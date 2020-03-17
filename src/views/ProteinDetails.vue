@@ -1,13 +1,19 @@
 <template>
   <div>
+      <ProteinSearchForm />
     <p>Displaying Search Results for:</p>
     <p>{{response}}</p>
   </div>
 </template>
 
 <script>
+import ProteinSearchForm from '../components/features/Forms/ProteinSearchForm';
+
 export default {
   name: "ProteinDetail",
+  components:{
+      ProteinSearchForm
+  },
   data() {
     return {
       protein_name: "",
