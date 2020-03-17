@@ -1,7 +1,6 @@
 <template>
-  <div class="home">
+  <div>
     <ProteinSearchForm />
-    
   </div>
 </template>
 
@@ -14,11 +13,6 @@ export default {
   components: {
     ProteinSearchForm
   },
-  data() {
-    return {
-      title: ""
-    };
-  }
 };
 </script>
 

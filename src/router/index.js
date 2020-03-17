@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import ProteinDetail from '../views/ProteinDetails.vue'
+import ProteinDetailsView from '../views/ProteinDetailsView.vue'
 
 Vue.use(VueRouter)
 
@@ -21,8 +21,8 @@ const routes = [
   },
   {
     path:'/protein-detail/:protein_name',
-    name: "ProteinDetail",
-    component: ProteinDetail
+    name: "ProteinDetailsView",
+    component: ProteinDetailsView
   }
 ]
 

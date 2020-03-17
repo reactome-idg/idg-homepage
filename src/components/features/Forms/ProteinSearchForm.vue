@@ -26,7 +26,7 @@ export default {
     searchProtein(e) {
       e.preventDefault();
       const protein = this.protein;
-      router.push({name:'ProteinDetail', params: {protein_name:protein}})
+    router.push({name:'ProteinDetailsView', params: {protein_name:protein}})
       this.protein = "";
     }
   }

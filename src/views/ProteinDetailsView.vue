@@ -10,7 +10,7 @@
 import ProteinSearchForm from '../components/features/Forms/ProteinSearchForm';
 
 export default {
-  name: "ProteinDetail",
+  name: "ProteinDetailsView",
   components:{
       ProteinSearchForm
   },
