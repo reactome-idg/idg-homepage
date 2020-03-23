@@ -1,10 +1,10 @@
 <template>
-  <header class="header">
-    <div class="logo-container">
+  <header>
+    <v-container fluid class="logo-container">
       <router-link to="/">
-        <img :src="'/assets/images/logo.svg'" alt="Reactome Logo" class="logo" />
+        <img :src="'/assets/images/logo.svg'" alt="Reactome Logo" class="logo"/>
       </router-link>
-    </div>
+    </v-container>
   </header>
 </template>
 
@@ -15,17 +15,11 @@ export default {
 </script>
 
 <style scoped>
-.header-h1 {
-  padding: 10px;
-  text-decoration: none;
-  color: black;
-}
-
 a {
   text-decoration: none;
 }
 .logo {
-  width: 20em;
+  width: 15em;
 }
 .logo-container{
   text-align: left;

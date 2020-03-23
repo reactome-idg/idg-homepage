@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <v-container fluid ma-5 class="outerContainer">
     <form @submit="searchProtein">
       <h2>Search Reactome:</h2>
       <input
@@ -10,7 +10,7 @@
       />
       <input class="btn" type="submit" value="Go!" />
     </form>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -33,14 +33,13 @@ export default {
 </script>
 
 <style>
-.container {
-  padding: 5em;
-  margin: 0;
+.outerContainer {
   background-color: #f0f0f0;
   width: 100%;
   text-align: center;
 }
 .protein-search-box {
+  background-color: white;
   font-size: medium;
   padding: 5px 10px;
   width: 50%;

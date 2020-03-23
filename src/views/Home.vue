@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-layout pa-5>
     <ProteinSearchForm v-on:search-protein="searchProtein" />
-  </div>
+  </v-layout>
 </template>
 
 <script>
