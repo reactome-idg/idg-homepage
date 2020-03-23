@@ -14,7 +14,6 @@
 </template>
 
 <script>
-// import router from "@/router/index.js";
 export default {
   name: "ProteinSearchForm",
   data() {
@@ -27,10 +26,6 @@ export default {
       e.preventDefault();
       const protein = this.protein;
       this.$emit("search-protein", protein);
-      // router.push({
-      //   name: "ProteinDetailsView",
-      //   params: { protein_name: protein }
-      // });
       this.protein = "";
     }
   }

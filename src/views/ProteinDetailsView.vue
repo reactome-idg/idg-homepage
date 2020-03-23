@@ -2,7 +2,7 @@
   <div>
     <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
     <p>Displaying Search Results for:</p>
-    <p>{{response}}</p>
+    <p>{{protein.proteinName}}</p>
   </div>
 </template>
 
@@ -17,8 +17,7 @@ export default {
   },
   data() {
     return {
-      protein_name: "",
-      response: ""
+      protein: {}
     };
   },
   created() {
@@ -29,10 +28,10 @@ export default {
     searchProtein(proteinName) {
       fetch(`http://localhost:8085/protein-detail/${proteinName}`)
         .then(res => {
-          return res.text();
+          return res.json();
         })
-        .then(data => {
-          this.response = data;
+        .then(protein => {
+          this.protein = protein;
         })
         .catch(err => console.log(err));
     },
