@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <v-content class="searchContainer" fluid>
       <ProteinSearchForm v-on:search-protein="searchProtein" />
     </v-content>
@@ -8,11 +9,13 @@
 
 <script>
 import ProteinSearchForm from "../components/features/Forms/ProteinSearchForm";
+import Header from "../components/layout/Header"
 import router from "@/router/index.js";
 
 export default {
   name: "Home",
   components: {
+    Header,
     ProteinSearchForm
   },
   methods: {

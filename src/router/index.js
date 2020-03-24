@@ -9,7 +9,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: "Home"
+    }
   },
   {
     path: '/about',
@@ -22,7 +25,10 @@ const routes = [
   {
     path: '/pathway-search/:proteinName',
     name: "PathwaySearch",
-    component: PathwaySearch
+    component: PathwaySearch,
+    meta: {
+      title: "Pathway Search"
+    }
   }
 ]
 

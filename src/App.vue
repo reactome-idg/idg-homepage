@@ -1,17 +1,22 @@
 <template>
   <v-app id="app">
-    <Header />
     <router-view/>
   </v-app>
 </template>
 
 <script>
-import Header from "./components/layout/Header";
 export default {
   name: "app",
   components:{
-    Header
-  }
+  },
+  watch: {
+      '$route':{
+        handler: (to) => {
+          document.title = 'Reactome IDG - ' + to.meta.title || 'Reactome IDG'
+        },
+         immediate: true
+      }
+    }
 }
 </script>
 
