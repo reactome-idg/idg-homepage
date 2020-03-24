@@ -1,13 +1,19 @@
 <template>
   <v-app id="app">
-    <router-view/>
+    <Header />
+    <router-view mb-5/>
+    <Footer />
   </v-app>
 </template>
 
 <script>
+import Header from "./components/layout/Header"
+import Footer from "./components/layout/Footer"
 export default {
   name: "app",
   components:{
+    Header,
+    Footer
   },
   watch: {
       '$route':{
@@ -21,6 +27,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

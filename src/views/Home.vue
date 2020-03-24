@@ -1,22 +1,22 @@
 <template>
   <div>
-    <Header />
     <v-content class="searchContainer" fluid>
       <ProteinSearchForm v-on:search-protein="searchProtein" />
+      <v-container>
+
+      </v-container>
     </v-content>
   </div>
 </template>
 
 <script>
 import ProteinSearchForm from "../components/features/Forms/ProteinSearchForm";
-import Header from "../components/layout/Header"
 import router from "@/router/index.js";
 
 export default {
   name: "Home",
   components: {
-    Header,
-    ProteinSearchForm
+    ProteinSearchForm,
   },
   methods: {
     searchProtein(proteinName) {
@@ -31,6 +31,6 @@ export default {
 
 <style scoped>
 .searchContainer {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
 }
 </style>

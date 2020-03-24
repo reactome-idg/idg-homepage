@@ -1,10 +1,9 @@
 <template>
   <div>
-    <Header />
     <v-container class="searchContainer" fluid>
       <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
     </v-container>
-    <v-container>
+    <v-container mb-5>
       <h2 class="text-left">Showing results for {{proteinName}}</h2>
       <PathwayList v-bind:pathways="pathways" />
     </v-container>
@@ -12,7 +11,6 @@
 </template>
 
 <script>
-import Header from "../components/layout/Header";
 import ProteinSearchForm from "../components/features/Forms/ProteinSearchForm";
 import PathwayList from "../components/features/pathwaySearch/PathwayList";
 import router from "@/router/index.js";
@@ -20,9 +18,8 @@ import router from "@/router/index.js";
 export default {
   name: "PathwaySearch",
   components: {
-    Header,
     ProteinSearchForm,
-    PathwayList
+    PathwayList,
   },
   data() {
     return {
@@ -59,8 +56,9 @@ export default {
 
 <style scoped>
 .searchContainer {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
 }
+
 .no-decorators {
   text-decoration: none;
 }
