@@ -1,7 +1,9 @@
 <template>
-  <v-container class="searchContainer" fluid>
-    <ProteinSearchForm v-on:search-protein="searchProtein" />
-  </v-container>
+  <div>
+    <v-container class="searchContainer" fluid>
+      <ProteinSearchForm v-on:search-protein="searchProtein" />
+    </v-container>
+  </div>
 </template>
 
 <script>

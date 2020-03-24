@@ -1,15 +1,15 @@
 <template>
-  <v-container class="searchContainer" fluid >
-    <v-container class="searchContainer">
-        <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
+  <div>
+    <v-container class="searchContainer" fluid>
+      <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
     </v-container>
     <v-container>
       <v-container v-for="pathway in pathways" :key="pathway.id">
-          <p>{{pathway}}</p>
-          <hr>
+        <p>{{pathway}}</p>
+        <hr />
       </v-container>
-  </v-container>
-  </v-container>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -53,9 +53,7 @@ export default {
 </script>
 
 <style scoped>
-
-.searchContainer{
-background-color: #f0f0f0;
+.searchContainer {
+  background-color: #f0f0f0;
 }
-
 </style>
