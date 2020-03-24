@@ -1,8 +1,15 @@
 <template>
   <v-container class="searchContainer" fluid >
-    <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
+    <v-container class="searchContainer">
+        <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
+    </v-container>
+    <v-container>
+      <v-container v-for="pathway in pathways" :key="pathway.id">
+          <p>{{pathway}}</p>
+          <hr>
+      </v-container>
   </v-container>
-  
+  </v-container>
 </template>
 
 <script>
