@@ -1,11 +1,10 @@
 <template>
-  <v-layout pa-5>
+  <v-container class="searchContainer" fluid>
     <ProteinSearchForm v-on:search-protein="searchProtein" />
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
 import ProteinSearchForm from "../components/features/Forms/ProteinSearchForm";
 import router from "@/router/index.js";
 
@@ -17,8 +16,8 @@ export default {
   methods: {
     searchProtein(proteinName) {
       router.push({
-        name: "ProteinDetailsView",
-        params: { protein_name: proteinName }
+        name: "PathwaySearch",
+        params: { proteinName: proteinName }
       });
     }
   }
@@ -26,5 +25,7 @@ export default {
 </script>
 
 <style scoped>
-
+.searchContainer {
+  background-color: #f0f0f0;
+}
 </style>

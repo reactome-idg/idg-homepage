@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     searchProtein(proteinName) {
-      fetch(`http://localhost:8085/protein-detail/${proteinName}`)
+      fetch(`http://localhost:8085/pathways/${proteinName}`)
         .then(res => {
           return res.json();
         })

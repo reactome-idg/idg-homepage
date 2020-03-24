@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid ma-5 class="outerContainer">
+  <v-container fluid class="outerContainer">
     <form @submit="searchProtein">
       <h2>Search Reactome:</h2>
       <input
@@ -34,7 +34,7 @@ export default {
 
 <style>
 .outerContainer {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   width: 100%;
   text-align: center;
 }

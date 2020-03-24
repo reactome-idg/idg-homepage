@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import ProteinDetailsView from '../views/ProteinDetailsView.vue'
+import PathwaySearch from '../views/PathwaySearch.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
     path:'/protein-detail/:protein_name',
     name: "ProteinDetailsView",
     component: ProteinDetailsView
+  },
+  {
+    path: '/pathway-search/:proteinName',
+    name: "PathwaySearch",
+    component: PathwaySearch
   }
 ]
 
