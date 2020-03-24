@@ -6,7 +6,7 @@
           <div>
             <v-expansion-panel-header>
               <p>
-                <a href="#" class="text-left font-weight-bold pathwayLink">{{pathway.pathwayName}}</a>
+                <a :href="'/PathwayBrowser/#/' + pathway.stableIdentifier" class="text-left font-weight-bold pathwayLink">{{pathway.pathwayName}}</a>
               </p>
               <span>
                 <b>Stable Identifier:</b>
