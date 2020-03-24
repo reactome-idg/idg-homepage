@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import ProteinDetailsView from '../views/ProteinDetailsView.vue'
 import PathwaySearch from '../views/PathwaySearch.vue'
 
 Vue.use(VueRouter)
@@ -19,11 +18,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
-    path:'/protein-detail/:protein_name',
-    name: "ProteinDetailsView",
-    component: ProteinDetailsView
   },
   {
     path: '/pathway-search/:proteinName',
