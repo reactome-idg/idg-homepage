@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-container class="searchContainer" fluid>
+    <v-content class="searchContainer" fluid>
       <ProteinSearchForm v-on:search-protein="searchProtein" />
-    </v-container>
+    </v-content>
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <v-content>
     <ProteinSearchForm v-on:search-protein="searchFormSubmit" />
     <p>Displaying Search Results for:</p>
     <p>{{protein.proteinName}}</p>
-  </div>
+  </v-content>
 </template>
 
 <script>
