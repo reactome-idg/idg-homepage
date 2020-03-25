@@ -23,6 +23,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: "/documentation",
+    name: "Documentation",
+    component: () => import ('../views/Documentation.vue')
+  },
+  {
     path: '/pathway-search/:proteinName',
     name: "PathwaySearch",
     component: PathwaySearch,
