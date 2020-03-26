@@ -1,7 +1,18 @@
 # idg-homepage documentation
 
+## Dev Environment setup
+Please install nvm through homebrew (or follow the documentation [here](https://github.com/nvm-sh/nvm#installing-and-updating))
 
+Next, install the latest version of Node:
+```
+nvm install --lts
+```
 
+Finally, install Vue CLI 3
+```
+npm install -g @vue/cli
+```
+clone the project, cd into the directory, and follow the Project setup steps
 
 ## Project setup
 ```
