@@ -1,6 +1,6 @@
 <template>
   <v-container>
-      DOCUMENTATION PAGE
+      Documentation coming soon!
   </v-container>
 </template>
 

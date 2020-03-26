@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="outerContainer">
     <form @submit="searchProtein">
-      <h2>Search Reactome:</h2>
+      <h2>Find Reactome Pathway: </h2>
       <input
         type="text"
         v-model="protein"
         class="protein-search-box"
-        placeholder="Enter a Protein..."
+        placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
       />
       <input class="btn" type="submit" value="Go!" />
     </form>
@@ -34,6 +34,7 @@ export default {
 
 <style>
 .outerContainer {
+  /* background-color: #f0f0f0; */
   width: 100%;
   text-align: center;
 }
