@@ -42,6 +42,7 @@ export default {
   padding: 30px;
 }
 * {
+  font-family: Comfortaa, curisve;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
