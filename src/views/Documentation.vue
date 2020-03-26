@@ -1,54 +1,73 @@
 <template>
   <v-container mb-5>
     <v-container>
-        <p class="display-2">IDG Reactome Dcumentation</p>
-      </v-container>
+      <p class="display-2">IDG Reactome Dcumentation</p>
+    </v-container>
     <DocumentationLinks />
-      <v-content class="text-left">
+    <v-content class="text-left">
+      <v-container>
+        <h2 class="borderBottom">Funtional Interaction View</h2>
+        <img :src="'/assets/doc/images/FIView.png'" class="images" />
         <v-container>
-          <h2 class="borderBottom">Funtional Interaction View</h2>
-          <img :src="'/assets/Documentation/images/FIView.png'" class="images" />
-          <v-container>
-            <span v-html="FIDoc"></span>
-          </v-container>
+          <span v-html="docs.FIDoc"></span>
         </v-container>
+      </v-container>
+      <v-container>
+        <h2 class="borderBottom">TCRD Overlays</h2>
+        <img
+          :src="'/assets/doc/images/TCRDOverlayForm.png'"
+          class="images-50"
+          alt="Form for choosing TCRD Overlays"
+        />
         <v-container>
-          <h2 class="borderBottom">TCRD Overlays</h2>
-          <img :src="'/assets/Documentation/images/TCRDOverlayForm.png'" class="images-50" alt="Form for choosing TCRD Overlays">
-          <v-container>
-            <span v-html="TCRDOverlayDoc"></span>
-          </v-container>
+          <span v-html="docs.TCRDOverlayDoc"></span>
         </v-container>
+      </v-container>
+      <v-container>
+        <h2 class="borderBottom">Choosing Pairwise Interactor Views</h2>
+        <img
+          :src="'/assets/doc/images/PairwiseRelationshipForm.png'"
+          class="images-50"
+          alt="Pairwise Relationship Form"
+        />
         <v-container>
-          <h2 class="borderBottom">Choosing Pairwise Interactor Views</h2>
-          <img :src="'/assets/Documentation/images/PairwiseRelationshipForm.png'" class="images-50" alt="Pairwise Relationship Form">
-          <v-container >
-            <span v-html="PairwiseInteractorFormDoc"></span>
-          </v-container>
+          <span v-html="docs.PairwiseInteractorFormDoc"></span>
         </v-container>
-      </v-content>
+      </v-container>
+      <v-container>
+        <h2 class="borderBottom">Pairwise Popups</h2>
+        <img :src="'/assets/doc/images/PairwisePopup.png'" class="images-50" alt="Pairwise Popup image">
+        <v-container>
+          <span v-html="docs.PairwisePopupDoc"></span>
+        </v-container>
+      </v-container>
+    </v-content>
   </v-container>
 </template>
 
 <script>
-import DocumentationLinks from "../components/features/Documentation/DocumentationLinks"
-import FIDoc from "raw-loader!../../public/assets/Documentation/text/FIDoc.html"
-import TCRDOverlayDoc from "raw-loader!../../public/assets/Documentation/text/TCRDOverlayDoc.html"
-import PairwiseInteractorFormDoc from "raw-loader!../../public/assets/Documentation/text/PairwiseInteractorFormDoc.html"
+import DocumentationLinks from "../components/features/Documentation/DocumentationLinks";
+import FIDoc from "raw-loader!../../public/assets/doc/text/FIDoc.html";
+import TCRDOverlayDoc from "raw-loader!../../public/assets/doc/text/TCRDOverlayDoc.html";
+import PairwiseInteractorFormDoc from "raw-loader!../../public/assets/doc/text/PairwiseInteractorFormDoc.html";
+import PairwisePopupDoc from "raw-loader!../../public/assets/doc/text/PairwisePopupDoc.html"
 
 export default {
   name: "Documentation",
   components: {
-    DocumentationLinks,
+    DocumentationLinks
   },
   data() {
     return {
-      FIDoc: FIDoc,
-      TCRDOverlayDoc: TCRDOverlayDoc,
-      PairwiseInteractorFormDoc: PairwiseInteractorFormDoc
-    }
+      docs: {
+        FIDoc: FIDoc,
+        TCRDOverlayDoc: TCRDOverlayDoc,
+        PairwiseInteractorFormDoc: PairwiseInteractorFormDoc,
+        PairwisePopupDoc: PairwisePopupDoc
+      }
+    };
   }
-}
+};
 </script>
 
 <style scoped>
@@ -57,7 +76,7 @@ export default {
   margin-bottom: 1em;
 }
 .images {
-  max-width:100%;
+  width: 100%;
 }
 .images-50 {
   display: block;
