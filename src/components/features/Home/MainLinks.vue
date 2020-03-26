@@ -4,7 +4,7 @@
       <v-col cols="12" md="4">
         <v-card class="mx-auto" max-width="350px" height="100%" raised>
           <v-card-title class="justify-center">
-            <a :href=browserLink>
+            <a :href="browserLink">
               <v-btn
                 large
                 color="primary"
@@ -24,7 +24,7 @@
       <v-col cols="12" md="4">
         <v-card class="mx-auto" max-width="350px" height="100%" raised>
           <v-card-title class="justify-center">
-            <a :href=reactomeLink>
+            <a v-bind:href="reactomeLink">
               <v-btn large color="primary" height="100px" width="100px" class="navigationButton">Go!</v-btn>
             </a>
           </v-card-title>

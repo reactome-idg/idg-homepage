@@ -4,10 +4,9 @@
         <v-col cols="12" md="6">
           <v-card>
             <v-card-title class="justify-center">
-              <v-btn large
-                color="primary"
-                height="100px"
-                width="100px">Go!</v-btn>
+             <a v-bind:href="reactomeDocumentation" target="_blank">
+              <v-btn large color="primary" height="100px" width="100px" class="navigationButton">Go!</v-btn>
+            </a>
             </v-card-title>
             <v-card-text>
               <p class="title font-weight-medium">Visit the Reactome Documentation</p>
@@ -33,7 +32,12 @@
 
 <script>
 export default {
-    name: "DocumentationLinks"
+    name: "DocumentationLinks",
+    data() {
+      return{
+        reactomeDocumentation: "https://reactome.org/documentation"
+      }
+    }
 }
 </script>
 
