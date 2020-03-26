@@ -19,6 +19,13 @@
             <span v-html="TCRDOverlayDoc"></span>
           </v-container>
         </v-container>
+        <v-container>
+          <h2 class="borderBottom">Choosing Pairwise Interactor Views</h2>
+          <img :src="'/assets/Documentation/images/PairwiseRelationshipForm.png'" class="images-50" alt="Pairwise Relationship Form">
+          <v-container >
+            <span v-html="PairwiseInteractorFormDoc"></span>
+          </v-container>
+        </v-container>
       </v-content>
   </v-container>
 </template>
@@ -27,6 +34,7 @@
 import DocumentationLinks from "../components/features/Documentation/DocumentationLinks"
 import FIDoc from "raw-loader!../../public/assets/Documentation/text/FIDoc.html"
 import TCRDOverlayDoc from "raw-loader!../../public/assets/Documentation/text/TCRDOverlayDoc.html"
+import PairwiseInteractorFormDoc from "raw-loader!../../public/assets/Documentation/text/PairwiseInteractorFormDoc.html"
 
 export default {
   name: "Documentation",
@@ -37,6 +45,7 @@ export default {
     return {
       FIDoc: FIDoc,
       TCRDOverlayDoc: TCRDOverlayDoc,
+      PairwiseInteractorFormDoc: PairwiseInteractorFormDoc
     }
   }
 }

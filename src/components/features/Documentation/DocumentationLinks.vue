@@ -2,7 +2,7 @@
   <v-container>
       <v-row>
         <v-col cols="12" md="6">
-          <v-card>
+          <v-card raised>
             <v-card-title class="justify-center">
              <a v-bind:href="reactomeDocumentation" target="_blank">
               <v-btn large color="primary" height="100px" width="100px" class="navigationButton">Go!</v-btn>
@@ -14,7 +14,7 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card>
+          <v-card raised>
             <v-card-title class="justify-center">
               <v-btn large
                 color="primary"
