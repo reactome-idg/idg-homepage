@@ -23,5 +23,6 @@ a {
 }
 .logo-container{
   text-align: left;
+  border-bottom: 1px solid #c0c0c0;
 }
 </style>

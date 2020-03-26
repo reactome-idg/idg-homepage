@@ -31,7 +31,6 @@ export default {
 
 <style scoped>
 .searchContainer {
-  border-top: 1px solid #c0c0c0;
   background-color: #e0e0e0;
 }
 
