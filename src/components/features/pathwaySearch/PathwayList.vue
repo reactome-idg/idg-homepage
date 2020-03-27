@@ -22,7 +22,9 @@
                   <v-col
                     v-for="(item, index) in pathway.overlayEntities"
                     :key="index"
-                    cols="2"
+                    cols="6"
+                    md="2"
+                    sm="4"
                     class="small-text"
                   >{{item}}</v-col>
                 </v-row>
