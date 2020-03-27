@@ -25,7 +25,12 @@ const routes = [
   {
     path: "/documentation",
     name: "Documentation",
-    component: () => import ('../views/Documentation.vue')
+    component: () => import ('../views/Docs/Documentation.vue')
+  },
+  {
+    path: "/cite",
+    name: "Cite",
+    component: () => import ('../views/Docs/Cite.vue')
   },
   {
     path: '/pathway-search/:proteinName',

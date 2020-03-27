@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import DocumentationLinks from "../components/features/Documentation/DocumentationLinks";
-import FIDoc from "raw-loader!../../public/assets/doc/text/FIDoc.html";
-import TCRDOverlayDoc from "raw-loader!../../public/assets/doc/text/TCRDOverlayDoc.html";
-import PairwiseInteractorFormDoc from "raw-loader!../../public/assets/doc/text/PairwiseInteractorFormDoc.html";
-import PairwisePopupDoc from "raw-loader!../../public/assets/doc/text/PairwisePopupDoc.html"
+import DocumentationLinks from "../../components/features/Documentation/DocumentationLinks";
+import FIDoc from "raw-loader!../../../public/assets/doc/text/FIDoc.html";
+import TCRDOverlayDoc from "raw-loader!../../../public/assets/doc/text/TCRDOverlayDoc.html";
+import PairwiseInteractorFormDoc from "raw-loader!../../../public/assets/doc/text/PairwiseInteractorFormDoc.html";
+import PairwisePopupDoc from "raw-loader!../../../public/assets/doc/text/PairwisePopupDoc.html"
 
 export default {
   name: "Documentation",

@@ -16,10 +16,10 @@
         <v-col cols="12" md="6">
           <v-card raised>
             <v-card-title class="justify-center">
-              <v-btn large
+              <router-link to="/cite"><v-btn large
                 color="primary"
                 height="100px"
-                width="100px">Cite Us!</v-btn>
+                width="100px">Cite Us!</v-btn></router-link>
             </v-card-title>
             <v-card-text>
               <p class="title font-weight-medium">Cite the IDG Reactome</p>
