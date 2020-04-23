@@ -45,7 +45,7 @@ export default {
     },
     searchFormSubmit(proteinName) {
       router.push({
-        name: "SearchPathway",
+        name: "PathwaySearch",
         params: { proteinName: proteinName }
       });
       this.searchProtein(proteinName);
