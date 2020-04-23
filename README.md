@@ -1,7 +1,8 @@
 # idg-homepage documentation
 
 ## Dev Environment setup
-Please install nvm through homebrew on a mac, (or follow the documentation [here](https://github.com/nvm-sh/nvm#installing-and-updating))
+This dev environment assumes a Mac or Linux dev environment.
+Please install nvm through homebrew on a Mac, (or follow the documentation [here](https://github.com/nvm-sh/nvm#installing-and-updating))
 
 Next, install the latest version of Node:
 ```
