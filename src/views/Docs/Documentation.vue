@@ -35,10 +35,20 @@
         </v-container>
       </v-container>
       <v-container>
-        <h2 class="borderBottom">Pairwise Popups</h2>
-        <img :src="'/assets/doc/images/PairwisePopup.png'" class="images-50" alt="Pairwise Popup image">
+        <h2 class = "borderBottom">Drug/Target Overlay</h2>
+        <img :src="'/assets/doc/images/DrugsInFIView.png'" class="images-50" alt="Drugs in FIView">
         <v-container>
-          <span v-html="docs.PairwisePopupDoc"></span>
+          <span v-html="docs.DrugTargetDoc"></span>
+        </v-container>
+      </v-container>
+      <v-container>
+        <h2 class="borderBottom">Pairwise Popups</h2>
+        <v-container style="justify-content: center;">
+          <img :src="'/assets/doc/images/PairwisePopup.png'" class="images-50-inline" alt="Pairwise Popup image">
+          <img :src="'/assets/doc/images/DrugPopup.png'" class="images-50-inline" alt="Drug/Target Popup image">
+        </v-container>
+        <v-container>
+          <span v-html="docs.IDGPopupDoc"></span>
         </v-container>
       </v-container>
     </v-content>
@@ -50,7 +60,8 @@ import DocumentationLinks from "../../components/features/Documentation/Document
 import FIDoc from "raw-loader!../../../public/assets/doc/text/FIDoc.html";
 import TCRDOverlayDoc from "raw-loader!../../../public/assets/doc/text/TCRDOverlayDoc.html";
 import PairwiseInteractorFormDoc from "raw-loader!../../../public/assets/doc/text/PairwiseInteractorFormDoc.html";
-import PairwisePopupDoc from "raw-loader!../../../public/assets/doc/text/PairwisePopupDoc.html"
+import IDGPopupDoc from "raw-loader!../../../public/assets/doc/text/IDGPopupDoc.html"
+import DrugTargetDoc from "raw-loader!../../../public/assets/doc/text/DrugTargetDoc.html"
 
 export default {
   name: "Documentation",
@@ -63,7 +74,8 @@ export default {
         FIDoc: FIDoc,
         TCRDOverlayDoc: TCRDOverlayDoc,
         PairwiseInteractorFormDoc: PairwiseInteractorFormDoc,
-        PairwisePopupDoc: PairwisePopupDoc
+        IDGPopupDoc: IDGPopupDoc,
+        DrugTargetDoc : DrugTargetDoc
       }
     };
   }
@@ -82,6 +94,13 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  max-width: 50%;
+  max-height: 40em;
+}
+.images-50-inline {
+  display: inline;
+  max-width: 50%;
+  max-height: 40em;
+  margin: 0 auto;
 }
 </style>
