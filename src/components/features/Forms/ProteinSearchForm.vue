@@ -32,7 +32,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .outerContainer {
   /* background-color: #f0f0f0; */
   width: 100%;
