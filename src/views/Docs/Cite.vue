@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: "Cite"
+  name: "Cite",
+  beforeCreate: () => {
+    document.body.className = "normal";
+  }
 };
 </script>
 

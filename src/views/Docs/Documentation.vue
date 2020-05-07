@@ -78,6 +78,9 @@ export default {
         DrugTargetDoc : DrugTargetDoc
       }
     };
+  },
+  beforeCreate: () => {
+    document.body.className = "normal"
   }
 };
 </script>

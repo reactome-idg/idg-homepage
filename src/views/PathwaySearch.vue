@@ -50,7 +50,7 @@ export default {
       });
       this.searchProtein(proteinName);
     }
-  }
+  },
 };
 </script>
 
