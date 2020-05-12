@@ -4,6 +4,16 @@
       <!-- LEFT SIDE CONTAINER -->
       <v-col col="12" md="8" sm="12" xs="12">
         <v-container fluid>
+
+          <v-card class="mb-5" dark raised>
+            <v-card-title>Illuminating the Druggable Genome with Reactome</v-card-title>
+            <v-card-text>
+              <p
+                class="text-left"
+              >At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+            </v-card-text>
+          </v-card>
+          
           <v-card dark raised>
             <v-card-title>
               <v-text-field
@@ -22,7 +32,7 @@
                   :headers="headers"
                   :items="pathways"
                   :expanded.sync="expanded"
-                  :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
+                  :footer-props="{'items-per-page-options': [5,40,50,100,-1]}"
                   show-expand
                 >
                   <template
@@ -52,14 +62,6 @@
               </v-container>
             </v-card-text>
           </v-card>
-          <v-card class="mt-5" dark raised>
-            <v-card-title>Illuminating the Druggable Genome with Reactome</v-card-title>
-            <v-card-text>
-              <p
-                class="text-left"
-              >At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-            </v-card-text>
-          </v-card>
         </v-container>
       </v-col>
       <!-- RIGHT SIDE CONTAINER -->
@@ -68,13 +70,13 @@
           <v-card dark raised>
             <v-card-title class="mx-auto">IDG Reactome</v-card-title>
             <v-card-text>
-              <v-card class="mx-auto mt-5" light max-width="350px" height="100%" raised>
+              <v-card class="mx-auto mt-5" light max-width="300px" height="100%" raised>
                 <v-card-title class="justify-center">
                   <a :href="browserLink">
                     <v-btn
                       large
                       color="primary"
-                      height="100px"
+                      height="50px"
                       width="100px"
                       class="navigationButton"
                     >Launch!</v-btn>
@@ -86,13 +88,13 @@
                   </v-container>
                 </v-card-text>
               </v-card>
-              <v-card class="mx-auto mt-5" light max-width="350px" height="100%" raised>
+              <v-card class="mx-auto mt-5" light max-width="300px" height="100%" raised>
                 <v-card-title class="justify-center">
                   <a v-bind:href="reactomeLink">
                     <v-btn
                       large
                       color="primary"
-                      height="100px"
+                      height="50px"
                       width="100px"
                       class="navigationButton"
                     >Go!</v-btn>
@@ -104,12 +106,12 @@
                   </v-container>
                 </v-card-text>
               </v-card>
-              <v-card class="mx-auto mt-5" light max-width="350px" height="100%" raised>
+              <v-card class="mx-auto mt-5" light max-width="300px" height="100%" raised>
                 <v-card-title class="justify-center">
                   <router-link to="/documentation">
                     <v-btn
                       color="primary"
-                      height="100px"
+                      height="50px"
                       width="100px"
                       class="navigationButton"
                     >View!</v-btn>

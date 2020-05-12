@@ -13,9 +13,10 @@ Finally, install Vue CLI 3
 ```
 npm install -g @vue/cli
 ```
-clone the project, cd into the directory, and follow the Project setup steps
 
 ## Project setup
+Clone the project, cd into the directory, and follow the Project setup steps!
+
 ```
 npm install
 ```
