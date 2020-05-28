@@ -1,92 +1,10 @@
 <template>
   <v-container fluid>
-    <v-container fluid>
-      <v-card class="mb-5" dark raised>
-        <v-card-title>
-          Illuminating the Druggable Genome with Reactome
-          <v-spacer></v-spacer>
-          <v-btn icon @click="show = !show">
-            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-expand-transition>
-          <div v-show="show">
-            <v-card-text>
-              <p
-                class="text-left"
-              >At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-            </v-card-text>
-          </div>
-        </v-expand-transition>
-      </v-card>
-    </v-container>
-    <v-container fluid>
-      <v-card dark raised class="pa-5">
-        <v-card-title class="pa-0">IDG Reactome</v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="4">
-          <v-card class="mx-auto mt-5" light max-width="250px" height="90%" raised>
-            <v-card-title class="justify-center">
-              <a :href="browserLink">
-                <v-btn
-                  large
-                  color="primary"
-                  height="50px"
-                  width="100px"
-                  class="navigationButton"
-                >Launch!</v-btn>
-              </a>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <p class="font-weight-bold">Lauch the IDG Pathway Browser</p>
-              </v-container>
-            </v-card-text>
-          </v-card>
-          </v-col>
-          <v-col cols="12" md="4">
-          <v-card class="mx-auto mt-5" light max-width="250px" height="90%" raised>
-            <v-card-title class="justify-center">
-              <a v-bind:href="reactomeLink">
-                <v-btn
-                  large
-                  color="primary"
-                  height="50px"
-                  width="100px"
-                  class="navigationButton"
-                >Go!</v-btn>
-              </a>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <p class="font-weight-bold">Vist Reactome</p>
-              </v-container>
-            </v-card-text>
-          </v-card>
-          </v-col>
-
-          <v-col cols="12" md="4">
-          <v-card class="mx-auto mt-5" light max-width="250px" height="90%" raised>
-            <v-card-title class="justify-center">
-              <router-link to="/documentation">
-                <v-btn color="primary" height="50px" width="100px" class="navigationButton">View!</v-btn>
-              </router-link>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <p class="font-weight-bold">Documentation</p>
-              </v-container>
-            </v-card-text>
-          </v-card>
-          </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-container>
+    <MainLinks />
+    <About />
     <v-container fluid>
       <v-card dark raised>
-        <v-card-title >
+        <v-card-text >
           <v-text-field
             dark
             label="Search a protein"
@@ -95,15 +13,18 @@
             :outlined="true"
             class="searchContainer"
             v-on:keydown.enter="searchProtein"
+            hide-details="auto"
           ></v-text-field>
-        </v-card-title>
+        </v-card-text>
+      </v-card>
+      <v-card class="mt-5" dark raised v-if="pathways && pathways.length > 0">
         <v-card-text>
-          <v-container v-if="pathways && pathways.length > 0">
+          <v-container fluid>
             <v-data-table
               :headers="headers"
               :items="pathways"
               :expanded.sync="expanded"
-              :footer-props="{'items-per-page-options': [5,40,50,100,-1]}"
+              :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
               show-expand
             >
               <template
@@ -138,9 +59,15 @@
 </template>
 
 <script>
+
+import About from "../components/layout/home/About"
+import MainLinks from "../components/layout/home/MainLinks"
 export default {
   name: "Home",
-  components: {},
+  components: {
+    About,
+    MainLinks
+  },
   data: () => ({
     browserLink: "/PathwayBrowser/#/",
     reactomeLink: "https://reactome.org",
@@ -153,7 +80,6 @@ export default {
     pathways: [],
     search: "",
     proteinName: "",
-    show: false
   }),
   methods: {
     searchProtein() {
@@ -182,7 +108,7 @@ export default {
   background-color: #555;
 }
 .searchContainer {
-  width: 50%;
+  width: 100%;
   outline: none !important;
   border: none !important;
 }
