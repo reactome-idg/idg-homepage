@@ -21,10 +21,12 @@
         <v-card dark raised v-if="showResults">
           <v-card-title>Showing Results For: {{relationshipRtn.gene}}</v-card-title>
           <v-card-text>
-            <CyInstance :cyElementsProp="relationshipRtn.fiData"/>
+            <CyInstance :cyElementsProp="relationshipRtn.fiData" />
             <v-container fluid>
-              <v-data-table dense>
-
+              <v-data-table dense :headers="headers" :items="relationshipRtn.pathwayObjects" item-key="stId" show-expand :single-expand="true">
+                <template v-slot:expanded-item="{headers, item}">
+                  <td :colspan="headers.length">{{item.name}}</td>
+                </template>
               </v-data-table>
             </v-container>
           </v-card-text>
@@ -50,7 +52,9 @@ export default {
     browserLink: "/PathwayBrowser/#/",
     reactomeLink: "https://reactome.org",
     headers: [
-      { text: "Pathway Name", value: "pathwayName" }
+      { text: "Pathway Stable id", value: "stId" },
+      { text: "Pathway Name", value: "name"},
+      { text: "Level", value: "level" }
     ],
     expanded: [],
     pathways: [],

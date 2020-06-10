@@ -15,7 +15,13 @@ class CompanyService {
     });
   }
 
+  /**
+   * Structures FiData and PathwayObjects from server return
+   * @param {*} data 
+   */
   static structureDataForGene({data}) {
+    var rtn = {}
+    rtn.gene = data.gene;
     var edges = []
     var nodes = []
     if(data.pathways && data.pathways.length > 0) {
@@ -25,15 +31,15 @@ class CompanyService {
                 data: {
                     id: `e${edges.length}`,
                     target: data.gene,
-                    source: data.pathways[i],
+                    source: data.pathways[i].stId,
                 }
             })
             nodes.push({
               group: "nodes",
               data: {
-                id: data.pathways[i],
-                name: data.pathways[i],
-                level: "primary",
+                id: data.pathways[i].stId,
+                name: data.pathways[i].stId,
+                degree: 2,
               },
             });
         }
@@ -46,15 +52,15 @@ class CompanyService {
               data: {
                 id: `e${edges.length}`,
                 target: data.gene,
-                source: data.secondaryPathways[i],
+                source: data.secondaryPathways[i].stId,
               },
             });
             nodes.push({
               group: "nodes",
               data: {
-                id: data.secondaryPathways[i],
-                name: data.secondaryPathways[i],
-                level: "secondary",
+                id: data.secondaryPathways[i].stId,
+                name: data.secondaryPathways[i].stId,
+                degree: 1,
               },
             });
         }
@@ -64,13 +70,31 @@ class CompanyService {
         data: {
             id: data.gene,
             name: data.gene,
-            level: 'target'
+            degree: 3
         }
     })
 
-    data.fiData = [...nodes,...edges]
+    rtn.fiData = [...nodes,...edges]
+
+    var primaryPathways = data.pathways.map((pathway) => {
+      return {
+        stId: pathway.stId,
+        name: pathway.name,
+        level: "primary"
+      }
+    }) 
+
+    var secondaryPathways = data.secondaryPathways.map((pathway) => {
+      return {
+        stId: pathway.stId,
+        name: pathway.name,
+        level: "secondary"
+      }
+    })
+
+    rtn.pathwayObjects = [...primaryPathways, ...secondaryPathways]
     
-    return data;
+    return rtn;
   }
 }
 
