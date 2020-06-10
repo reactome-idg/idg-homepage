@@ -23,7 +23,17 @@
           <v-card-text>
             <CyInstance :cyElementsProp="relationshipRtn.fiData" />
             <v-container fluid>
-              <v-data-table dense :headers="headers" :items="relationshipRtn.pathwayObjects" item-key="stId" show-expand :single-expand="true">
+              <v-data-table
+                dense
+                :headers="headers"
+                :items="relationshipRtn.pathwayObjects"
+                item-key="stId"
+                show-expand
+                :single-expand="true"
+              >
+                <template v-slot:item.stId="{item}">
+                  <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+                </template>
                 <template v-slot:expanded-item="{headers, item}">
                   <td :colspan="headers.length">{{item.name}}</td>
                 </template>
@@ -37,8 +47,8 @@
 </template>
 
 <script>
-import About from "../components/layout/home/About";
-import MainLinks from "../components/layout/home/MainLinks";
+import About from "../components/Home/About";
+import MainLinks from "../components/Home/MainLinks";
 import PairwiseService from "../service/PairwiseService";
 import CyInstance from "../components/features/pathwaySearch/CyInstance";
 export default {
@@ -53,7 +63,7 @@ export default {
     reactomeLink: "https://reactome.org",
     headers: [
       { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name"},
+      { text: "Pathway Name", value: "name" },
       { text: "Level", value: "level" }
     ],
     expanded: [],
