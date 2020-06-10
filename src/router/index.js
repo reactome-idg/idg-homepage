@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import PathwaySearch from '../views/PathwaySearch.vue'
 
 Vue.use(VueRouter)
 
@@ -32,14 +31,6 @@ const routes = [
     name: "Cite",
     component: () => import ('../views/Docs/Cite.vue')
   },
-  {
-    path: '/pathway-search/:proteinName',
-    name: "PathwaySearch",
-    component: PathwaySearch,
-    meta: {
-      title: "Pathway Search"
-    }
-  }
 ]
 
 const router = new VueRouter({
