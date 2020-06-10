@@ -17,6 +17,11 @@
           ></v-text-field>
         </v-card-text>
       </v-card>
+      <v-container fluid v-show="loading" class="pl-0 pr-0">
+        <v-card outlined class="pa-5">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-card>
+      </v-container>
       <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
         <GeneToPathwayResult :data="relationshipRtn" />
       </v-container>
@@ -38,14 +43,17 @@ export default {
   },
   data: () => ({
     search: "",
-    relationshipRtn: null
+    relationshipRtn: null,
+    loading: false
   }),
   methods: {
     async searchProtein() {
       try {
+        this.loading = true;
         this.relationshipRtn = await PairwiseService.searchGeneName(
           this.search
         );
+        this.loading = false;
       } catch (err) {
         console.log(err);
       }
