@@ -17,30 +17,8 @@
           ></v-text-field>
         </v-card-text>
       </v-card>
-      <v-container fluid class="pl-0 pr-0">
-        <v-card dark raised v-if="showResults">
-          <v-card-title>Showing Results For: {{relationshipRtn.gene}}</v-card-title>
-          <v-card-text>
-            <CyInstance :cyElementsProp="relationshipRtn.fiData" />
-            <v-container fluid>
-              <v-data-table
-                dense
-                :headers="headers"
-                :items="relationshipRtn.pathwayObjects"
-                item-key="stId"
-                show-expand
-                :single-expand="true"
-              >
-                <template v-slot:item.stId="{item}">
-                  <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
-                </template>
-                <template v-slot:expanded-item="{headers, item}">
-                  <td :colspan="headers.length">{{item.name}}</td>
-                </template>
-              </v-data-table>
-            </v-container>
-          </v-card-text>
-        </v-card>
+      <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
+        <GeneToPathwayResult :data="relationshipRtn" />
       </v-container>
     </v-container>
   </v-container>
@@ -50,28 +28,17 @@
 import About from "../components/Home/About";
 import MainLinks from "../components/Home/MainLinks";
 import PairwiseService from "../service/PairwiseService";
-import CyInstance from "../components/features/pathwaySearch/CyInstance";
+import GeneToPathwayResult from "../components/Home/GeneToPathwayResult";
 export default {
   name: "Home",
   components: {
     About,
     MainLinks,
-    CyInstance
+    GeneToPathwayResult
   },
   data: () => ({
-    browserLink: "/PathwayBrowser/#/",
-    reactomeLink: "https://reactome.org",
-    headers: [
-      { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" },
-      { text: "Level", value: "level" }
-    ],
-    expanded: [],
-    pathways: [],
     search: "",
-    proteinName: "",
-    relationshipRtn: {},
-    showResults: false
+    relationshipRtn: null
   }),
   methods: {
     async searchProtein() {
@@ -79,7 +46,6 @@ export default {
         this.relationshipRtn = await PairwiseService.searchGeneName(
           this.search
         );
-        this.showResults = true;
       } catch (err) {
         console.log(err);
       }
