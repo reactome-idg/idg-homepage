@@ -20,8 +20,6 @@ class CompanyService {
    * @param {*} data 
    */
   static structureDataForGene({data}) {
-    var rtn = {}
-    rtn.gene = data.gene;
     var edges = []
     var nodes = []
     if(data.pathways && data.pathways.length > 0) {
@@ -74,27 +72,9 @@ class CompanyService {
         }
     })
 
-    rtn.fiData = [...nodes,...edges]
-
-    var primaryPathways = data.pathways.map((pathway) => {
-      return {
-        stId: pathway.stId,
-        name: pathway.name,
-        level: "primary"
-      }
-    }) 
-
-    var secondaryPathways = data.secondaryPathways.map((pathway) => {
-      return {
-        stId: pathway.stId,
-        name: pathway.name,
-        level: "secondary"
-      }
-    })
-
-    rtn.pathwayObjects = [...primaryPathways, ...secondaryPathways]
+    data.fiData = [...nodes,...edges]
     
-    return rtn;
+    return data;
   }
 }
 

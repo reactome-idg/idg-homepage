@@ -49,6 +49,7 @@ export default {
   methods: {
     async searchProtein() {
       try {
+        this.relationshipRtn = null;
         this.loading = true;
         this.relationshipRtn = await PairwiseService.searchGeneName(
           this.search
