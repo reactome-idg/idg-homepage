@@ -9,7 +9,7 @@
 <script>
 import About from "../components/Home/About";
 import MainLinks from "../components/Home/MainLinks";
-import PairwiseSearch from "../components/Home/PairwiseSearch";
+import PairwiseSearch from "../components/features/PairwiseSearch/PairwiseSearch"
 export default {
   name: "Home",
   components: {

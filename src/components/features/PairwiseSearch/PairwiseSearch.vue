@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import PairwiseService from "../../service/PairwiseService"
+import PairwiseService from "../../../service/PairwiseService"
 import GeneToPathwayResult from "./GeneToPathwayResult"
 export default {
   name: "PairwiseSearch",
