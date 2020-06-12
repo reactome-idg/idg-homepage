@@ -14,11 +14,7 @@
           ></v-text-field>
         </v-card-text>
       </v-card>
-      <v-container fluid v-show="loading" class="pl-0 pr-0">
-        <v-card outlined class="pa-5">
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
-        </v-card>
-      </v-container>
+      <LoadingCircularProgress v-if="loading" />
       <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
         <GeneToPathwayResult :data="relationshipRtn" />
       </v-container>
@@ -28,10 +24,12 @@
 <script>
 import PairwiseService from "../../../service/PairwiseService"
 import GeneToPathwayResult from "./GeneToPathwayResult"
+import LoadingCircularProgress from "../../layout/LoadingCircularProgress"
 export default {
   name: "PairwiseSearch",
   components: {
-    GeneToPathwayResult
+    GeneToPathwayResult,
+    LoadingCircularProgress
   },
   data: () => ({
     search: "",

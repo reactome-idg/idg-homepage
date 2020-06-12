@@ -37,7 +37,7 @@ class CompanyService {
               data: {
                 id: data.pathways[i].stId,
                 name: data.pathways[i].stId,
-                degree: 2,
+                degree: 1,
               },
             });
         }
@@ -58,7 +58,7 @@ class CompanyService {
               data: {
                 id: data.secondaryPathways[i].stId,
                 name: data.secondaryPathways[i].stId,
-                degree: 1,
+                degree: 0,
               },
             });
         }
@@ -68,7 +68,7 @@ class CompanyService {
         data: {
             id: data.gene,
             name: data.gene,
-            degree: 3
+            degree: 2
         }
     })
 

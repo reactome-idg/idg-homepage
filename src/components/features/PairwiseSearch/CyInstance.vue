@@ -28,7 +28,8 @@ export default {
             shape: "ellipse",
             "background-color": "#00CC00",
             "border-color": "#00CC00",
-            "background-opacity": ".4"
+            "background-opacity": ".4",
+            color: "white"
           }
         },
         {
@@ -38,6 +39,18 @@ export default {
             "border-color": "#AAD8FF",
             "border-opacity": "0.5",
             "text-outline-color": "#0bb50b"
+          }
+        },
+        {
+          selector: "node[degree == 0]",
+          style: {
+            shape: "hexagon"
+          }
+        },
+        {
+          selector: "node[degree == 1]",
+          style: {
+            shape: "square"
           }
         },
         {
@@ -81,7 +94,7 @@ export default {
     afterCreated(cy) {
       this.cy = cy;
       this.cy.add(this.cyElementsProp);
-      this.cy.layout({ name: "circle" }).run();
+      this.cy.layout({ name: "concentric" }).run();
     }
   }
 };

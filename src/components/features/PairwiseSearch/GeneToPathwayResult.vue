@@ -13,7 +13,14 @@
           single-expand
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
-        ></v-data-table>
+        >
+        <template v-slot:item.stId="{item}">
+          <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+        </template>
+        <template v-slot:expanded-item="{headers, item}">
+          <td :colspan="headers.length">{{item.name}}</td>
+        </template>
+        </v-data-table>
         <hr />
       </v-container>
       <p v-else>No primary pathways found.</p>
@@ -28,6 +35,7 @@
           :single-expand="true"
           :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
           :hide-default-footer="hideSecondaryPagination"
+          @item-expanded="loadDetails"
         >
           <template v-slot:item.stId="{item}">
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
@@ -60,7 +68,8 @@ export default {
     headers: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" }
-    ]
+    ],
+    pathwayDetails: []
   }),
   computed: {
     hidePrimaryPagination() {
@@ -68,6 +77,12 @@ export default {
     },
     hideSecondaryPagination() {
         return this.data.secondaryPathways.length < 20;
+    }
+  },
+  methods: {
+    loadDetails({item, value}){
+      if(!value) return;
+      console.log(item.stId)
     }
   }
 };
