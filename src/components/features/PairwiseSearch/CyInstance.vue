@@ -42,15 +42,16 @@ export default {
           }
         },
         {
-          selector: "node[degree == 0]",
+          selector: "node[degree = 0]",
           style: {
             shape: "hexagon"
           }
         },
         {
-          selector: "node[degree == 1]",
+          selector: "node[degree = 1]",
           style: {
-            shape: "square"
+            shape: "square",
+            "background-color": "#CC0000"
           }
         },
         {
@@ -94,7 +95,7 @@ export default {
     afterCreated(cy) {
       this.cy = cy;
       this.cy.add(this.cyElementsProp);
-      this.cy.layout({ name: "concentric" }).run();
+      this.cy.layout({ name: "concentric", concentric: (node)=> {return node.degree()} }).run();
     }
   }
 };

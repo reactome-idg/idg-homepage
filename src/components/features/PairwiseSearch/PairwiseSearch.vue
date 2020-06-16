@@ -9,9 +9,10 @@
             placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
             :outlined="true"
             class="searchContainer"
-            v-on:keydown.enter="searchProtein"
+            v-on:keydown.enter="searchGene"
             hide-details="auto"
           ></v-text-field>
+          <span style="color:red;" v-if="error">{{error}}</span>
         </v-card-text>
       </v-card>
       <LoadingCircularProgress v-if="loading" />
@@ -34,20 +35,22 @@ export default {
   data: () => ({
     search: "",
     relationshipRtn: null,
-    loading: false
+    loading: false,
+    error: ""
   }),
   methods: {
-    async searchProtein() {
+    async searchGene() {
       try {
         this.relationshipRtn = null;
+        this.error = ""
         this.loading = true;
         this.relationshipRtn = await PairwiseService.searchGeneName(
           this.search
         );
-        this.loading = false;
       } catch (err) {
-        console.log(err);
+        this.error = err.message
       }
+      this.loading = false;
     }
   },
 }

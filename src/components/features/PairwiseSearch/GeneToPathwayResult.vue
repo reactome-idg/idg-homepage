@@ -14,12 +14,12 @@
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
         >
-        <template v-slot:item.stId="{item}">
-          <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
-        </template>
-        <template v-slot:expanded-item="{headers, item}">
-          <td :colspan="headers.length">{{item.name}}</td>
-        </template>
+          <template v-slot:item.stId="{item}">
+            <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+          </template>
+          <template v-slot:expanded-item="{headers, item}">
+            <td :colspan="headers.length">{{item.name}}</td>
+          </template>
         </v-data-table>
         <hr />
       </v-container>
@@ -40,8 +40,11 @@
           <template v-slot:item.stId="{item}">
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
           </template>
-          <template v-slot:expanded-item="{headers, item}">
-            <td :colspan="headers.length">{{item.name}}</td>
+          <template v-slot:expanded-item="{headers}">
+            <td :colspan="headers.length" class="text-left pa-2">
+              <p class="subtitle-1">Description</p>
+              {{openPathwayDetails.description}}
+            </td>
           </template>
         </v-data-table>
       </v-container>
@@ -52,6 +55,7 @@
 
 <script>
 import CyInstance from "./CyInstance";
+import ReactomeService from "../../../service/ReactomeService";
 export default {
   name: "GeneToPathwayResult",
   components: {
@@ -69,20 +73,44 @@ export default {
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" }
     ],
-    pathwayDetails: []
+    pathwayDetailsList: [],
+    openPathwayDetails: {}
   }),
   computed: {
     hidePrimaryPagination() {
       return this.data.pathways.length < 10;
     },
     hideSecondaryPagination() {
-        return this.data.secondaryPathways.length < 20;
+      return this.data.secondaryPathways.length < 20;
     }
   },
   methods: {
-    loadDetails({item, value}){
-      if(!value) return;
-      console.log(item.stId)
+    async loadDetails({ item, value }) {
+      if (!value) return;
+      this.openPathwayDetails = {};
+
+      try {
+        if (!this.pathwayDetailsList.some(e => e.stId === item.stId)) {
+          this.pathwayDetailsList.push(
+            await ReactomeService.fetchPathwayDetails(item.stId)
+          );
+        }
+        const open = this.pathwayDetailsList.find(pathway => {
+          return pathway.stId === item.stId;
+        });
+        if (open !== undefined) {
+          this.openPathwayDetails = {
+            stId: open.stId,
+            description:
+              open.details.summation !== null
+                ? open.details.summation[0].text
+                : "No Description Available.",
+            ancestors: open.ancestors
+          };
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 };

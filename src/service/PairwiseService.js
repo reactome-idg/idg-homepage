@@ -5,13 +5,17 @@ const url = "http://localhost:8043/";
 class CompanyService {
   static searchGeneName(geneName) {
     return new Promise((resolve, reject) => {
-      axios.get(`${url}idgpairwise/relationships/gene/${geneName}`)
+      axios
+        .get(`${url}idgpairwise/relationships/pathwaysForGene/${geneName}`)
         .then((res) => {
-            resolve(this.structureDataForGene(res));
+          if(res.data === "") {
+            reject(`No pathways for ${geneName} were found.`);
+          }
+          resolve(this.structureDataForGene(res));
         })
         .catch((err) => {
-            reject(err)
-        })
+          reject(err);
+        });
     });
   }
 
@@ -39,6 +43,7 @@ class CompanyService {
                 name: data.pathways[i].stId,
                 degree: 1,
               },
+              degree: 1
             });
         }
     }
@@ -60,6 +65,7 @@ class CompanyService {
                 name: data.secondaryPathways[i].stId,
                 degree: 0,
               },
+              degree: 0
             });
         }
     }
@@ -69,7 +75,8 @@ class CompanyService {
             id: data.gene,
             name: data.gene,
             degree: 2
-        }
+        },
+        degree: 2
     })
 
     data.fiData = [...nodes,...edges]
