@@ -13,12 +13,17 @@
           single-expand
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
+          @item-expanded="loadDetails"
         >
           <template v-slot:item.stId="{item}">
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
           </template>
-          <template v-slot:expanded-item="{headers, item}">
-            <td :colspan="headers.length">{{item.name}}</td>
+          <template v-slot:expanded-item="{headers}">
+            <td :colspan="headers.length">
+               <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails"/>
+               <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
+
+            </td>
           </template>
         </v-data-table>
         <hr />
@@ -41,9 +46,9 @@
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
           </template>
           <template v-slot:expanded-item="{headers}">
-            <td :colspan="headers.length" class="text-left pa-2">
-              <p class="subtitle-1">Description</p>
-              {{openPathwayDetails.description}}
+            <td :colspan="headers.length">
+              <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails"/>
+              <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
             </td>
           </template>
         </v-data-table>
@@ -55,11 +60,13 @@
 
 <script>
 import CyInstance from "./CyInstance";
+import TableDetails from "./TableDetails"
 import ReactomeService from "../../../service/ReactomeService";
 export default {
   name: "GeneToPathwayResult",
   components: {
-    CyInstance
+    CyInstance,
+    TableDetails
   },
   props: {
     data: {
@@ -74,7 +81,7 @@ export default {
       { text: "Pathway Name", value: "name" }
     ],
     pathwayDetailsList: [],
-    openPathwayDetails: {}
+    openPathwayDetails: null
   }),
   computed: {
     hidePrimaryPagination() {
@@ -87,7 +94,7 @@ export default {
   methods: {
     async loadDetails({ item, value }) {
       if (!value) return;
-      this.openPathwayDetails = {};
+      this.openPathwayDetails = null;
 
       try {
         if (!this.pathwayDetailsList.some(e => e.stId === item.stId)) {
