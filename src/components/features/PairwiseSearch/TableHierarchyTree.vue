@@ -16,7 +16,7 @@ export default {
   props: ["children", "label", "depth"],
   computed: {
     indent() {
-      return { transform: `translate(${this.depth * 50}px)` }
+      return { transform: `translate(${this.depth * 25}px)` }
     }
   }
 };
