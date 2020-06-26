@@ -2,6 +2,11 @@
   <v-card dark raised>
     <v-card-title>Showing Results For: {{data.gene}}</v-card-title>
     <v-card-text>
+      <v-container fluid class="pb-5">
+        <span>Significance level: </span>
+        <v-text-field prefix="FDR ≤" v-model="fdr" hide-details class="search-box pr-1"></v-text-field>
+        <v-text-field prefix="pValue ≤" v-model="pVal" hide-details class="search-box pr-1" ></v-text-field>
+        </v-container>
       <CyInstance :cyElementsProp="data.fiData" />
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
@@ -33,8 +38,8 @@
         <p class="display-1 text-left">Secondary Pathways</p>
         <v-data-table
           dense
-          :headers="headers"
-          :items="data.secondaryPathways"
+          :headers="secondaryHeaders"
+          :items="filteredSecondaryPathways"
           item-key="stId"
           show-expand
           :single-expand="true"
@@ -44,6 +49,12 @@
         >
           <template v-slot:item.stId="{item}">
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+          </template>
+          <template v-slot:item.fdr="{item}">
+            {{ item.fdr.toExponential(2) }}
+          </template>
+          <template v-slot:item.pVal="{item}">
+            {{ item.pVal.toExponential(2) }}
           </template>
           <template v-slot:expanded-item="{headers}">
             <td :colspan="headers.length">
@@ -78,10 +89,18 @@ export default {
     browserLink: "/PathwayBrowser/#/",
     headers: [
       { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" }
+      { text: "Pathway Name", value: "name" },
+    ],
+    secondaryHeaders: [
+      { text: "Pathway Stable id", value: "stId" },
+      { text: "Pathway Name", value: "name" },
+      { text: "FDR", value:"fdr"},
+      { text: "pValue", value: "pVal"}
     ],
     pathwayDetailsList: [],
-    openPathwayDetails: null
+    openPathwayDetails: null,
+    fdr: 0.05,
+    pVal: 0.05
   }),
   computed: {
     hidePrimaryPagination() {
@@ -89,6 +108,11 @@ export default {
     },
     hideSecondaryPagination() {
       return this.data.secondaryPathways.length < 20;
+    },
+    filteredSecondaryPathways() {
+      return this.data.secondaryPathways.filter(i => {
+        return i.fdr <= this.fdr && i.pVal <= this.pVal
+      })
     }
   },
   methods: {
@@ -124,4 +148,8 @@ export default {
 </script>
 
 <style scoped>
+.search-box{
+  float: left;
+  width: 25%;
+}
 </style>
