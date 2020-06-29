@@ -101,8 +101,8 @@ export default {
     openPathwayDetails: null,
     fdr: 0.05,
     pVal: 0.05,
-    fdrInput: "",
-    pValInput: ""
+    fdrInput: "0.05",
+    pValInput: "0.05"
   }),
   computed: {
     hidePrimaryPagination() {
