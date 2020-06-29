@@ -53,7 +53,6 @@ class ReactomeService {
       children = children.find(({dbId}) => dbId === hierarchy[i].dbId).children;
      }
     }
-    console.log(JSON.stringify(roots,0,2))
     return roots;
   }
 }

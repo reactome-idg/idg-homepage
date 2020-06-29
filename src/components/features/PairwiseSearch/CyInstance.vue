@@ -13,6 +13,14 @@ export default {
     cyElementsProp: {
       type: Array,
       default: () => []
+    },
+    fdr: {
+      type : Number,
+      default:() => null
+    },
+    pVal: {
+      type: Number,
+      default: () => null
     }
   },
   data: () => ({
@@ -95,7 +103,14 @@ export default {
     afterCreated(cy) {
       this.cy = cy;
       this.cy.add(this.cyElementsProp);
+      if(this.fdr){
+        this.cy.elements(`node[fdr <= ${this.fdr}]`).hide();
+      }
+      if(this.pVal){
+        this.cy.elements(`node[pVal <= ${this.pVal}]`).hide();
+      }
       this.cy.layout({ name: "concentric", concentric: (node)=> {return node.degree()} }).run();
+
     }
   }
 };

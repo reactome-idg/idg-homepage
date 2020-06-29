@@ -4,10 +4,10 @@
     <v-card-text>
       <v-container fluid class="pb-5">
         <span>Significance level: </span>
-        <v-text-field prefix="FDR ≤" v-model="fdr" hide-details class="search-box pr-1"></v-text-field>
-        <v-text-field prefix="pValue ≤" v-model="pVal" hide-details class="search-box pr-1" ></v-text-field>
+        <v-text-field prefix="FDR ≤" v-model="fdrInput" @keyup.enter="updateFDR" label="0.05" hide-details class="search-box pr-1"></v-text-field>
+        <v-text-field prefix="pValue ≤" v-model="pValInput" @keyup.enter="updatePValue" label="0.05" hide-details class="search-box pr-1" ></v-text-field>
         </v-container>
-      <CyInstance :cyElementsProp="data.fiData" />
+      <CyInstance :cyElementsProp="data.fiData" :pVal="pVal" :fdr="fdr"/>
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
         <v-data-table
@@ -100,7 +100,9 @@ export default {
     pathwayDetailsList: [],
     openPathwayDetails: null,
     fdr: 0.05,
-    pVal: 0.05
+    pVal: 0.05,
+    fdrInput: "",
+    pValInput: ""
   }),
   computed: {
     hidePrimaryPagination() {
@@ -142,6 +144,15 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    updateFDR() {
+      const newFDR = Number.parseFloat(this.fdrInput).isNaN ? this.fdr : Number.parseFloat(this.fdrInput);
+      this.fdr = newFDR
+    },
+    updatePValue(){
+      console.log(Number.parseFloat(this.pValInput))
+      const newPVal = Number.parseFloat(this.pValInput).isNaN ? this.pVal : Number.parseFloat(this.pValInput)
+      this.pVal = newPVal
     }
   }
 };
