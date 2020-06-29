@@ -4,8 +4,8 @@
     <v-card-text>
       <v-container fluid class="pb-5">
         <span>Significance level: </span>
-        <v-text-field prefix="FDR ≤" v-model="fdrInput" @keyup.enter="updateFDR" label="0.05" hide-details class="search-box pr-1"></v-text-field>
-        <v-text-field prefix="pValue ≤" v-model="pValInput" @keyup.enter="updatePValue" label="0.05" hide-details class="search-box pr-1" ></v-text-field>
+        <v-text-field prefix="FDR ≤" v-model="fdrInput" @keyup.enter="updateFDR" hide-details class="search-box pr-1"></v-text-field>
+        <v-text-field prefix="pValue ≤" v-model="pValInput" @keyup.enter="updatePValue" hide-details class="search-box pr-1"></v-text-field>
         </v-container>
       <CyInstance :cyElementsProp="data.fiData" :pVal="pVal" :fdr="fdr"/>
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
@@ -150,7 +150,6 @@ export default {
       this.fdr = newFDR
     },
     updatePValue(){
-      console.log(Number.parseFloat(this.pValInput))
       const newPVal = Number.parseFloat(this.pValInput).isNaN ? this.pVal : Number.parseFloat(this.pValInput)
       this.pVal = newPVal
     }
