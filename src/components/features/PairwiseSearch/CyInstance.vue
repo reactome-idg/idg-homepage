@@ -110,16 +110,15 @@ export default {
   methods: {
     afterCreated(cy) {
       this.cy = cy;
-      this.cy.add(this.cyElementsProp);
       this.filterNodes();
     },
     filterNodes() {
-      this.cy.elements().show();
+      this.cy.add(this.cyElementsProp);
       if (this.pVal) {
-        this.cy.elements(`node[pVal >= ${this.pVal}]`).hide();
+        this.cy.elements(`node[pVal >= ${this.pVal}]`).remove();
       }
       if (this.fdr) {
-        this.cy.elements(`node[fdr >= ${this.fdr}]`).hide();
+        this.cy.elements(`node[fdr >= ${this.fdr}]`).remove();
       }
       this.cy
         .layout({
