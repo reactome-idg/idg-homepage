@@ -113,6 +113,7 @@ export default {
       this.filterNodes();
     },
     filterNodes() {
+      //must filter by adding and removing nodes, showing and hiding causes layout issues
       this.cy.add(this.cyElementsProp);
       if (this.pVal) {
         this.cy.elements(`node[pVal >= ${this.pVal}]`).remove();
