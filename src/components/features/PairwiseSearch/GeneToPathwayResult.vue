@@ -31,6 +31,7 @@
           :headers="headers"
           :items="data.pathways"
           item-key="stId"
+          :search="primarySearch"
           show-expand
           single-expand
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
@@ -46,6 +47,15 @@
               <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
             </td>
           </template>
+          <template v-slot:footer="{}">
+            <v-text-field
+                    v-model="primarySearch"
+                    label="Search"
+                    hide-details
+                    single-line
+                    class="search-box pr-1"
+                  ></v-text-field>
+          </template>
         </v-data-table>
         <hr />
       </v-container>
@@ -58,6 +68,7 @@
           :items="filteredSecondaryPathways"
           item-key="stId"
           show-expand
+          :search="secondarySearch"
           :single-expand="true"
           :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
           :hide-default-footer="hideSecondaryPagination"
@@ -73,6 +84,15 @@
               <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
               <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
             </td>
+          </template>
+          <template v-slot:footer="{}">
+            <v-text-field
+                    v-model="secondarySearch"
+                    label="Search"
+                    hide-details
+                    single-line
+                    class="search-box pr-1"
+                  ></v-text-field>
           </template>
         </v-data-table>
       </v-container>
@@ -114,7 +134,9 @@ export default {
     fdr: 0.05,
     pVal: 0.05,
     fdrInput: "0.05",
-    pValInput: "0.05"
+    pValInput: "0.05",
+    primarySearch: "",
+    secondarySearch: ""
   }),
   computed: {
     hidePrimaryPagination() {
@@ -176,6 +198,6 @@ export default {
 <style scoped>
 .search-box {
   float: left;
-  width: 25%;
+  max-width: 25em;
 }
 </style>
