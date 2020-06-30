@@ -65,7 +65,7 @@ class CompanyService {
                 name: data.secondaryPathways[i].stId,
                 degree: 0,
                 fdr: data.secondaryPathways[i].fdr,
-                pVal: data.secondaryPathways[i]
+                pVal: data.secondaryPathways[i].pVal
               },
               degree: 0
             });

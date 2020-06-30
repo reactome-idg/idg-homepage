@@ -112,16 +112,17 @@ export default {
       this.cy = cy;
       this.cy.add(this.cyElementsProp);
       this.filterNodes();
-      this.cy.layout({ name: "concentric", concentric: (node)=> {return node.degree()} }).run();
+      
     },
     filterNodes() {
       this.cy.elements().show();
-      if(this.fdr){
-        this.cy.elements(`node[fdr <= ${this.fdr}]`).hide();
-      }
       if(this.pVal){
-        this.cy.elements(`node[pVal <= ${this.pVal}]`).hide();
+        this.cy.elements(`node[pVal >= ${this.pVal}]`).hide();
       }
+      if(this.fdr){
+        this.cy.elements(`node[fdr >= ${this.fdr}]`).hide();
+      }
+      this.cy.layout({ name: "concentric", concentric: (node)=> {return node.degree()} }).run();
     }
   }
 };
