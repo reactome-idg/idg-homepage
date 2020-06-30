@@ -15,8 +15,8 @@ export default {
       default: () => []
     },
     fdr: {
-      type : Number,
-      default:() => null
+      type: Number,
+      default: () => null
     },
     pVal: {
       type: Number,
@@ -112,17 +112,26 @@ export default {
       this.cy = cy;
       this.cy.add(this.cyElementsProp);
       this.filterNodes();
-      
     },
     filterNodes() {
       this.cy.elements().show();
-      if(this.pVal){
+      if (this.pVal) {
         this.cy.elements(`node[pVal >= ${this.pVal}]`).hide();
       }
-      if(this.fdr){
+      if (this.fdr) {
         this.cy.elements(`node[fdr >= ${this.fdr}]`).hide();
       }
-      this.cy.layout({ name: "concentric", concentric: (node)=> {return node.degree()} }).run();
+      this.cy
+        .layout({
+          name: "concentric",
+          concentric: node => {
+            return node.degree();
+          },
+          levelWidth: function(nodes) {
+            return nodes.maxDegree() / 4;
+          }
+        })
+        .run();
     }
   }
 };
@@ -130,6 +139,6 @@ export default {
 
 <style scoped>
 .cyCard {
-    position: relative;
+  position: relative;
 }
 </style>

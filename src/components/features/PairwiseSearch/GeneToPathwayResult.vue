@@ -2,12 +2,29 @@
   <v-card dark raised>
     <v-card-title>Showing Results For: {{data.gene}}</v-card-title>
     <v-card-text>
-      <v-container fluid class="pb-5">
-        <span>Significance level: </span>
-        <v-text-field prefix="FDR ≤" v-model="fdrInput" @keyup.enter="updateFDR" hide-details class="search-box pr-1"></v-text-field>
-        <v-text-field prefix="pValue ≤" v-model="pValInput" @keyup.enter="updatePValue" hide-details class="search-box pr-1"></v-text-field>
+      <v-container class="pb-0 pt-0">
+        <v-row>
+          <v-col cols="6" class="pa-0">
+            <v-text-field
+              prefix="FDR ≤"
+              v-model="fdrInput"
+              @keyup.enter="updateFDR"
+              hide-details
+              class="pr-1"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6" class="pa-0">
+          <v-text-field
+            prefix="pValue ≤"
+            v-model="pValInput"
+            @keyup.enter="updatePValue"
+            hide-details
+            class="pr-1"
+          ></v-text-field>
+          </v-col>
+        </v-row>
         </v-container>
-      <CyInstance :cyElementsProp="data.fiData" :pVal="pVal" :fdr="fdr"/>
+      <CyInstance :cyElementsProp="data.fiData" :pVal="pVal" :fdr="fdr" />
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
         <v-data-table
@@ -25,9 +42,8 @@
           </template>
           <template v-slot:expanded-item="{headers}">
             <td :colspan="headers.length">
-               <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails"/>
-               <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
-
+              <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
+              <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
             </td>
           </template>
         </v-data-table>
@@ -50,15 +66,11 @@
           <template v-slot:item.stId="{item}">
             <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
           </template>
-          <template v-slot:item.fdr="{item}">
-            {{ item.fdr.toExponential(2) }}
-          </template>
-          <template v-slot:item.pVal="{item}">
-            {{ item.pVal.toExponential(2) }}
-          </template>
+          <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
+          <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
           <template v-slot:expanded-item="{headers}">
             <td :colspan="headers.length">
-              <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails"/>
+              <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
               <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
             </td>
           </template>
@@ -71,7 +83,7 @@
 
 <script>
 import CyInstance from "./CyInstance";
-import TableDetails from "./TableDetails"
+import TableDetails from "./TableDetails";
 import ReactomeService from "../../../service/ReactomeService";
 export default {
   name: "GeneToPathwayResult",
@@ -89,13 +101,13 @@ export default {
     browserLink: "/PathwayBrowser/#/",
     headers: [
       { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" },
+      { text: "Pathway Name", value: "name" }
     ],
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" },
-      { text: "FDR", value:"fdr"},
-      { text: "pValue", value: "pVal"}
+      { text: "FDR", value: "fdr" },
+      { text: "pValue", value: "pVal" }
     ],
     pathwayDetailsList: [],
     openPathwayDetails: null,
@@ -113,8 +125,8 @@ export default {
     },
     filteredSecondaryPathways() {
       return this.data.secondaryPathways.filter(i => {
-        return i.fdr <= this.fdr && i.pVal <= this.pVal
-      })
+        return i.fdr <= this.fdr && i.pVal <= this.pVal;
+      });
     }
   },
   methods: {
@@ -146,19 +158,23 @@ export default {
       }
     },
     updateFDR() {
-      const newFDR = Number.parseFloat(this.fdrInput).isNaN ? this.fdr : Number.parseFloat(this.fdrInput);
-      this.fdr = newFDR
+      const newFDR = Number.parseFloat(this.fdrInput).isNaN
+        ? this.fdr
+        : Number.parseFloat(this.fdrInput);
+      this.fdr = newFDR;
     },
-    updatePValue(){
-      const newPVal = Number.parseFloat(this.pValInput).isNaN ? this.pVal : Number.parseFloat(this.pValInput)
-      this.pVal = newPVal
+    updatePValue() {
+      const newPVal = Number.parseFloat(this.pValInput).isNaN
+        ? this.pVal
+        : Number.parseFloat(this.pValInput);
+      this.pVal = newPVal;
     }
   }
 };
 </script>
 
 <style scoped>
-.search-box{
+.search-box {
   float: left;
   width: 25%;
 }
