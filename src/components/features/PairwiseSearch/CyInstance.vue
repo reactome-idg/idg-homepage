@@ -18,18 +18,11 @@ export default {
       type: Number,
       default: () => null
     },
-    pVal: {
-      type: Number,
-      default: () => null
-    }
   },
   watch: {
     fdr() {
       this.filterNodes();
     },
-    pVal() {
-      this.filterNodes();
-    }
   },
   data: () => ({
     config: {
@@ -115,9 +108,6 @@ export default {
     filterNodes() {
       //must filter by adding and removing nodes, showing and hiding causes layout issues
       this.cy.add(this.cyElementsProp);
-      if (this.pVal) {
-        this.cy.elements(`node[pVal >= ${this.pVal}]`).remove();
-      }
       if (this.fdr) {
         this.cy.elements(`node[fdr >= ${this.fdr}]`).remove();
       }

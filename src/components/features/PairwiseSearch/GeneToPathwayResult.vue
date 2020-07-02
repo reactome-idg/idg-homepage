@@ -13,18 +13,9 @@
               class="pr-1"
             ></v-text-field>
           </v-col>
-          <v-col cols="6" class="pa-0">
-          <v-text-field
-            prefix="pValue ≤"
-            v-model="pValInput"
-            @keyup.enter="updatePValue"
-            hide-details
-            class="pr-1"
-          ></v-text-field>
-          </v-col>
         </v-row>
         </v-container>
-      <CyInstance :cyElementsProp="data.fiData" :pVal="pVal" :fdr="fdr" />
+      <CyInstance :cyElementsProp="data.fiData" :fdr="fdr" />
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
         <v-data-table
@@ -132,9 +123,7 @@ export default {
     pathwayDetailsList: [],
     openPathwayDetails: null,
     fdr: 0.05,
-    pVal: 0.05,
     fdrInput: "0.05",
-    pValInput: "0.05",
     primarySearch: "",
     secondarySearch: ""
   }),
@@ -147,7 +136,7 @@ export default {
     },
     filteredSecondaryPathways() {
       return this.data.secondaryPathways.filter(i => {
-        return i.fdr <= this.fdr && i.pVal <= this.pVal;
+        return i.fdr <= this.fdr
       });
     }
   },
@@ -185,12 +174,6 @@ export default {
         : Number.parseFloat(this.fdrInput);
       this.fdr = newFDR;
     },
-    updatePValue() {
-      const newPVal = Number.parseFloat(this.pValInput).isNaN
-        ? this.pVal
-        : Number.parseFloat(this.pValInput);
-      this.pVal = newPVal;
-    }
   }
 };
 </script>
