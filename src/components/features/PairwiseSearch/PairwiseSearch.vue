@@ -4,7 +4,7 @@
         <v-card-text>
           <v-text-field
             dark
-            label="Search a protein"
+            label="Search a Gene Name"
             v-model="search"
             placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
             :outlined="true"

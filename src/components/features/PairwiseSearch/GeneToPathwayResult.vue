@@ -4,7 +4,7 @@
     <v-card-text>
       <v-container class="pb-0 pt-0">
         <v-row>
-          <v-col cols="6" class="pa-0">
+          <v-col cols="6" class="pb-0 pt-0 pl-0">
             <v-text-field
               prefix="FDR ≤"
               v-model="fdrInput"
