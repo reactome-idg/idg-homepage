@@ -1,38 +1,40 @@
 <template>
   <v-container fluid>
-      <v-card dark raised>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="10" >
-          <v-text-field
-            dark
-            label="Search a Gene Name"
-            v-model="search"
-            placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
-            :outlined="true"
-            class="searchContainer"
-            v-on:keydown.enter="searchPairwise"
-            hide-details="auto"
-          ></v-text-field>
-          </v-col>
+    <v-card dark raised>
+      <v-card-text class="pa-3">
+        <v-row align="center" justify="center">
           <v-col cols="12" md="2">
-          <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
+            <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
           </v-col>
-          </v-row>
-          <span style="color:red;" v-if="error">{{error}}</span>
-        </v-card-text>
-      </v-card>
-      <LoadingCircularProgress v-if="loading" />
-      <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
-        <GeneToPathwayResult :data="relationshipRtn" />
-      </v-container>
+          <v-col cols="12" md="8">
+            <v-text-field
+              dark
+              label="Search a Gene Name"
+              v-model="search"
+              placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
+              :outlined="true"
+              class="searchContainer"
+              hide-details="auto"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="2" >
+            <v-btn color="primary" @click="searchPairwise">Search</v-btn>
+          </v-col>
+        </v-row>
+        <span style="color:red;" v-if="error">{{error}}</span>
+      </v-card-text>
+    </v-card>
+    <LoadingCircularProgress v-if="loading" />
+    <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
+      <GeneToPathwayResult :data="relationshipRtn" />
     </v-container>
+  </v-container>
 </template>
 
 <script>
-import PairwiseService from "../../../service/PairwiseService"
-import GeneToPathwayResult from "./GeneToPathwayResult"
-import LoadingCircularProgress from "../../layout/LoadingCircularProgress"
+import PairwiseService from "../../../service/PairwiseService";
+import GeneToPathwayResult from "./GeneToPathwayResult";
+import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 export default {
   name: "PairwiseSearch",
   components: {
@@ -48,44 +50,43 @@ export default {
   }),
   methods: {
     async searchPairwise() {
-      if(! this.uniprotCheckBox) this.searchGene();
+      if (!this.uniprotCheckBox) this.searchGene();
       else this.searchUniprot();
     },
     async searchGene() {
       try {
         this.relationshipRtn = null;
-        this.error = ""
+        this.error = "";
         this.loading = true;
         this.relationshipRtn = await PairwiseService.searchGeneName(
           this.search
         );
       } catch (err) {
-        console.log(err.response.status)
-        this.error = err.message
-        if(err.response.status == 404){
-          this.error = "No recorded gene. Please use standard human gene symbol.";
+        this.error = err.message;
+        if (err.response.status == 404) {
+          this.error =
+            "No recorded gene. Please use standard human gene symbol.";
         }
       }
       this.loading = false;
     },
-    async searchUniprot(){
+    async searchUniprot() {
       try {
         this.relationshipRtn = null;
         this.error = "";
         this.loading = true;
         this.relationshipRtn = await PairwiseService.searchUniprot(this.search);
-      } catch(err) {
+      } catch (err) {
         this.error = err.message;
-        if(err.response.status == 404){
+        if (err.response.status == 404) {
           this.error = "No recorded uniprot";
         }
       }
       this.loading = false;
     }
-  },
-}
+  }
+};
 </script>
 
 <style scoped>
-
 </style>
