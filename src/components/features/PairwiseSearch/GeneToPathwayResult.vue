@@ -14,7 +14,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        </v-container>
+      </v-container>
       <CyInstance :cyElementsProp="data.fiData" :fdr="fdr" />
       <v-container fluid v-if="data.pathways && data.pathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
@@ -40,12 +40,13 @@
           </template>
           <template v-slot:footer="{}">
             <v-text-field
-                    v-model="primarySearch"
-                    label="Search"
-                    hide-details
-                    single-line
-                    class="search-box pr-1"
-                  ></v-text-field>
+              v-if="!hidePrimaryPagination"
+              v-model="primarySearch"
+              label="Search"
+              hide-details
+              single-line
+              class="search-box pr-1"
+            ></v-text-field>
           </template>
         </v-data-table>
         <hr />
@@ -78,12 +79,13 @@
           </template>
           <template v-slot:footer="{}">
             <v-text-field
-                    v-model="secondarySearch"
-                    label="Search"
-                    hide-details
-                    single-line
-                    class="search-box pr-1"
-                  ></v-text-field>
+            v-if="!hideSecondaryPagination"
+              v-model="secondarySearch"
+              label="Search"
+              hide-details
+              single-line
+              class="search-box pr-1"
+            ></v-text-field>
           </template>
         </v-data-table>
       </v-container>
@@ -136,7 +138,7 @@ export default {
     },
     filteredSecondaryPathways() {
       return this.data.secondaryPathways.filter(i => {
-        return i.fdr <= this.fdr
+        return i.fdr <= this.fdr;
       });
     }
   },
@@ -173,7 +175,7 @@ export default {
         ? this.fdr
         : Number.parseFloat(this.fdrInput);
       this.fdr = newFDR;
-    },
+    }
   }
 };
 </script>

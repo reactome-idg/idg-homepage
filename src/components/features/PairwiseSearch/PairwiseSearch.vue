@@ -2,6 +2,8 @@
   <v-container fluid>
       <v-card dark raised>
         <v-card-text>
+          <v-row>
+            <v-col cols="12" md="10" >
           <v-text-field
             dark
             label="Search a Gene Name"
@@ -9,9 +11,14 @@
             placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
             :outlined="true"
             class="searchContainer"
-            v-on:keydown.enter="searchGene"
+            v-on:keydown.enter="searchPairwise"
             hide-details="auto"
           ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="2">
+          <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
+          </v-col>
+          </v-row>
           <span style="color:red;" v-if="error">{{error}}</span>
         </v-card-text>
       </v-card>
@@ -34,11 +41,16 @@ export default {
   },
   data: () => ({
     search: "",
+    uniprotCheckBox: false,
     relationshipRtn: null,
     loading: false,
     error: ""
   }),
   methods: {
+    async searchPairwise() {
+      if(! this.uniprotCheckBox) this.searchGene();
+      else this.searchUniprot();
+    },
     async searchGene() {
       try {
         this.relationshipRtn = null;
@@ -48,7 +60,25 @@ export default {
           this.search
         );
       } catch (err) {
+        console.log(err.response.status)
         this.error = err.message
+        if(err.response.status == 404){
+          this.error = "No recorded gene. Please use standard human gene symbol.";
+        }
+      }
+      this.loading = false;
+    },
+    async searchUniprot(){
+      try {
+        this.relationshipRtn = null;
+        this.error = "";
+        this.loading = true;
+        this.relationshipRtn = await PairwiseService.searchUniprot(this.search);
+      } catch(err) {
+        this.error = err.message;
+        if(err.response.status == 404){
+          this.error = "No recorded uniprot";
+        }
       }
       this.loading = false;
     }

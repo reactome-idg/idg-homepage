@@ -1,22 +1,31 @@
 import axios from "axios";
 
-const url = "http://localhost:8043/";
+const url = "http://localhost:8043/idgpairwise/relationships/";
 
 class CompanyService {
   static searchGeneName(geneName) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}idgpairwise/relationships/pathwaysForGene/${geneName}`)
+        .get(`${url}pathwaysForGene/${geneName}`)
         .then((res) => {
-          if(res.data === "") {
-            reject(`No pathways for ${geneName} were found.`);
-          }
           resolve(this.structureDataForGene(res));
         })
         .catch((err) => {
           reject(err);
         });
     });
+  }
+
+  static searchUniprot(uniprot) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${url}pathwaysForUniprot/${uniprot}`)
+          .then((res) => {
+            resolve(this.structureDataForGene(res))
+          })
+          .catch((err) => {
+            reject(err);
+          })
+    })
   }
 
   /**
