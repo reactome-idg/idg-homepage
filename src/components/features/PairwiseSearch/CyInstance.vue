@@ -37,7 +37,7 @@ export default {
             shape: "ellipse",
             "background-color": "#00CC00",
             "border-color": "#00CC00",
-            "background-opacity": ".4",
+            // "background-opacity": ".4",
             color: "white"
           }
         },
@@ -53,14 +53,15 @@ export default {
         {
           selector: "node[degree = 0]",
           style: {
-            shape: "hexagon"
+            shape: "triangle",
+            "background-color": "#03DAC6"
           }
         },
         {
           selector: "node[degree = 1]",
           style: {
             shape: "square",
-            "background-color": "#CC0000"
+            "background-color": "#6200EE"
           }
         },
         {
@@ -114,12 +115,6 @@ export default {
       this.cy
         .layout({
           name: "concentric",
-          concentric: node => {
-            return node.degree();
-          },
-          levelWidth: function(nodes) {
-            return nodes.maxDegree() / 4;
-          }
         })
         .run();
     }

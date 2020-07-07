@@ -12,8 +12,16 @@
           <div v-show="show">
             <v-card-text>
               <p
-                class="text-left"
-              >At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+                class="text-left">
+                Placing understudied proteins in the context of biological pathways facilitates the generation of experimentally testable hypotheses to infer potential functions of these proteins. 
+                The Reactome Pathway Diagram View is a web-based tool, providing a biologist-friendly way to visualize proteins, complexes, and reactions in high-quality Reactome pathways. In order to 
+                put understudied proteins in the context of Reactome pathways, we have extended the Pathway Diagram View to overlay tissue-specific expression data, protein pairwise relationships, and 
+                drug/target interactions. We implemented new interfaces for users to select tissue-specific mRNA and protein expression data from 19 data sources collected in the target central 
+                resource database (TCRD). The pairwise relationship overlay allows users to display positive and negative relationships from multiple sources in the same view. We have also 
+                implemented a new visualizer via the use of Cytoscape.js, allowing a pathway to be displayed as a set of functional interactions. Drugs can be overlayed in our pairwise view and in the 
+                new functional interaction visualizer. The new features we have introduced in the Reactome Pathway Diagram View pave the way for us to predict and visualize functions of understudied 
+                proteins based on Reactome pathways.
+                </p>
             </v-card-text>
           </div>
         </v-expand-transition>
