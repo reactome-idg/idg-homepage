@@ -1,5 +1,7 @@
 <template>
-  <v-container>Cite Us!</v-container>
+  <v-container>
+    Coming soon!
+  </v-container>
 </template>
 
 <script>
