@@ -31,15 +31,4 @@ export default {
 </script>
 
 <style scoped>
-.right-title {
-  color: white;
-}
-.right-card {
-  background-color: #555;
-}
-.searchContainer {
-  width: 100%;
-  outline: none !important;
-  border: none !important;
-}
 </style>
