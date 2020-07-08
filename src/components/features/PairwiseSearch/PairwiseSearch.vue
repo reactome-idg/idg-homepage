@@ -50,6 +50,10 @@ export default {
   }),
   methods: {
     async searchPairwise() {
+      if(this.search === ""){
+        this.error = "Please enter a search term";
+        return;
+      }
       if (!this.uniprotCheckBox) this.searchGene();
       else this.searchUniprot();
     },
