@@ -2,18 +2,18 @@
   <v-app id="app">
     <Header />
     <router-view mb-5 />
-    <!-- <Footer /> -->
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import Header from "./components/layout/Header"
-// import Footer from "./components/layout/Footer"
+import Footer from "./components/layout/Footer"
 export default {
   name: "app",
   components: {
     Header,
-    // Footer
+    Footer
   },
   watch: {
     $route: {
