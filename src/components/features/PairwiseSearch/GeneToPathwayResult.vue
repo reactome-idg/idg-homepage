@@ -30,7 +30,7 @@
           @item-expanded="loadDetails"
         >
           <template v-slot:item.stId="{item}">
-            <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+            <a :href="getPrimaryLink(item.stId)">{{item.stId}}</a>
           </template>
           <template v-slot:expanded-item="{headers}">
             <td :colspan="headers.length">
@@ -140,6 +140,9 @@ export default {
       return this.data.secondaryPathways.filter(i => {
         return i.fdr <= this.fdr;
       });
+    },
+    primaryBrowserLink() {
+      return ``
     }
   },
   methods: {
@@ -175,6 +178,9 @@ export default {
         ? this.fdr
         : Number.parseFloat(this.fdrInput);
       this.fdr = newFDR;
+    },
+    getPrimaryLink(stId){
+      return `${this.browserLink}${stId}&FLG=${this.data.gene}`;
     }
   }
 };
