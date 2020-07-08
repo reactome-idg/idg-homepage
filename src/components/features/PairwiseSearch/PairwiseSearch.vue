@@ -11,7 +11,7 @@
               dark
               label="Search a Gene Name"
               v-model="search"
-              placeholder="e.g. O95631, NTN1, signaling by EGFR, glucose"
+              placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"
               class="searchContainer"
               hide-details="auto"
