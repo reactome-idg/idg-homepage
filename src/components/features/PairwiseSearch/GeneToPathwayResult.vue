@@ -67,7 +67,7 @@
           @item-expanded="loadDetails"
         >
           <template v-slot:item.stId="{item}">
-            <a :href="`${browserLink}${item.stId}`">{{item.stId}}</a>
+            <a :href="getSecondaryLink(item.stId)">{{item.stId}}</a>
           </template>
           <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
           <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
@@ -181,6 +181,9 @@ export default {
     },
     getPrimaryLink(stId){
       return `${this.browserLink}${stId}&FLG=${this.data.gene}`;
+    },
+    getSecondaryLink(stId){
+      return `${this.browserLink}${stId}&FLG=${this.data.gene}&FLGINT`
     }
   }
 };
