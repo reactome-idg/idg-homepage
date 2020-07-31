@@ -4,7 +4,7 @@
       <p>{{details.description}}</p>
       <h2>Hierarchy</h2>
       <div v-for="(ancestor, index) in details.ancestors" :key="index" class="pb-5">
-          <hierarchy-tree :label="ancestor.displayName" :children="ancestor.children" :depth="0"></hierarchy-tree>
+          <hierarchy-tree :label="ancestor.name" :children="ancestor.children" :depth="0"></hierarchy-tree>
       </div> 
   </div>
 </template>

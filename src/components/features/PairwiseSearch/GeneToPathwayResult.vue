@@ -1,30 +1,15 @@
 <template>
   <v-card dark raised>
-    <v-card-title>Showing Results For: {{data.gene}}</v-card-title>
+    <v-card-title>Showing Results For: {{gene}}</v-card-title>
     <v-card-text>
-      <v-container class="pb-0 pt-0">
-        <v-row>
-          <v-col cols="6" class="pb-0 pt-0 pl-0">
-            <v-text-field
-              prefix="FDR ≤"
-              v-model="fdrInput"
-              @keyup.enter="updateFDR"
-              hide-details
-              class="pr-1"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-      <CyInstance :cyElementsProp="data.fiData" :fdr="fdr" />
-      <v-container fluid v-if="data.pathways && data.pathways.length > 0">
+      <v-container fluid v-if="primaryPathways && primaryPathways.length > 0">
         <p class="display-1 text-left">Primary Pathways</p>
         <v-data-table
           :headers="headers"
-          :items="data.pathways"
+          :items="primaryPathways"
           item-key="stId"
           :search="primarySearch"
           show-expand
-          single-expand
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
           @item-expanded="loadDetails"
@@ -52,9 +37,10 @@
         <hr />
       </v-container>
       <p v-else>No primary pathways found.</p>
-      <v-container fluid v-if="data.secondaryPathways && data.secondaryPathways.length > 0">
+      <v-container fluid>
         <p class="display-1 text-left">Secondary Pathways</p>
         <v-data-table
+          v-if="secondaryPathways && secondaryPathways.length > 0"
           dense
           :headers="secondaryHeaders"
           :items="filteredSecondaryPathways"
@@ -79,71 +65,88 @@
           </template>
           <template v-slot:footer="{}">
             <v-text-field
-            v-if="!hideSecondaryPagination"
+              v-if="!hideSecondaryPagination"
               v-model="secondarySearch"
               label="Search"
               hide-details
               single-line
               class="search-box pr-1"
             ></v-text-field>
+            <v-text-field
+              prefix="FDR ≤"
+              v-model="fdrInput"
+              @keyup.enter="updateFDR"
+              hide-details
+              class="pr-1 search-box"
+            ></v-text-field>
           </template>
         </v-data-table>
+        <SecondaryPathwaysForm v-else @searchSecondaryPathways="searchSecondaryPathways" />
       </v-container>
-      <p v-else>No secondary pathways found.</p>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import CyInstance from "./CyInstance";
+import PairwiseService from "../../../service/PairwiseService";
 import TableDetails from "./TableDetails";
+import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import ReactomeService from "../../../service/ReactomeService";
 export default {
   name: "GeneToPathwayResult",
   components: {
-    CyInstance,
-    TableDetails
+    TableDetails,
+    SecondaryPathwaysForm,
   },
   props: {
-    data: {
-      type: Object,
-      default: () => {}
-    }
+    gene: {
+      type: String,
+      default: () => "",
+    },
+    primaryPathways: {
+      type: Array,
+      default: () => [],
+    },
+    uniprot: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data: () => ({
     browserLink: "/PathwayBrowser/#/",
     headers: [
       { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" }
+      { text: "Pathway Name", value: "name" },
     ],
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" },
       { text: "FDR", value: "fdr" },
-      { text: "pValue", value: "pVal" }
+      { text: "pValue", value: "pVal" },
     ],
     pathwayDetailsList: [],
+    secondaryPathways: [],
     openPathwayDetails: null,
     fdr: 0.05,
     fdrInput: "0.05",
     primarySearch: "",
-    secondarySearch: ""
+    secondarySearch: "",
   }),
   computed: {
     hidePrimaryPagination() {
-      return this.data.pathways.length < 10;
+      return this.primaryPathways.length < 10;
     },
     hideSecondaryPagination() {
-      return this.data.secondaryPathways.length < 20;
+      return this.secondaryPathways.length < 20;
     },
     filteredSecondaryPathways() {
-      return this.data.secondaryPathways.filter(i => {
+      return this.secondaryPathways.filter((i) => {
         return i.fdr <= this.fdr;
       });
     },
     primaryBrowserLink() {
-      return ``
-    }
+      return ``;
+    },
   },
   methods: {
     async loadDetails({ item, value }) {
@@ -151,12 +154,12 @@ export default {
       this.openPathwayDetails = null;
 
       try {
-        if (!this.pathwayDetailsList.some(e => e.stId === item.stId)) {
+        if (!this.pathwayDetailsList.some((e) => e.stId === item.stId)) {
           this.pathwayDetailsList.push(
             await ReactomeService.fetchPathwayDetails(item.stId)
           );
         }
-        const open = this.pathwayDetailsList.find(pathway => {
+        const open = this.pathwayDetailsList.find((pathway) => {
           return pathway.stId === item.stId;
         });
         if (open !== undefined) {
@@ -166,11 +169,28 @@ export default {
               open.details.summation !== null
                 ? open.details.summation[0].text
                 : "No Description Available.",
-            ancestors: open.ancestors
+            ancestors: open.ancestors,
           };
         }
       } catch (err) {
         console.log(err);
+      }
+    },
+    async searchSecondaryPathways(dataDescs) {
+      if (!this.uniprot) {
+        this.secondaryPathways = await PairwiseService.searchGeneSecondaryPathways(
+          {
+            gene: this.gene,
+            dataDescs: dataDescs,
+          }
+        );
+      } else {
+        this.secondaryPathways = await PairwiseService.searchUniprotSecondaryPathways(
+          {
+            gene: this.gene,
+            dataDescs: dataDescs,
+          }
+        );
       }
     },
     updateFDR() {
@@ -179,13 +199,13 @@ export default {
         : Number.parseFloat(this.fdrInput);
       this.fdr = newFDR;
     },
-    getPrimaryLink(stId){
-      return `${this.browserLink}${stId}&FLG=${this.data.gene}`;
+    getPrimaryLink(stId) {
+      return `${this.browserLink}${stId}&FLG=${this.gene}`;
     },
-    getSecondaryLink(stId){
-      return `${this.browserLink}${stId}&FLG=${this.data.gene}&FLGINT`
-    }
-  }
+    getSecondaryLink(stId) {
+      return `${this.browserLink}${stId}&FLG=${this.gene}&FLGINT`;
+    },
+  },
 };
 </script>
 
@@ -193,5 +213,6 @@ export default {
 .search-box {
   float: left;
   max-width: 25em;
+  margin-right: 0.25em;
 }
 </style>

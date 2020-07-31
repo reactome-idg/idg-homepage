@@ -3,10 +3,10 @@
     <v-card dark raised>
       <v-card-text class="pa-3">
         <v-row align="center" justify="center">
-          <v-col cols="12" md="2">
+          <v-col cols="2" md="1">
             <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
           </v-col>
-          <v-col cols="12" md="8">
+          <v-col cols="10" md="9">
             <v-text-field
               dark
               label="Search a Gene Name"
@@ -17,7 +17,16 @@
               hide-details="auto"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="2" >
+          <!-- <v-col cols="12" md="5">
+            <v-combobox
+              v-model="dataDescSelections"
+              label="Select sources"
+              :items="dataDescIds"
+              multiple
+              hint="Maximum of 6 sources"
+            ></v-combobox>
+          </v-col>-->
+          <v-col cols="12" md="2">
             <v-btn color="primary" @click="searchPairwise">Search</v-btn>
           </v-col>
         </v-row>
@@ -25,8 +34,12 @@
       </v-card-text>
     </v-card>
     <LoadingCircularProgress v-if="loading" />
-    <v-container fluid class="pl-0 pr-0" v-if="relationshipRtn">
-      <GeneToPathwayResult :data="relationshipRtn" />
+    <v-container fluid class="pl-0 pr-0" v-if="primaryPathways">
+      <GeneToPathwayResult
+        :gene="searchedGene"
+        :primaryPathways="primaryPathways"
+        :uniprot="uniprotCheckBox"
+      />
     </v-container>
   </v-container>
 </template>
@@ -39,30 +52,33 @@ export default {
   name: "PairwiseSearch",
   components: {
     GeneToPathwayResult,
-    LoadingCircularProgress
+    LoadingCircularProgress,
   },
   data: () => ({
     search: "",
     uniprotCheckBox: false,
     relationshipRtn: null,
+    searchedGene: "",
+    primaryPathways: null,
     loading: false,
-    error: ""
+    error: "",
   }),
   methods: {
     async searchPairwise() {
-      if(this.search === ""){
+      if (this.search === "") {
         this.error = "Please enter a search term";
         return;
       }
+      this.primaryPathways = null;
+      this.error = "";
+      this.loading = true;
+      this.searchedGene = this.search;
       if (!this.uniprotCheckBox) this.searchGene();
       else this.searchUniprot();
     },
     async searchGene() {
       try {
-        this.relationshipRtn = null;
-        this.error = "";
-        this.loading = true;
-        this.relationshipRtn = await PairwiseService.searchGeneName(
+        this.primaryPathways = await PairwiseService.searchGeneName(
           this.search
         );
       } catch (err) {
@@ -76,10 +92,7 @@ export default {
     },
     async searchUniprot() {
       try {
-        this.relationshipRtn = null;
-        this.error = "";
-        this.loading = true;
-        this.relationshipRtn = await PairwiseService.searchUniprot(this.search);
+        this.primaryPathways = await PairwiseService.searchUniprot(this.search);
       } catch (err) {
         this.error = err.message;
         if (err.response.status == 404) {
@@ -87,8 +100,8 @@ export default {
         }
       }
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

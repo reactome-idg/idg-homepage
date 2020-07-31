@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const url = "http://localhost:8043/idgpairwise/relationships/";
+const url = "http://localhost:8043/idgpairwise/";
 
 class CompanyService {
   static searchGeneName(geneName) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}pathwaysForGene/${geneName}`)
+        .get(`${url}relationships/primaryPathwaysForGene/${geneName}`)
         .then((res) => {
-          resolve(this.structureDataForGene(res));
+          resolve(res.data);
         })
         .catch((err) => {
           reject(err);
@@ -19,9 +19,51 @@ class CompanyService {
   static searchUniprot(uniprot) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}pathwaysForUniprot/${uniprot}`)
+        .get(`${url}relationships/primaryPathwaysForUniprot/${uniprot}`)
         .then((res) => {
-          resolve(this.structureDataForGene(res));
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static searchGeneSecondaryPathways(postData) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${url}relationships/enrichedSecondaryPathwaysForGene`, postData)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static searchUniprotSecondaryPathways(postData) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          `${url}relationships/enrichedSecondaryPathwaysForUniprot`,
+          postData
+        )
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static getDataDescs() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${url}/datadesc`)
+        .then((res) => {
+          resolve(res.data);
         })
         .catch((err) => {
           reject(err);
