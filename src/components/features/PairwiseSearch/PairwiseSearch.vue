@@ -17,15 +17,6 @@
               hide-details="auto"
             ></v-text-field>
           </v-col>
-          <!-- <v-col cols="12" md="5">
-            <v-combobox
-              v-model="dataDescSelections"
-              label="Select sources"
-              :items="dataDescIds"
-              multiple
-              hint="Maximum of 6 sources"
-            ></v-combobox>
-          </v-col>-->
           <v-col cols="12" md="2">
             <v-btn color="primary" @click="searchPairwise">Search</v-btn>
           </v-col>
