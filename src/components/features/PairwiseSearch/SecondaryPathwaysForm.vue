@@ -47,7 +47,7 @@
       </v-card>
       <v-row align="center" justify="center">
         <v-col cols="12" md="10">
-          <v-chip v-for="(rel, index) in relationshipTypes" :key="index">{{rel}}</v-chip>
+          <v-chip v-for="(rel, index) in relationshipTypes" :key="index" close @click:close="remove(rel)">{{rel}}</v-chip>
         </v-col>
         <v-col cols="12" md="2">
           <v-btn color="primary" @click="searchSecondaryPathways">Search</v-btn>
@@ -66,7 +66,7 @@ export default {
   name: "SecondaryPathwayForm",
   props: {
     errors: Array,
-    default: () => []
+    default: () => [],
   },
   data: () => ({
     dataDescs: [],
@@ -104,22 +104,27 @@ export default {
       ];
     },
     origins() {
-      var origins = [...new Set(this.dataDescs.filter(
-        (desc) =>
-          desc.dataType == this.dataType &&
-          desc.provenance == this.provenance &&
-          desc.bioSource == this.bioSource
-      ).map(desc => desc.origin))].filter(item => item !== undefined);
+      var origins = [
+        ...new Set(
+          this.dataDescs
+            .filter(
+              (desc) =>
+                desc.dataType == this.dataType &&
+                desc.provenance == this.provenance &&
+                desc.bioSource == this.bioSource
+            )
+            .map((desc) => desc.origin)
+        ),
+      ].filter((item) => item !== undefined);
       return origins;
     },
     computedErrors() {
       var computedErrors = "";
-      if(this.errors.length > 0)
-        computedErrors = computedErrors + this.errors.join(", ")
-      if(this.error.length > 0)
-        computedErrors = computedErrors + this.error;
+      if (this.errors.length > 0)
+        computedErrors = computedErrors + this.errors.join(", ");
+      if (this.error.length > 0) computedErrors = computedErrors + this.error;
       return computedErrors;
-    }
+    },
   },
   watch: {
     relationshipTypes(val) {
@@ -143,19 +148,25 @@ export default {
     },
     addRelationship() {
       this.error = "";
-      if(this.provenance === null ||
-         this.bioSource === null ||
-         this.dataType === null ||
-         (this.origins.length > 0 && this.origin===null)){
-          this.error = "All options are required before adding."
-          return;
-         }
       var desc = `${this.provenance}|${this.bioSource}|${this.dataType}`;
       if (this.origin != "") {
         desc = `${desc}|${this.origin}`;
       }
       if (desc.length > 100) desc = desc.substring(0, 100);
-      this.relationshipTypes.push(desc);
+
+      //check to see if this is a valid datadesc id
+      if (this.dataDescs.map((type) => type.id).indexOf(desc) === -1) {
+        this.error =
+          "This is not a valid option set. Please select choices from the drop down menus.";
+        return;
+      }
+
+      //check to make sure this desc hasn't already been added
+      if (this.relationshipTypes.indexOf(desc) === -1) {
+        this.relationshipTypes.push(desc);
+      } else this.error = "This interactor set has already been added.";
+
+      //reset form
       this.dataType = "";
       this.provenance = "";
       this.bioSource = "";
@@ -173,10 +184,15 @@ export default {
     cascadeBioSource() {
       this.origin = "";
     },
+    remove(rel){
+      this.relationshipTypes = this.relationshipTypes.filter(type => type !== rel);
+    }
   },
 };
 </script>
 
 <style scoped>
-.errors{color:red;}
+.errors {
+  color: red;
+}
 </style>
