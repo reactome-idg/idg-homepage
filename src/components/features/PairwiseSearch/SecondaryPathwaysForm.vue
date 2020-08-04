@@ -54,7 +54,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" class="errors">{{errors.join(', ')}}, {{error}}</v-col>
+        <v-col cols="12" class="errors">{{computedErrors}}</v-col>
       </v-row>
     </v-card-text>
   </v-card>
@@ -112,6 +112,14 @@ export default {
       ).map(desc => desc.origin))].filter(item => item !== undefined);
       return origins;
     },
+    computedErrors() {
+      var computedErrors = "";
+      if(this.errors.length > 0)
+        computedErrors = computedErrors + this.errors.join(", ")
+      if(this.error.length > 0)
+        computedErrors = computedErrors + this.error;
+      return computedErrors;
+    }
   },
   watch: {
     relationshipTypes(val) {
@@ -134,6 +142,14 @@ export default {
       this.$emit("searchSecondaryPathways", this.relationshipTypes);
     },
     addRelationship() {
+      this.error = "";
+      if(this.provenance === null ||
+         this.bioSource === null ||
+         this.dataType === null ||
+         (this.origins.length > 0 && this.origin===null)){
+          this.error = "All options are required before adding."
+          return;
+         }
       var desc = `${this.provenance}|${this.bioSource}|${this.dataType}`;
       if (this.origin != "") {
         desc = `${desc}|${this.origin}`;
