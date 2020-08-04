@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8043/idgpairwise/";
+const url = "/idgpairwise/";
 
 class CompanyService {
   static searchGeneName(geneName) {
