@@ -218,7 +218,8 @@ export default {
 
 <style scoped>
 .search-box {
-  float: left;
+  align-content: left;
+  justify-content: left;
   max-width: 25em;
   margin-right: 0.25em;
 }
