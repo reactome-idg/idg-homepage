@@ -40,6 +40,9 @@
       <v-container fluid>
         <p class="display-1 text-left">Secondary Pathways</p>
         <v-container fluid v-if="secondaryPathways && secondaryPathways.length > 0">
+          <v-card outlined>
+            <v-btn icon style="float:left;" class="mx-1" @click="closeSecondaryPathways"><v-icon>{{'mdi-close'}}</v-icon></v-btn>
+            <v-card-text>
           <v-data-table
             dense
             :headers="secondaryHeaders"
@@ -64,23 +67,28 @@
               </td>
             </template>
             <template v-slot:footer="{}">
+              <v-row>
+                <v-col cols="2">
               <v-text-field
                 v-if="!hideSecondaryPagination"
                 v-model="secondarySearch"
                 label="Search"
                 hide-details
-                single-line
-                class="search-box pr-1"
               ></v-text-field>
+              </v-col>
+              <v-col cols="2">
               <v-text-field
                 prefix="FDR ≤"
                 v-model="fdrInput"
                 @keyup.enter="updateFDR"
                 hide-details
-                class="pr-1 search-box"
               ></v-text-field>
+              </v-col>
+              </v-row>
             </template>
           </v-data-table>
+          </v-card-text>
+          </v-card>
         </v-container>
         <SecondaryPathwaysForm v-else :errors="secondarySearchErrors" @searchSecondaryPathways="searchSecondaryPathways" />
       </v-container>
@@ -212,15 +220,12 @@ export default {
     getSecondaryLink(stId) {
       return `${this.browserLink}${stId}&FLG=${this.gene}&FLGINT`;
     },
+    closeSecondaryPathways() {
+      this.secondaryPathways = []
+    }
   },
 };
 </script>
 
 <style scoped>
-.search-box {
-  align-content: left;
-  justify-content: left;
-  max-width: 25em;
-  margin-right: 0.25em;
-}
 </style>
