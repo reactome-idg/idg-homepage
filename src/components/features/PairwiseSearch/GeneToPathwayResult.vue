@@ -3,7 +3,10 @@
     <v-card-title>Showing Results For: {{gene}}</v-card-title>
     <v-card-text>
       <v-container fluid v-if="primaryPathways && primaryPathways.length > 0">
-        <p class="display-1 text-left">Primary Pathways</p>
+        <div class="text-left">
+          <span class="display-1 text-left">Primary Pathways</span>
+          <small class="pl-2">Reactome annotated</small>
+        </div>
         <v-data-table
           :headers="headers"
           :items="primaryPathways"
@@ -13,6 +16,7 @@
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
           @item-expanded="loadDetails"
+          must-sort="true"
         >
           <template v-slot:item.stId="{item}">
             <a :href="getPrimaryLink(item.stId)">{{item.stId}}</a>
@@ -38,59 +42,69 @@
       </v-container>
       <p v-else>No primary pathways found.</p>
       <v-container fluid>
-        <p class="display-1 text-left">Secondary Pathways</p>
+        <div class="text-left">
+          <span class="display-1">Secondary Pathways</span>
+          <small class="pl-2">Reachable through interactor</small>
+        </div>
         <v-container fluid v-if="secondaryPathways && secondaryPathways.length > 0">
           <v-card outlined>
-            <v-btn icon style="float:left;" class="mx-1" @click="closeSecondaryPathways"><v-icon>{{'mdi-close'}}</v-icon></v-btn>
+            <v-btn icon style="float:left;" class="mx-1" @click="closeSecondaryPathways">
+              <v-icon>{{'mdi-close'}}</v-icon>
+            </v-btn>
             <v-card-text>
-          <v-data-table
-            dense
-            :headers="secondaryHeaders"
-            :items="filteredSecondaryPathways"
-            item-key="stId"
-            show-expand
-            :search="secondarySearch"
-            :single-expand="true"
-            :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
-            :hide-default-footer="hideSecondaryPagination"
-            @item-expanded="loadDetails"
-          >
-            <template v-slot:item.stId="{item}">
-              <a :href="getSecondaryLink(item.stId)">{{item.stId}}</a>
-            </template>
-            <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
-            <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
-            <template v-slot:expanded-item="{headers}">
-              <td :colspan="headers.length">
-                <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
-                <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
-              </td>
-            </template>
-            <template v-slot:footer="{}">
-              <v-row>
-                <v-col cols="2">
-              <v-text-field
-                v-if="!hideSecondaryPagination"
-                v-model="secondarySearch"
-                label="Search"
-                hide-details
-              ></v-text-field>
-              </v-col>
-              <v-col cols="2">
-              <v-text-field
-                prefix="FDR ≤"
-                v-model="fdrInput"
-                @keyup.enter="updateFDR"
-                hide-details
-              ></v-text-field>
-              </v-col>
-              </v-row>
-            </template>
-          </v-data-table>
-          </v-card-text>
+              <v-data-table
+                dense
+                :headers="secondaryHeaders"
+                :items="filteredSecondaryPathways"
+                item-key="stId"
+                show-expand
+                :search="secondarySearch"
+                :single-expand="true"
+                :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
+                :hide-default-footer="hideSecondaryPagination"
+                @item-expanded="loadDetails"
+                must-sort="true"
+              >
+                <template v-slot:item.stId="{item}">
+                  <a :href="getSecondaryLink(item.stId)">{{item.stId}}</a>
+                </template>
+                <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
+                <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
+                <template v-slot:expanded-item="{headers}">
+                  <td :colspan="headers.length">
+                    <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
+                    <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
+                  </td>
+                </template>
+                <template v-slot:footer="{}">
+                  <v-row>
+                    <v-col cols="2">
+                      <v-text-field
+                        v-if="!hideSecondaryPagination"
+                        v-model="secondarySearch"
+                        label="Search"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="2">
+                      <v-text-field
+                        prefix="FDR ≤"
+                        v-model="fdrInput"
+                        @keyup.enter="updateFDR"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </template>
+              </v-data-table>
+            </v-card-text>
           </v-card>
         </v-container>
-        <SecondaryPathwaysForm v-else :errors="secondarySearchErrors" @searchSecondaryPathways="searchSecondaryPathways" />
+        <SecondaryPathwaysForm
+          v-else
+          :errors="secondarySearchErrors"
+          @searchSecondaryPathways="searchSecondaryPathways"
+        />
       </v-container>
     </v-card-text>
   </v-card>
@@ -136,7 +150,7 @@ export default {
     pathwayDetailsList: [],
     secondaryPathways: [],
     openPathwayDetails: null,
-    fdr: 1.00,
+    fdr: 1.0,
     fdrInput: "1.00",
     primarySearch: "",
     secondarySearch: "",
@@ -221,8 +235,8 @@ export default {
       return `${this.browserLink}${stId}&FLG=${this.gene}&FLGINT`;
     },
     closeSecondaryPathways() {
-      this.secondaryPathways = []
-    }
+      this.secondaryPathways = [];
+    },
   },
 };
 </script>
