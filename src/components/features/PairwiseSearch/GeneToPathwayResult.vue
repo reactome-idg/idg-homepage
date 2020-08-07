@@ -44,7 +44,7 @@
       <v-container fluid>
         <div class="text-left">
           <span class="display-1">Secondary Pathways</span>
-          <small class="pl-2">Reachable through interactor</small>
+          <small class="pl-2">Reachable through interactors</small>
         </div>
         <v-container fluid v-if="secondaryPathways && secondaryPathways.length > 0">
           <v-card outlined>
