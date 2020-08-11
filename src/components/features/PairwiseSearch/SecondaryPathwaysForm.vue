@@ -47,7 +47,12 @@
       </v-card>
       <v-row align="center" justify="center">
         <v-col cols="12" md="10">
-          <v-chip v-for="(rel, index) in relationshipTypes" :key="index" close @click:close="remove(rel)">{{rel}}</v-chip>
+          <v-chip
+            v-for="(rel, index) in relationshipTypes"
+            :key="index"
+            close
+            @click:close="remove(rel)"
+          >{{rel}}</v-chip>
         </v-col>
         <v-col cols="12" md="2">
           <v-btn color="primary" @click="searchSecondaryPathways">Search</v-btn>
@@ -65,8 +70,14 @@ import PairwiseService from "../../../service/PairwiseService";
 export default {
   name: "SecondaryPathwayForm",
   props: {
-    errors: Array,
-    default: () => [],
+    errors: {
+      type: Array,
+      default: () => [],
+    },
+    initialDescs: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     dataDescs: [],
@@ -131,6 +142,9 @@ export default {
       if (val.length > 6) this.$nextTick(() => this.relationshipTypes.pop());
     },
   },
+  mounted() {
+    this.relationshipTypes.push(...this.initialDescs);
+  },
   async created() {
     try {
       this.dataDescs = await PairwiseService.getDataDescs();
@@ -184,9 +198,11 @@ export default {
     cascadeBioSource() {
       this.origin = "";
     },
-    remove(rel){
-      this.relationshipTypes = this.relationshipTypes.filter(type => type !== rel);
-    }
+    remove(rel) {
+      this.relationshipTypes = this.relationshipTypes.filter(
+        (type) => type !== rel
+      );
+    },
   },
 };
 </script>

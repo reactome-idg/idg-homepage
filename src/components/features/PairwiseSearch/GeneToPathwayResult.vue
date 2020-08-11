@@ -16,7 +16,7 @@
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
           @item-expanded="loadDetails"
-          must-sort="true"
+          :must-sort="true"
         >
           <template v-slot:item.stId="{item}">
             <a :href="getPrimaryLink(item.stId)">{{item.stId}}</a>
@@ -63,7 +63,7 @@
                 :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
                 :hide-default-footer="hideSecondaryPagination"
                 @item-expanded="loadDetails"
-                must-sort="true"
+                :must-sort="true"
               >
                 <template v-slot:item.stId="{item}">
                   <a :href="getSecondaryLink(item.stId)">{{item.stId}}</a>
@@ -103,6 +103,7 @@
         <SecondaryPathwaysForm
           v-else
           :errors="secondarySearchErrors"
+          :initialDescs = "currentSecondarySearchDescs"
           @searchSecondaryPathways="searchSecondaryPathways"
         />
       </v-container>
@@ -155,6 +156,7 @@ export default {
     primarySearch: "",
     secondarySearch: "",
     secondarySearchErrors: [],
+    currentSecondarySearchDescs: []
   }),
   computed: {
     hidePrimaryPagination() {
@@ -202,6 +204,7 @@ export default {
     },
     async searchSecondaryPathways(dataDescs) {
       this.secondarySearchErrors = [];
+      this.currentSecondarySearchDescs = dataDescs
       if (!this.uniprot) {
         this.secondaryPathways = await PairwiseService.searchGeneSecondaryPathways(
           {
