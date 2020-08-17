@@ -8,7 +8,8 @@ class CompanyService {
       axios
         .get(`${url}relationships/primaryPathwaysForGene/${geneName}`)
         .then((res) => {
-          resolve(res.data);
+          //return only bottom level pathways
+          resolve(res.data.filter((p) => p.bottomLevel));
         })
         .catch((err) => {
           reject(err);
@@ -21,7 +22,8 @@ class CompanyService {
       axios
         .get(`${url}relationships/primaryPathwaysForUniprot/${uniprot}`)
         .then((res) => {
-          resolve(res.data);
+          //return only bottom level pathways
+          resolve(res.data.filter((p) => p.bottomLevel));
         })
         .catch((err) => {
           reject(err);
@@ -34,7 +36,8 @@ class CompanyService {
       axios
         .post(`${url}relationships/enrichedSecondaryPathwaysForGene`, postData)
         .then((res) => {
-          resolve(res.data);
+          //return only bottom level pathways
+          resolve(res.data.filter((p) => p.bottomLevel));
         })
         .catch((err) => {
           reject(err);
@@ -50,7 +53,8 @@ class CompanyService {
           postData
         )
         .then((res) => {
-          resolve(res.data);
+          //return only bottom level pathways
+          resolve(res.data.filter((p) => p.bottomLevel));
         })
         .catch((err) => {
           reject(err);

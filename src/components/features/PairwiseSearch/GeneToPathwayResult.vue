@@ -28,14 +28,16 @@
             </td>
           </template>
           <template v-slot:footer="{}">
-            <v-text-field
-              v-if="!hidePrimaryPagination"
-              v-model="primarySearch"
-              label="Search"
-              hide-details
-              single-line
-              class="search-box pr-1"
-            ></v-text-field>
+            <v-row>
+              <v-col cols="1">
+                <v-text-field
+                  v-if="!hidePrimaryPagination"
+                  v-model="primarySearch"
+                  label="Search"
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
         <hr />
@@ -103,7 +105,7 @@
         <SecondaryPathwaysForm
           v-else
           :errors="secondarySearchErrors"
-          :initialDescs = "currentSecondarySearchDescs"
+          :initialDescs="currentSecondarySearchDescs"
           @searchSecondaryPathways="searchSecondaryPathways"
         />
       </v-container>
@@ -145,8 +147,8 @@ export default {
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" },
-      { text: "FDR", value: "fdr" },
       { text: "pValue", value: "pVal" },
+      { text: "FDR", value: "fdr" },
     ],
     pathwayDetailsList: [],
     secondaryPathways: [],
@@ -156,7 +158,7 @@ export default {
     primarySearch: "",
     secondarySearch: "",
     secondarySearchErrors: [],
-    currentSecondarySearchDescs: []
+    currentSecondarySearchDescs: [],
   }),
   computed: {
     hidePrimaryPagination() {
@@ -204,7 +206,7 @@ export default {
     },
     async searchSecondaryPathways(dataDescs) {
       this.secondarySearchErrors = [];
-      this.currentSecondarySearchDescs = dataDescs
+      this.currentSecondarySearchDescs = dataDescs;
       if (!this.uniprot) {
         this.secondaryPathways = await PairwiseService.searchGeneSecondaryPathways(
           {
@@ -221,6 +223,7 @@ export default {
         );
       }
       if (this.secondaryPathways.length === 0)
+      this.currentSecondarySearchDescs = []
         this.secondarySearchErrors.push(
           "No pathways for this selection. Please try another."
         );
