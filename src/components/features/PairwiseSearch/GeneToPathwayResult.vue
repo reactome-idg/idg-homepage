@@ -172,9 +172,6 @@ export default {
         return i.fdr <= this.fdr;
       });
     },
-    primaryBrowserLink() {
-      return ``;
-    },
   },
   methods: {
     async loadDetails({ item, value }) {
@@ -238,7 +235,7 @@ export default {
       return `${this.browserLink}${stId}&FLG=${this.gene}`;
     },
     getSecondaryLink(stId) {
-      return `${this.browserLink}${stId}&FLG=${this.gene}&FLGINT`;
+      return `${this.browserLink}${stId}&FLG=${this.gene},${this.currentSecondarySearchDescs.join(',')}&FLGINT`;
     },
     closeSecondaryPathways() {
       this.secondaryPathways = [];
