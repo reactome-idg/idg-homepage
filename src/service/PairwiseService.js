@@ -9,7 +9,8 @@ class CompanyService {
         .get(`${url}relationships/primaryPathwaysForGene/${geneName}`)
         .then((res) => {
           //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
+          // resolve(res.data.filter((p) => p.bottomLevel));
+          resolve(res.data)
         })
         .catch((err) => {
           reject(err);
@@ -23,7 +24,8 @@ class CompanyService {
         .get(`${url}relationships/primaryPathwaysForUniprot/${uniprot}`)
         .then((res) => {
           //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
+          // resolve(res.data.filter((p) => p.bottomLevel));
+          resolve(res.data)
         })
         .catch((err) => {
           reject(err);
@@ -37,7 +39,8 @@ class CompanyService {
         .post(`${url}relationships/enrichedSecondaryPathwaysForGene`, postData)
         .then((res) => {
           //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
+          // resolve(res.data.filter((p) => p.bottomLevel));
+          resolve(res.data)
         })
         .catch((err) => {
           reject(err);
@@ -54,7 +57,8 @@ class CompanyService {
         )
         .then((res) => {
           //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
+          // resolve(res.data.filter((p) => p.bottomLevel));
+          resolve(res.data)
         })
         .catch((err) => {
           reject(err);
