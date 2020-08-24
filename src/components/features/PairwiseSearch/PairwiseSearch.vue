@@ -14,7 +14,7 @@
               placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"
               class="searchContainer"
-              @keyup:enter="searchPairwise"
+              @keyup.enter="searchPairwise"
               hide-details="auto"
             ></v-text-field>
           </v-col>
