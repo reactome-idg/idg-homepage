@@ -235,7 +235,9 @@ export default {
       return `${this.browserLink}${stId}&FLG=${this.gene}`;
     },
     getSecondaryLink(stId) {
-      return `${this.browserLink}${stId}&FLG=${this.gene},${this.currentSecondarySearchDescs.join(',')}&FLGINT`;
+      var descs = []
+      this.currentSecondarySearchDescs.forEach(desc => { descs.push(desc.replace(/\|/g, "%7C"))});
+      return `${this.browserLink}${stId}&FLG=${this.gene},${descs.join(',')}&FLGINT`;
     },
     closeSecondaryPathways() {
       this.secondaryPathways = [];
