@@ -47,6 +47,7 @@
         <div class="text-left">
           <span class="display-1">Secondary Pathways</span>
           <small class="pl-2">Reachable through interactors</small>
+          <small class="pl-2">{{currentSecondarySearchDescs.join(", ")}}</small>
         </div>
         <v-container fluid v-if="secondaryPathwaysLoading">
           <v-card outlined>
