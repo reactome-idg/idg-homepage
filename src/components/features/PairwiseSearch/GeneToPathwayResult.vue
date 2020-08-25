@@ -48,6 +48,13 @@
           <span class="display-1">Secondary Pathways</span>
           <small class="pl-2">Reachable through interactors</small>
         </div>
+        <v-container fluid v-if="secondaryPathwaysLoading">
+          <v-card outlined>
+            <v-card-text>
+              <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            </v-card-text>
+          </v-card>
+        </v-container>
         <v-container fluid v-if="secondaryPathways && secondaryPathways.length > 0">
           <v-card outlined>
             <v-btn icon style="float:left;" class="mx-1" @click="closeSecondaryPathways">
@@ -159,6 +166,7 @@ export default {
     secondarySearch: "",
     secondarySearchErrors: [],
     currentSecondarySearchDescs: [],
+    secondaryPathwaysLoading: false,
   }),
   computed: {
     hidePrimaryPagination() {
@@ -202,6 +210,7 @@ export default {
       }
     },
     async searchSecondaryPathways(dataDescs) {
+      this.secondaryPathwaysLoading = true;
       this.secondarySearchErrors = [];
       this.currentSecondarySearchDescs = dataDescs;
       if (!this.uniprot) {
@@ -219,11 +228,13 @@ export default {
           }
         );
       }
-      if (this.secondaryPathways.length === 0)
-      this.currentSecondarySearchDescs = []
+      this.secondaryPathwaysLoading = false;
+      if (this.secondaryPathways.length === 0) {
+        this.currentSecondarySearchDescs = [];
         this.secondarySearchErrors.push(
           "No pathways for this selection. Please try another."
         );
+      }
     },
     updateFDR() {
       const newFDR = Number.parseFloat(this.fdrInput).isNaN
@@ -235,9 +246,13 @@ export default {
       return `${this.browserLink}${stId}&FLG=${this.gene}`;
     },
     getSecondaryLink(stId) {
-      var descs = []
-      this.currentSecondarySearchDescs.forEach(desc => { descs.push(desc.replace(/\|/g, "%7C"))});
-      return `${this.browserLink}${stId}&FLG=${this.gene},${descs.join(',')}&FLGINT`;
+      var descs = [];
+      this.currentSecondarySearchDescs.forEach((desc) => {
+        descs.push(desc.replace(/\|/g, "%7C"));
+      });
+      return `${this.browserLink}${stId}&FLG=${this.gene},${descs.join(
+        ","
+      )}&FLGINT`;
     },
     closeSecondaryPathways() {
       this.secondaryPathways = [];
