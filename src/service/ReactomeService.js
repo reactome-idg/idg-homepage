@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REACTOME_URL = "http://localhost:8080/ContentService/";
+const REACTOME_URL = "https://idg.reactome.org/ContentService/";
 
 class ReactomeService {
   static fetchPathwayDetails(stId) {
