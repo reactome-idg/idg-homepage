@@ -190,7 +190,7 @@ export default {
 
       try {
         if(!item.details){
-             item.details = await ReactomeService.fetchPathwayDetails(item.stId); //load details
+             item.details = await ReactomeService.fetchPathwayDetails(item.stId);
              this.$forceUpdate();
            }
       } catch (err) {

@@ -13,7 +13,8 @@
               v-model="search"
               placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"
-              class="searchContainer"
+              class="searchContainer" 
+              text-uppercase
               @keyup.enter="searchPairwise"
               hide-details="auto"
             ></v-text-field>
@@ -28,7 +29,7 @@
     <LoadingCircularProgress v-if="loading" />
     <v-container fluid class="pl-0 pr-0" v-if="primaryPathways">
       <GeneToPathwayResult
-        :gene="searchedGene"
+        :gene="searchedGene.toUpperCase()"
         :primaryPathways="primaryPathways"
         :uniprot="uniprotCheckBox"
       />
@@ -71,7 +72,7 @@ export default {
     async searchGene() {
       try {
         this.primaryPathways = await PairwiseService.searchGeneName(
-          this.search
+          this.search.toUpperCase()
         );
       } catch (err) {
         this.error = err.message;
@@ -84,7 +85,7 @@ export default {
     },
     async searchUniprot() {
       try {
-        this.primaryPathways = await PairwiseService.searchUniprot(this.search);
+        this.primaryPathways = await PairwiseService.searchUniprot(this.search.toUpperCase());
       } catch (err) {
         this.error = err.message;
         if (err.response.status == 404) {
@@ -98,4 +99,7 @@ export default {
 </script>
 
 <style scoped>
+.searchContainer{
+  text-transform: uppercase;
+}
 </style>
