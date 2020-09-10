@@ -9,22 +9,22 @@
         </div>
         <v-data-table
           :headers="headers"
-          :items="primaryPathways"
+          :items="primaryPathwaysData"
           item-key="stId"
           :search="primarySearch"
           show-expand
           :footer-props="{'items-per-page-options': [5,10,50,-1]}"
           :hide-default-footer="hidePrimaryPagination"
-          @item-expanded="loadDetails"
+          @item-expanded="loadPrimaryDetails"
           :must-sort="true"
         >
           <template v-slot:item.stId="{item}">
             <a :href="getPrimaryLink(item.stId)">{{item.stId}}</a>
           </template>
-          <template v-slot:expanded-item="{headers}">
+          <template v-slot:expanded-item="{headers, item}">
             <td :colspan="headers.length">
-              <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
-              <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
+              <v-progress-circular v-if="!item.details" indeterminate color="primary"></v-progress-circular>
+              <TableDetails v-else :details="item.details" />
             </td>
           </template>
           <template v-slot:footer="{}">
@@ -72,7 +72,7 @@
                 :single-expand="true"
                 :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
                 :hide-default-footer="hideSecondaryPagination"
-                @item-expanded="loadDetails"
+                @item-expanded="loadSecondaryDetails"
                 :must-sort="true"
               >
                 <template v-slot:item.stId="{item}">
@@ -80,9 +80,9 @@
                 </template>
                 <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
                 <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
-                <template v-slot:expanded-item="{headers}">
+                <template v-slot:expanded-item="{headers, item}">
                   <td :colspan="headers.length">
-                    <TableDetails v-if="openPathwayDetails" :details="openPathwayDetails" />
+                    <TableDetails v-if="item.details" :details="item.details" />
                     <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
                   </td>
                 </template>
@@ -146,6 +146,9 @@ export default {
       default: () => false,
     },
   },
+  created() {
+    this.primaryPathwaysData = this.primaryPathways;
+  },
   data: () => ({
     browserLink: "/PathwayBrowser/#/",
     headers: [
@@ -158,9 +161,8 @@ export default {
       { text: "pValue", value: "pVal" },
       { text: "FDR", value: "fdr" },
     ],
-    pathwayDetailsList: [],
+    primaryPathwaysData: [],
     secondaryPathways: [],
-    openPathwayDetails: null,
     fdr: 1.0,
     fdrInput: "1.00",
     primarySearch: "",
@@ -183,30 +185,28 @@ export default {
     },
   },
   methods: {
-    async loadDetails({ item, value }) {
+    async loadPrimaryDetails({ item, value }) {
       if (!value) return;
-      this.openPathwayDetails = null;
 
       try {
-        if (!this.pathwayDetailsList.some((e) => e.stId === item.stId)) {
-          this.pathwayDetailsList.push(
-            await ReactomeService.fetchPathwayDetails(item.stId)
-          );
-        }
-        const open = this.pathwayDetailsList.find((pathway) => {
-          return pathway.stId === item.stId;
-        });
-        if (open !== undefined) {
-          this.openPathwayDetails = {
-            stId: open.stId,
-            description:
-              open.details.summation !== null
-                ? open.details.summation[0].text
-                : "No Description Available.",
-            ancestors: open.ancestors,
-          };
-        }
+        if(!item.details){
+             item.details = await ReactomeService.fetchPathwayDetails(item.stId); //load details
+             this.$forceUpdate();
+           }
       } catch (err) {
+        console.log(err);
+      }
+    },
+    async loadSecondaryDetails({item, value}){
+      if(!value) return;
+      try{
+        if(!item.details){
+          const data = await ReactomeService.fetchPathwayDetails(item.stId);
+          item.details = data;
+          this.secondaryPathways.filter(p => p.stId === item.stId).details = data;
+          this.$forceUpdate();
+        }
+      } catch(err){
         console.log(err);
       }
     },
