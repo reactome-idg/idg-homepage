@@ -2,12 +2,27 @@
   <v-card dark raised>
     <v-card-title>Showing Results For: {{gene}}</v-card-title>
     <v-card-text>
-      <v-container fluid v-if="primaryPathways && primaryPathways.length > 0">
+      <v-container fluid v-if="primaryPathways && primaryPathways.hierarchy.length > 0">
         <div class="text-left">
           <span class="display-1 text-left">Primary Pathways</span>
           <small class="pl-2">Reactome annotated</small>
         </div>
-        <v-data-table
+        <v-card outlined class="mb-5">
+        <v-expansion-panels flat>
+          <v-expansion-panel style="overflow:hidden;" v-for="(child, index) in primaryPathways.hierarchy" :key="index">
+            <v-expansion-panel-header>{{child.name}}</v-expansion-panel-header>
+            <v-expansion-panel-content> <div style="overflow-y:scroll; max-height:20em;"><PrimaryPathwayHierarchy
+              :stId="child.stId"
+              :geneName="primaryPathways.gene"
+              :children="child.children"
+              :label="child.name"
+              :depth="0"
+              :topLevel="true"
+            ></PrimaryPathwayHierarchy></div></v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        </v-card>
+        <!-- <v-data-table
           :headers="headers"
           :items="primaryPathwaysData"
           item-key="stId"
@@ -39,7 +54,7 @@
               </v-col>
             </v-row>
           </template>
-        </v-data-table>
+        </v-data-table>-->
         <hr />
       </v-container>
       <p v-else>No primary pathways found.</p>
@@ -126,11 +141,13 @@ import PairwiseService from "../../../service/PairwiseService";
 import TableDetails from "./TableDetails";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import ReactomeService from "../../../service/ReactomeService";
+import PrimaryPathwayHierarchy from "./PrimaryPathwayHierarchy";
 export default {
   name: "GeneToPathwayResult",
   components: {
     TableDetails,
     SecondaryPathwaysForm,
+    PrimaryPathwayHierarchy,
   },
   props: {
     gene: {
@@ -138,8 +155,8 @@ export default {
       default: () => "",
     },
     primaryPathways: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
     uniprot: {
       type: Boolean,
@@ -189,24 +206,26 @@ export default {
       if (!value) return;
 
       try {
-        if(!item.details){
-             item.details = await ReactomeService.fetchPathwayDetails(item.stId);
-             this.$forceUpdate();
-           }
+        if (!item.details) {
+          item.details = await ReactomeService.fetchPathwayDetails(item.stId);
+          this.$forceUpdate();
+        }
       } catch (err) {
         console.log(err);
       }
     },
-    async loadSecondaryDetails({item, value}){
-      if(!value) return;
-      try{
-        if(!item.details){
+    async loadSecondaryDetails({ item, value }) {
+      if (!value) return;
+      try {
+        if (!item.details) {
           const data = await ReactomeService.fetchPathwayDetails(item.stId);
           item.details = data;
-          this.secondaryPathways.filter(p => p.stId === item.stId).details = data;
+          this.secondaryPathways.filter(
+            (p) => p.stId === item.stId
+          ).details = data;
           this.$forceUpdate();
         }
-      } catch(err){
+      } catch (err) {
         console.log(err);
       }
     },
@@ -263,4 +282,16 @@ export default {
 </script>
 
 <style scoped>
+.headerLink{
+  text-decoration: none;
+  font-weight: bold;
+  font-size: larger;
+  color: white;
+}
+.headerLink:hover{
+  color: lightgrey;
+}
+.headerLink:active:hover{
+  color:grey;
+}
 </style>

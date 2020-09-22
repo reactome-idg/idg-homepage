@@ -71,7 +71,7 @@ export default {
     },
     async searchGene() {
       try {
-        this.primaryPathways = await PairwiseService.searchGeneName(
+        this.primaryPathways = await PairwiseService.searchGeneNameHierarchy(
           this.search.toUpperCase()
         );
       } catch (err) {

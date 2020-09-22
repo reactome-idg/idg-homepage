@@ -17,6 +17,16 @@ class CompanyService {
     });
   }
 
+  static searchGeneNameHierarchy(geneName) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${url}relationships/hierarchyForGene/${geneName}`).then((res) => {
+        resolve(res.data);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+  }
+
   static searchUniprot(uniprot) {
     return new Promise((resolve, reject) => {
       axios
