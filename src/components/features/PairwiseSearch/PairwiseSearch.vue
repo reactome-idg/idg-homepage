@@ -3,10 +3,10 @@
     <v-card dark raised>
       <v-card-text class="pa-3">
         <v-row align="center" justify="center">
-          <v-col cols="2" md="1">
+          <v-col cols="2" md="2">
             <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
           </v-col>
-          <v-col cols="10" md="9">
+          <v-col cols="10" md="8">
             <v-text-field
               dark
               label="Search a Gene Name"
