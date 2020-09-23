@@ -1,60 +1,22 @@
 <template>
   <v-card dark raised>
-    <v-card-title>Showing Results For: {{gene}}</v-card-title>
+    <v-card-title>Showing Results For: {{ gene }}</v-card-title>
     <v-card-text>
-      <v-container fluid v-if="primaryPathways && primaryPathways.hierarchy.length > 0">
+      <v-container
+        fluid
+        v-if="primaryPathways && primaryPathways.hierarchy.length > 0"
+      >
         <div class="text-left">
           <span class="display-1 text-left">Primary Pathways</span>
           <small class="pl-2">Reactome annotated</small>
         </div>
-        <v-card outlined class="mb-5">
-        <v-expansion-panels flat>
-          <v-expansion-panel style="overflow:hidden;" v-for="(child, index) in primaryPathways.hierarchy" :key="index">
-            <v-expansion-panel-header>{{child.name}}</v-expansion-panel-header>
-            <v-expansion-panel-content> <div style="overflow-y:scroll; max-height:20em;"><PrimaryPathwayHierarchy
-              :stId="child.stId"
-              :geneName="primaryPathways.gene"
-              :children="child.children"
-              :label="child.name"
-              :depth="0"
-              :topLevel="true"
-            ></PrimaryPathwayHierarchy></div></v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <v-card outlined class="mb-5 text-left">
+          <v-treeview dense :items="primaryPathways.hierarchy">
+            <template v-slot:label="{item}">
+              <a :href="getPrimaryLink(item.stId)" class="link">{{item.name}}</a>
+            </template>
+          </v-treeview>
         </v-card>
-        <!-- <v-data-table
-          :headers="headers"
-          :items="primaryPathwaysData"
-          item-key="stId"
-          :search="primarySearch"
-          show-expand
-          :footer-props="{'items-per-page-options': [5,10,50,-1]}"
-          :hide-default-footer="hidePrimaryPagination"
-          @item-expanded="loadPrimaryDetails"
-          :must-sort="true"
-        >
-          <template v-slot:item.stId="{item}">
-            <a :href="getPrimaryLink(item.stId)">{{item.stId}}</a>
-          </template>
-          <template v-slot:expanded-item="{headers, item}">
-            <td :colspan="headers.length">
-              <v-progress-circular v-if="!item.details" indeterminate color="primary"></v-progress-circular>
-              <TableDetails v-else :details="item.details" />
-            </td>
-          </template>
-          <template v-slot:footer="{}">
-            <v-row>
-              <v-col cols="1">
-                <v-text-field
-                  v-if="!hidePrimaryPagination"
-                  v-model="primarySearch"
-                  label="Search"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </template>
-        </v-data-table>-->
         <hr />
       </v-container>
       <p v-else>No primary pathways found.</p>
@@ -62,19 +24,32 @@
         <div class="text-left">
           <span class="display-1">Secondary Pathways</span>
           <small class="pl-2">Reachable through interactors</small>
-          <small class="pl-2">{{currentSecondarySearchDescs.join(", ")}}</small>
+          <small class="pl-2">{{
+            currentSecondarySearchDescs.join(", ")
+          }}</small>
         </div>
         <v-container fluid v-if="secondaryPathwaysLoading">
           <v-card outlined>
             <v-card-text>
-              <v-progress-circular indeterminate color="primary"></v-progress-circular>
+              <v-progress-circular
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
             </v-card-text>
           </v-card>
         </v-container>
-        <v-container fluid v-if="secondaryPathways && secondaryPathways.length > 0">
+        <v-container
+          fluid
+          v-if="secondaryPathways && secondaryPathways.length > 0"
+        >
           <v-card outlined>
-            <v-btn icon style="float:left;" class="mx-1" @click="closeSecondaryPathways">
-              <v-icon>{{'mdi-close'}}</v-icon>
+            <v-btn
+              icon
+              style="float: left"
+              class="mx-1"
+              @click="closeSecondaryPathways"
+            >
+              <v-icon>{{ "mdi-close" }}</v-icon>
             </v-btn>
             <v-card-text>
               <v-data-table
@@ -85,20 +60,30 @@
                 show-expand
                 :search="secondarySearch"
                 :single-expand="true"
-                :footer-props="{'items-per-page-options': [20,40,50,100,-1]}"
+                :footer-props="{
+                  'items-per-page-options': [20, 40, 50, 100, -1],
+                }"
                 :hide-default-footer="hideSecondaryPagination"
                 @item-expanded="loadSecondaryDetails"
                 :must-sort="true"
               >
-                <template v-slot:item.stId="{item}">
-                  <a :href="getSecondaryLink(item.stId)">{{item.stId}}</a>
+                <template v-slot:item.stId="{ item }">
+                  <a :href="getSecondaryLink(item.stId)">{{ item.stId }}</a>
                 </template>
-                <template v-slot:item.fdr="{item}">{{ item.fdr.toExponential(2) }}</template>
-                <template v-slot:item.pVal="{item}">{{ item.pVal.toExponential(2) }}</template>
-                <template v-slot:expanded-item="{headers, item}">
+                <template v-slot:item.fdr="{ item }">{{
+                  item.fdr.toExponential(2)
+                }}</template>
+                <template v-slot:item.pVal="{ item }">{{
+                  item.pVal.toExponential(2)
+                }}</template>
+                <template v-slot:expanded-item="{ headers, item }">
                   <td :colspan="headers.length">
                     <TableDetails v-if="item.details" :details="item.details" />
-                    <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
+                    <v-progress-circular
+                      v-else
+                      indeterminate
+                      color="primary"
+                    ></v-progress-circular>
                   </td>
                 </template>
                 <template v-slot:footer="{}">
@@ -141,13 +126,11 @@ import PairwiseService from "../../../service/PairwiseService";
 import TableDetails from "./TableDetails";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import ReactomeService from "../../../service/ReactomeService";
-import PrimaryPathwayHierarchy from "./PrimaryPathwayHierarchy";
 export default {
   name: "GeneToPathwayResult",
   components: {
     TableDetails,
     SecondaryPathwaysForm,
-    PrimaryPathwayHierarchy,
   },
   props: {
     gene: {
@@ -168,10 +151,6 @@ export default {
   },
   data: () => ({
     browserLink: "/PathwayBrowser/#/",
-    headers: [
-      { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" },
-    ],
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" },
@@ -182,7 +161,6 @@ export default {
     secondaryPathways: [],
     fdr: 1.0,
     fdrInput: "1.00",
-    primarySearch: "",
     secondarySearch: "",
     secondarySearchErrors: [],
     currentSecondarySearchDescs: [],
@@ -202,18 +180,6 @@ export default {
     },
   },
   methods: {
-    async loadPrimaryDetails({ item, value }) {
-      if (!value) return;
-
-      try {
-        if (!item.details) {
-          item.details = await ReactomeService.fetchPathwayDetails(item.stId);
-          this.$forceUpdate();
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
     async loadSecondaryDetails({ item, value }) {
       if (!value) return;
       try {
@@ -263,7 +229,7 @@ export default {
       this.fdr = newFDR;
     },
     getPrimaryLink(stId) {
-      return `${this.browserLink}${stId}&FLG=${this.gene}`;
+      return `${this.browserLink}${stId}&FLG=${this.primaryPathways.gene}`;
     },
     getSecondaryLink(stId) {
       var descs = [];
@@ -282,16 +248,26 @@ export default {
 </script>
 
 <style scoped>
-.headerLink{
+.headerLink {
   text-decoration: none;
   font-weight: bold;
   font-size: larger;
   color: white;
 }
-.headerLink:hover{
+.headerLink:hover {
   color: lightgrey;
 }
-.headerLink:active:hover{
-  color:grey;
+.headerLink:active:hover {
+  color: grey;
+}
+.link {
+    text-decoration: none;
+    color: white;
+}
+.link:hover{
+    color:lightgrey;
+}
+.link:active:hover{
+    color:grey;
 }
 </style>
