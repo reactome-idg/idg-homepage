@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const REACTOME_URL = "https://idg.reactome.org/ContentService/";
+const REACTOME_URL = process.env.VUE_APP_CONTENT_SERVICE;
 
 class ReactomeService {
   static fetchPathwayDetails(stId) {

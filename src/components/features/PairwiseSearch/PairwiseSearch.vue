@@ -85,7 +85,7 @@ export default {
     },
     async searchUniprot() {
       try {
-        this.primaryPathways = await PairwiseService.searchUniprot(this.search.toUpperCase());
+        this.primaryPathways = await PairwiseService.searchUniprotHierarchy(this.search.toUpperCase());
       } catch (err) {
         this.error = err.message;
         if (err.response.status == 404) {

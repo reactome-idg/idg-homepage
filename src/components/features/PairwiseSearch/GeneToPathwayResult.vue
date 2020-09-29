@@ -13,7 +13,9 @@
         <v-card outlined class="mb-5 text-left">
           <v-treeview dense :items="primaryPathways.hierarchy">
             <template v-slot:label="{item}">
-              <a :href="getPrimaryLink(item.stId)" class="link">{{item.name}}</a>
+              <a v-if="item.type === 'TopLevelPathway'" style="font-size:larger;" :href="getPrimaryLink(item.stId)" class="link">{{item.name}}</a>
+              <a v-else-if="!item.children || item.children.length === 0" style="font-weight:bolder; text-decoration:underline;" :href="getPrimaryLink(item.stId)" class="link">{{item.name}}</a>
+              <a v-else :href="getPrimaryLink(item.stId)" class="link">{{item.name}}</a>
             </template>
           </v-treeview>
         </v-card>
@@ -167,9 +169,6 @@ export default {
     secondaryPathwaysLoading: false,
   }),
   computed: {
-    hidePrimaryPagination() {
-      return this.primaryPathways.length < 10;
-    },
     hideSecondaryPagination() {
       return this.secondaryPathways.length < 20;
     },

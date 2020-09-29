@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:8043/idgpairwise/";
+const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 
 class CompanyService {
   static searchGeneName(geneName) {
@@ -19,11 +19,27 @@ class CompanyService {
 
   static searchGeneNameHierarchy(geneName) {
     return new Promise((resolve, reject) => {
-      axios.get(`${url}relationships/hierarchyForGene/${geneName}`).then((res) => {
-        resolve(res.data);
-      }).catch((err) => {
-        reject(err);
-      });
+      axios
+        .get(`${url}relationships/hierarchyForGene/${geneName}`)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static searchUniprotHierarchy(uniprot) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${url}relationships/hierarchyForUniprot/${uniprot}`)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
