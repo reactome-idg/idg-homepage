@@ -22,13 +22,15 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
+loads using .env.development file for public env variables
 ```
 npm run serve
 ```
 
 ### Compiles and minifies for production
+builds using .env.production file for public env variables
 ```
-npm run build
+npm run build -- --mode production
 ```
 
 ### Lints and fixes files
