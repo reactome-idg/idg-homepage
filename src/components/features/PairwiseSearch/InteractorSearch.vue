@@ -128,6 +128,15 @@ export default {
     currentSecondarySearchDescs: [],
     secondaryPathwaysLoading: false,
   }),
+  watch: {
+    term() {
+      this.secondaryPathways = [];
+      this.fdr = 1.0;
+      this.secondarySearch = "";
+      this.fdrInput = "1.00";
+      this.secondarySearchErrors = [];
+    }
+  },
   computed: {
     hideSecondaryPagination() {
       return this.secondaryPathways.length < 20;
