@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
       <div class="text-left">
-        <span class="display-1">Secondary Pathways</span>
+        <span class="larger">Secondary Pathways</span>
         <small class="pl-2">Reachable through interactors</small>
         <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
       </div>
@@ -15,11 +15,7 @@
           </v-card-text>
         </v-card>
       </v-container>
-      <v-container
-        fluid
-        v-if="secondaryPathways && secondaryPathways.length > 0"
-      >
-        <v-card outlined>
+        <v-card outlined v-if="secondaryPathways && secondaryPathways.length > 0">
           <v-btn
             icon
             style="float: left"
@@ -86,7 +82,6 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-      </v-container>
       <SecondaryPathwaysForm
         v-else-if="secondaryPathways.length === 0 && !secondaryPathwaysLoading"
         :errors="secondarySearchErrors"

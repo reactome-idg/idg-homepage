@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <v-card-text>
-      <h1 class="text-left pb-2">Choose sources</h1>
+      <h2 class="text-left pb-2">Choose sources</h2>
       <v-card outlined>
         <v-card-text>
           <v-row align="center" justify="center">

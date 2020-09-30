@@ -1,7 +1,6 @@
 <style src="vuetify/dist/vuetify.min.css"></style>
 <template>
 <v-container fluid>
-  <p class="larger text-left">Showing Results For: {{ term }}</p>
   <v-card outlined v-if="primaryPathways === null">
     <v-card-text>
       <LoadingCircularProgress />
@@ -13,7 +12,7 @@
         v-if="primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0"
       >
         <div class="text-left">
-          <span class="display-1 text-left">Primary Pathways</span>
+          <span class="text-left">Annotated Pathways</span>
           <small class="pl-2">Reactome annotated</small>
         </div>
         <v-card outlined class="mb-5 text-left">
