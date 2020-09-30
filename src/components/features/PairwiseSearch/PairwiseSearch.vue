@@ -26,32 +26,19 @@
         <span style="color:red;" v-if="error">{{error}}</span>
       </v-card-text>
     </v-card>
-    <LoadingCircularProgress v-if="loading" />
-    <v-container fluid class="pl-0 pr-0" v-if="primaryPathways">
-      <GeneToPathwayResult
-        :gene="searchedGene.toUpperCase()"
-        :primaryPathways="primaryPathways"
-        :uniprot="uniprotCheckBox"
-      />
-    </v-container>
   </v-container>
 </template>
 
 <script>
 import PairwiseService from "../../../service/PairwiseService";
-import GeneToPathwayResult from "./GeneToPathwayResult";
-import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 export default {
   name: "PairwiseSearch",
   components: {
-    GeneToPathwayResult,
-    LoadingCircularProgress,
   },
   data: () => ({
     search: "",
     uniprotCheckBox: false,
     relationshipRtn: null,
-    searchedGene: "",
     primaryPathways: null,
     loading: false,
     error: "",
@@ -64,10 +51,11 @@ export default {
       }
       this.primaryPathways = null;
       this.error = "";
-      this.loading = true;
-      this.searchedGene = this.search;
-      if (!this.uniprotCheckBox) this.searchGene();
-      else this.searchUniprot();
+      this.$emit("searchPathways", {
+        term: this.search.toUpperCase(),
+        uniprotBoolean: this.uniprotCheckBox
+        });
+      
     },
     async searchGene() {
       try {
