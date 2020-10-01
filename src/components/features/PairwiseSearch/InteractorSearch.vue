@@ -198,7 +198,7 @@ export default {
       this.currentSecondarySearchDescs.forEach((desc) => {
         descs.push(desc.replace(/\|/g, "%7C"));
       });
-      return `${this.browserLink}${stId}&FLG=${this.gene},${descs.join(
+      return `${this.browserLink}${stId}&FLG=${this.term},${descs.join(
         ","
       )}&FLGINT`;
     },
