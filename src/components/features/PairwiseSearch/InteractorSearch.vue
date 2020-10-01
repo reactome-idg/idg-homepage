@@ -1,93 +1,93 @@
 <template>
   <v-container fluid>
-      <div class="text-left">
-        <span class="larger">Secondary Pathways</span>
-        <small class="pl-2">Reachable through interactors</small>
-        <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
-      </div>
-      <v-container fluid v-if="secondaryPathwaysLoading">
-        <v-card outlined>
-          <v-card-text>
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
-          </v-card-text>
-        </v-card>
-      </v-container>
-        <v-card outlined v-if="secondaryPathways && secondaryPathways.length > 0">
-          <v-btn
-            icon
-            style="float: left"
-            class="mx-1"
-            @click="closeSecondaryPathways"
-          >
-            <v-icon>{{ "mdi-close" }}</v-icon>
-          </v-btn>
-          <v-card-text>
-            <v-data-table
-              dense
-              :headers="secondaryHeaders"
-              :items="filteredSecondaryPathways"
-              item-key="stId"
-              show-expand
-              :search="secondarySearch"
-              :single-expand="true"
-              :footer-props="{
-                'items-per-page-options': [20, 40, 50, 100, -1],
-              }"
-              :hide-default-footer="hideSecondaryPagination"
-              @item-expanded="loadSecondaryDetails"
-              :must-sort="true"
-            >
-              <template v-slot:item.stId="{ item }">
-                <a :href="getSecondaryLink(item.stId)">{{ item.stId }}</a>
-              </template>
-              <template v-slot:item.fdr="{ item }">{{
-                item.fdr.toExponential(2)
-              }}</template>
-              <template v-slot:item.pVal="{ item }">{{
-                item.pVal.toExponential(2)
-              }}</template>
-              <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length">
-                  <TableDetails v-if="item.details" :details="item.details" />
-                  <v-progress-circular
-                    v-else
-                    indeterminate
-                    color="primary"
-                  ></v-progress-circular>
-                </td>
-              </template>
-              <template v-slot:footer="{}">
-                <v-row>
-                  <v-col cols="2">
-                    <v-text-field
-                      v-if="!hideSecondaryPagination"
-                      v-model="secondarySearch"
-                      label="Search"
-                      hide-details
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-text-field
-                      prefix="FDR ≤"
-                      v-model="fdrInput"
-                      @keyup.enter="updateFDR"
-                      hide-details
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      <SecondaryPathwaysForm
-        v-else-if="secondaryPathways.length === 0 && !secondaryPathwaysLoading"
-        :errors="secondarySearchErrors"
-        :initialDescs="currentSecondarySearchDescs"
-        @searchSecondaryPathways="searchSecondaryPathways"
-      />
+    <div class="text-left">
+      <span class="larger">Secondary Pathways</span>
+      <small class="pl-2">Reachable through interactors</small>
+      <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
+    </div>
+    <v-container fluid v-if="secondaryPathwaysLoading">
+      <v-card outlined>
+        <v-card-text>
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </v-card-text>
+      </v-card>
+    </v-container>
+    <v-card outlined v-if="secondaryPathways && secondaryPathways.length > 0">
+      <v-btn
+        icon
+        style="float: left"
+        class="mx-1"
+        @click="closeSecondaryPathways"
+      >
+        <v-icon>{{ "mdi-close" }}</v-icon>
+      </v-btn>
+      <v-card-text>
+        <v-data-table
+          dense
+          :headers="secondaryHeaders"
+          :items="filteredSecondaryPathways"
+          item-key="stId"
+          show-expand
+          :search="secondarySearch"
+          :single-expand="true"
+          :footer-props="{
+            'items-per-page-options': [20, 40, 50, 100, -1],
+          }"
+          :hide-default-footer="hideSecondaryPagination"
+          @item-expanded="loadSecondaryDetails"
+          :must-sort="true"
+        >
+          <template v-slot:item.stId="{ item }">
+            <a :href="getSecondaryLink(item.stId)">{{ item.stId }}</a>
+          </template>
+          <template v-slot:item.fdr="{ item }">{{
+            item.fdr.toExponential(2)
+          }}</template>
+          <template v-slot:item.pVal="{ item }">{{
+            item.pVal.toExponential(2)
+          }}</template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <TableDetails v-if="item.details" :details="item.details" />
+              <v-progress-circular
+                v-else
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </td>
+          </template>
+          <template v-slot:footer="{}">
+            <v-row>
+              <v-col cols="2">
+                <v-text-field
+                  v-if="!hideSecondaryPagination"
+                  v-model="secondarySearch"
+                  label="Search"
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field
+                  prefix="FDR ≤"
+                  v-model="fdrInput"
+                  @keyup.enter="updateFDR"
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
+    <SecondaryPathwaysForm
+      v-else-if="secondaryPathways.length === 0 && !secondaryPathwaysLoading"
+      :errors="secondarySearchErrors"
+      :initialDescs="currentSecondarySearchDescs"
+      @searchSecondaryPathways="searchSecondaryPathways"
+    />
   </v-container>
 </template>
 
@@ -100,16 +100,12 @@ export default {
   name: "InteractorSearch",
   components: {
     SecondaryPathwaysForm,
-    TableDetails
+    TableDetails,
   },
   props: {
     term: {
       type: String,
       default: () => "",
-    },
-    uniprotBoolean: {
-      type: Boolean,
-      default: () => false,
     },
   },
   data: () => ({
@@ -135,7 +131,8 @@ export default {
       this.secondarySearch = "";
       this.fdrInput = "1.00";
       this.secondarySearchErrors = [];
-    }
+      this.currentSecondarySearchDescs = [];
+    },
   },
   computed: {
     hideSecondaryPagination() {
@@ -148,7 +145,7 @@ export default {
     },
   },
   methods: {
-      async loadSecondaryDetails({ item, value }) {
+    async loadSecondaryDetails({ item, value }) {
       if (!value) return;
       try {
         if (!item.details) {
@@ -167,28 +164,28 @@ export default {
       this.secondaryPathwaysLoading = true;
       this.secondarySearchErrors = [];
       this.currentSecondarySearchDescs = dataDescs;
-      if (!this.uniprotBoolean) {
-        this.secondaryPathways = await PairwiseService.searchGeneSecondaryPathways(
+
+      try {
+        this.secondaryPathways = await PairwiseService.searchTermSecondaryPathways(
           {
             gene: this.term,
             dataDescs: dataDescs,
           }
         );
-      } else {
-        this.secondaryPathways = await PairwiseService.searchUniprotSecondaryPathways(
-          {
-            gene: this.term,
-            dataDescs: dataDescs,
-          }
-        );
+      } catch (err) {
+        this.secondaryPathwaysLoading = false;
+        this.secondaryPathwaysError()
       }
       this.secondaryPathwaysLoading = false;
       if (this.secondaryPathways.length === 0) {
-        this.currentSecondarySearchDescs = [];
+        this.secondaryPatwhaysError();
+      }
+    },
+    secondaryPathwaysError(){
+      this.currentSecondarySearchDescs = [];
         this.secondarySearchErrors.push(
           "No pathways for this selection. Please try another."
         );
-      }
     },
     updateFDR() {
       const newFDR = Number.parseFloat(this.fdrInput).isNaN
@@ -208,7 +205,7 @@ export default {
     closeSecondaryPathways() {
       this.secondaryPathways = [];
     },
-  }
+  },
 };
 </script>
 

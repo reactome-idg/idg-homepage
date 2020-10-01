@@ -3,10 +3,20 @@ import axios from "axios";
 const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 
 class CompanyService {
-  static searchGeneName(geneName) {
+  static searchHierarchyForTerm(term){
+    return new Promise((resolve, reject) =>{
+      axios.get(`${url}relationships/hierarchyForTerm/${term}`).then((res) => {
+        resolve(res.data);
+      }).catch((err) => {
+        reject(err);
+      })
+    });
+  }
+
+  static searchTermSecondaryPathways(postData){
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}relationships/primaryPathwaysForGene/${geneName}`)
+        .post(`${url}relationships/enrichedSecondaryPathwaysForTerm`, postData)
         .then((res) => {
           //return only bottom level pathways
           resolve(res.data.filter((p) => p.bottomLevel));
@@ -14,78 +24,7 @@ class CompanyService {
         .catch((err) => {
           reject(err);
         });
-    });
-  }
-
-  static searchGeneNameHierarchy(geneName) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${url}relationships/hierarchyForGene/${geneName}`)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  static searchUniprotHierarchy(uniprot) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${url}relationships/hierarchyForUniprot/${uniprot}`)
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  static searchUniprot(uniprot) {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${url}relationships/primaryPathwaysForUniprot/${uniprot}`)
-        .then((res) => {
-          //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  static searchGeneSecondaryPathways(postData) {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(`${url}relationships/enrichedSecondaryPathwaysForGene`, postData)
-        .then((res) => {
-          //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-
-  static searchUniprotSecondaryPathways(postData) {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(
-          `${url}relationships/enrichedSecondaryPathwaysForUniprot`,
-          postData
-        )
-        .then((res) => {
-          //return only bottom level pathways
-          resolve(res.data.filter((p) => p.bottomLevel));
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    })
   }
 
   static getDataDescs() {

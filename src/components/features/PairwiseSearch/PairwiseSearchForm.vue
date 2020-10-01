@@ -3,13 +3,10 @@
     <v-card dark raised>
       <v-card-text class="pa-3">
         <v-row align="center" justify="center">
-          <v-col cols="2" md="2">
-            <v-checkbox v-model="uniprotCheckBox" label="Uniprot"></v-checkbox>
-          </v-col>
-          <v-col cols="10" md="8">
+          <v-col cols="12" md="10">
             <v-text-field
               dark
-              label="Search a Gene Name"
+              label="Search a Gene Name or Uniprot"
               v-model="search"
               placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"

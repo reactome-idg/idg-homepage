@@ -1,7 +1,7 @@
 <style src="vuetify/dist/vuetify.min.css"></style>
 <template>
 <v-container fluid>
-  <v-card outlined v-if="primaryPathways === null">
+  <v-card outlined v-if="loadingPrimary">
     <v-card-text>
       <LoadingCircularProgress />
     </v-card-text>
@@ -46,7 +46,6 @@
 
 <script>
 import PairwiseService from "../../../service/PairwiseService";
-import ReactomeService from "../../../service/ReactomeService";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 import vuetify from "../../../plugins/vuetify";
 import {VContainer, VCard, VCardText, VTreeview} from "vuetify/lib";
@@ -62,10 +61,6 @@ export default {
     term: {
       type: String,
       default: () => "",
-    },
-    uniprotBoolean: {
-      type: Boolean,
-      default: () => false,
     },
   },
   data: () => ({
@@ -108,94 +103,21 @@ export default {
   methods: {
     async loadPrimaryPathways() {
       this.loadingPrimary = true;
-      if (!this.uniprotBoolean) {
-        try {
-          this.primaryPathways = await PairwiseService.searchGeneNameHierarchy(
-            this.term.toUpperCase()
-          );
-        } catch (err) {
-          this.error = err.message;
+
+      try{
+        this.primaryPathways = await PairwiseService.searchHierarchyForTerm(this.term.toUpperCase());
+      }catch(err){
+        this.error = err.message;
           if (err.response.status == 404) {
             this.error =
-              "No recorded gene. Please use standard human gene symbol.";
+              "No recorded term. Please try another.";
           }
-        }
-      } else {
-        try {
-          this.primaryPathways = await PairwiseService.searchUniprotHierarchy(
-            this.term.toUpperCase()
-          );
-        } catch (err) {
-          this.error = err.message;
-          if (err.response.status == 404) {
-            this.error = "No recorded uniprot";
-          }
-        }
       }
+
       this.loadingPrimary = false;
-    },
-    async loadSecondaryDetails({ item, value }) {
-      if (!value) return;
-      try {
-        if (!item.details) {
-          const data = await ReactomeService.fetchPathwayDetails(item.stId);
-          item.details = data;
-          this.secondaryPathways.filter(
-            (p) => p.stId === item.stId
-          ).details = data;
-          this.$forceUpdate();
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async searchSecondaryPathways(dataDescs) {
-      this.secondaryPathwaysLoading = true;
-      this.secondarySearchErrors = [];
-      this.currentSecondarySearchDescs = dataDescs;
-      if (!this.uniprot) {
-        this.secondaryPathways = await PairwiseService.searchGeneSecondaryPathways(
-          {
-            gene: this.term,
-            dataDescs: dataDescs,
-          }
-        );
-      } else {
-        this.secondaryPathways = await PairwiseService.searchUniprotSecondaryPathways(
-          {
-            gene: this.term,
-            dataDescs: dataDescs,
-          }
-        );
-      }
-      this.secondaryPathwaysLoading = false;
-      if (this.secondaryPathways.length === 0) {
-        this.currentSecondarySearchDescs = [];
-        this.secondarySearchErrors.push(
-          "No pathways for this selection. Please try another."
-        );
-      }
-    },
-    updateFDR() {
-      const newFDR = Number.parseFloat(this.fdrInput).isNaN
-        ? this.fdr
-        : Number.parseFloat(this.fdrInput);
-      this.fdr = newFDR;
     },
     getPrimaryLink(stId) {
       return `${this.browserLink}${stId}&FLG=${this.primaryPathways.gene}`;
-    },
-    getSecondaryLink(stId) {
-      var descs = [];
-      this.currentSecondarySearchDescs.forEach((desc) => {
-        descs.push(desc.replace(/\|/g, "%7C"));
-      });
-      return `${this.browserLink}${stId}&FLG=${this.gene},${descs.join(
-        ","
-      )}&FLGINT`;
-    },
-    closeSecondaryPathways() {
-      this.secondaryPathways = [];
     },
   },
 };
