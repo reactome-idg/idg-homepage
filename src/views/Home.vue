@@ -5,7 +5,7 @@
     <PairwiseSearchForm @searchPathways = "searchPathways"/>
     <v-card dark raised v-if="term !== null" class="pa-5 mb-5">
       <h2 class="text-left mb-3">Showing Results For: {{ term }}</h2>
-      <AnnotatedPathwaySearch :term="this.term"/>
+      <AnnotatedPathwaySearch :term="this.term" :darkMode="true"/>
       <InteractorSearch :term="this.term"/>
     </v-card>
   </v-container>
@@ -36,7 +36,6 @@ export default {
   methods: {
     searchPathways(search){
       this.term = search.term;
-      this.uniprotBoolean = search.uniprotBoolean; 
     }
   }
 };

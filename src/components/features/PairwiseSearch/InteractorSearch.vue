@@ -147,6 +147,7 @@ export default {
   methods: {
     async loadSecondaryDetails({ item, value }) {
       if (!value) return;
+
       try {
         if (!item.details) {
           const data = await ReactomeService.fetchPathwayDetails(item.stId);
@@ -176,6 +177,7 @@ export default {
         this.secondaryPathwaysLoading = false;
         this.secondaryPathwaysError()
       }
+
       this.secondaryPathwaysLoading = false;
       if (this.secondaryPathways.length === 0) {
         this.secondaryPatwhaysError();
