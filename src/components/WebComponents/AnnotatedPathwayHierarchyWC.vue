@@ -30,9 +30,6 @@ export default {
 
 <style>
 @import "../../../node_modules/vuetify/dist/vuetify.min.css";
-.wrapper{
-   min-height:1vh !important; 
-}
 .v-application--wrap{
     min-height:1vh !important;
 }
