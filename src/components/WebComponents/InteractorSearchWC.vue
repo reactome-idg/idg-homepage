@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import InteractorSearch from "./InteractorSearch";
+import InteractorSearch from "../features/PairwiseSearch/InteractorSearch";
 import {VApp} from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify";
 export default {
@@ -19,6 +19,10 @@ export default {
         term: {
             type: String,
             default: () => ""
+        },
+        darkmode: {
+          type: Boolean,
+          default: () => false,
         }
     }
 }
@@ -26,17 +30,7 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
-* {
-  font-family: Comfortaa, curisve;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
+.v-application--wrap{
+  min-height: 1vh !important;
 }
 </style>

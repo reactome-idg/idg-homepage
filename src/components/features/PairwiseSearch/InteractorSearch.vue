@@ -113,6 +113,10 @@ export default {
       type: String,
       default: () => "",
     },
+    darkmode: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   data: () => ({
     mdiClose,
