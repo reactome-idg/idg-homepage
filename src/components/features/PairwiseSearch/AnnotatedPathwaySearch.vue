@@ -1,6 +1,6 @@
-<template>
-  <v-container fluid>
-    <v-card outlined v-if="loadingPrimary">
+<template :dark="darkmode">
+  <v-container :dark="darkmode" fluid>
+    <v-card :dark="darkmode" outlined v-if="loadingPrimary">
       <v-card-text>
         <LoadingCircularProgress />
       </v-card-text>
@@ -14,7 +14,7 @@
         <span class="text-left">Annotated Pathways</span>
         <small class="paddingL">Reactome annotated</small>
       </div>
-      <v-card outlined :dark="darkMode" class="text-left">
+      <v-card outlined :dark="darkmode" class="text-left">
         <v-treeview
           dense
           :items="primaryPathways.hierarchy"
@@ -26,20 +26,20 @@
               v-if="item.type === 'TopLevelPathway'"
               style="font-size: larger"
               :href="getPrimaryLink(item.stId)"
-              :class="darkMode === true ? 'linkDark' : 'link'"
+              :class="darkmode === true ? 'linkDark' : 'link'"
               >{{ item.name }}</a
             >
             <a
               v-else-if="!item.children || item.children.length === 0"
               style="font-weight: bolder; text-decoration: underline"
               :href="getPrimaryLink(item.stId)"
-              :class="darkMode === true ? 'linkDark' : 'link'"
+              :class="darkmode === true ? 'linkDark' : 'link'"
               >{{ item.name }}</a
             >
             <a
               v-else
               :href="getPrimaryLink(item.stId)"
-              :class="darkMode === true ? 'linkDark' : 'link'"
+              :class="darkmode === true ? 'linkDark' : 'link'"
               >{{ item.name }}</a
             >
           </template>
@@ -72,7 +72,7 @@ export default {
       type: String,
       default: () => "",
     },
-    darkMode: {
+    darkmode: {
       type: Boolean,
       default: () => true,
     },
@@ -134,20 +134,6 @@ export default {
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 @import "https://fonts.googleapis.com/css?family=Comfortaa&display=swap";
-* {
-  font-family: Comfortaa, curisve;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-}
 .linkDark {
   text-decoration: none;
   color: white;

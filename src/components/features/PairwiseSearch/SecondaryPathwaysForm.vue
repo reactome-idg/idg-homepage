@@ -40,7 +40,9 @@
               ></v-combobox>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn small color="secondary" @click="addRelationship">Add</v-btn>
+              <v-btn small color="secondary" @click="addRelationship"
+                >Add</v-btn
+              >
             </v-col>
           </v-row>
         </v-card-text>
@@ -52,14 +54,15 @@
             :key="index"
             close
             @click:close="remove(rel)"
-          >{{rel}}</v-chip>
+            >{{ rel }}</v-chip
+          >
         </v-col>
         <v-col cols="12" md="2">
           <v-btn color="primary" @click="searchSecondaryPathways">Search</v-btn>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" class="errors">{{computedErrors}}</v-col>
+        <v-col cols="12" class="errors">{{ computedErrors }}</v-col>
       </v-row>
     </v-card-text>
   </v-card>
@@ -67,8 +70,20 @@
 
 <script>
 import PairwiseService from "../../../service/PairwiseService";
+import { VCard, VCardText, VCol, VRow, VBtn, VCombobox, VChip } from "vuetify/lib";
+import vuetify from "../../../plugins/vuetify"
 export default {
   name: "SecondaryPathwayForm",
+  components: {
+    VCard,
+    VCardText,
+    VCol,
+    VRow,
+    VBtn,
+    VCombobox,
+    VChip
+  },
+  vuetify,
   props: {
     errors: {
       type: Array,
@@ -208,6 +223,7 @@ export default {
 </script>
 
 <style scoped>
+@import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 .errors {
   color: red;
 }

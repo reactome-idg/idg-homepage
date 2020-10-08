@@ -22,7 +22,7 @@
         class="mx-1"
         @click="closeSecondaryPathways"
       >
-        <v-icon>{{ "mdi-close" }}</v-icon>
+        <v-icon>{{mdiClose}}</v-icon>
       </v-btn>
       <v-card-text>
         <v-data-table
@@ -96,12 +96,18 @@ import PairwiseService from "../../../service/PairwiseService";
 import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import TableDetails from "./TableDetails";
+import {VContainer, VDataTable, VCardText, VTextField, VCol, VRow, VCard, VProgressCircular, } from "vuetify/lib";
+import vuetify from "../../../plugins/vuetify";
+import {mdiClose} from "@mdi/js";
+
 export default {
   name: "InteractorSearch",
   components: {
     SecondaryPathwaysForm,
     TableDetails,
+    VContainer, VDataTable, VCardText, VTextField, VCol, VRow, VCard, VProgressCircular,
   },
+  vuetify,
   props: {
     term: {
       type: String,
@@ -109,6 +115,7 @@ export default {
     },
   },
   data: () => ({
+    mdiClose,
     browserLink: "/PathwayBrowser/#/",
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
@@ -212,4 +219,20 @@ export default {
 </script>
 
 <style scoped>
+@import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+@import "https://fonts.googleapis.com/css?family=Comfortaa&display=swap";
+* {
+  font-family: Comfortaa, curisve;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
 </style>
