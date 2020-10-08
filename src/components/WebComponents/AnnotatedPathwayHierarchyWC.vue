@@ -1,5 +1,5 @@
 <template>
-  <v-app class="wrapper">
+  <v-app>
     <AnnotatedPathwaySearch :term="term" :darkmode="darkmode" />
   </v-app>
 </template>
