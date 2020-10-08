@@ -74,7 +74,7 @@ export default {
     },
     darkmode: {
       type: Boolean,
-      default: () => true,
+      default: () => false,
     },
   },
   data: () => ({
