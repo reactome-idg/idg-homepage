@@ -1,46 +1,68 @@
-<template>
-  <v-card outlined>
+<template :dark="darkmode">
+  <v-card :dark="darkmode" outlined>
     <v-card-text>
       <h2 class="text-left pb-2">Choose sources</h2>
-      <v-card outlined>
+      <v-card :dark="darkmode" outlined>
         <v-card-text>
           <v-row align="center" justify="center">
             <v-col cols="12" md="6">
-              <v-combobox
+              <label for="types" class="left">Select an interaction type</label>
+              <select name="types" id="types" @change="cascadeDataType" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
+                <option v-for="(type, index) in types" :key="index" :value="type">{{type}}</option>
+              </select>
+              <!-- <v-combobox
+                :append-icon="mdiMenuDown"
                 v-model="dataType"
                 label="Select an interaction type"
                 :items="types"
                 @change="cascadeDataType"
-              ></v-combobox>
+              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="6">
-              <v-combobox
+              <label for="provenances">Select an interactor source</label>
+              <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
+                <option v-for="(provenance, index) in provenances" :key="index" :value="provenance">{{provenance}}</option>
+              </select>
+              <!-- <v-combobox
+                :append-icon="mdiMenuDown"
                 v-model="provenance"
                 label="Select an interactor source"
                 :items="provenances"
                 :disabled="!dataType"
                 @change="cascadeProvenance"
-              ></v-combobox>
+              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="6">
-              <v-combobox
+              <label for="bioSources">Select a biosource</label>
+              <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
+                <option v-for="(bioSource, index) in bioSources" :key="index" :value="bioSource">{{bioSource}}</option>
+              </select>
+              <!-- <v-combobox
+                :append-icon="mdiMenuDown"
                 v-model="bioSource"
                 label="Select a biosource"
                 :items="bioSources"
                 :disabled="!provenance"
                 @change="cascadeBioSource"
-              ></v-combobox>
+              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="4">
-              <v-combobox
+              <div v-if="bioSource && origins.length > 0">
+                <label for="origin">Select an origin</label>
+                <select name="origin" id="origin" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="origin">
+                  <option v-for="(origin, index) in origins" :key="index" :value="origin">{{origin}}</option>
+                </select>
+              </div>
+              <!-- <v-combobox
+                :append-icon="mdiMenuDown"
                 v-if="bioSource && origins.length > 0"
                 v-model="origin"
                 label="Select an origin"
                 :items="origins"
-              ></v-combobox>
+              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn small color="secondary" @click="addRelationship"
+              <v-btn small class="secondaryBtn" @click="addRelationship"
                 >Add</v-btn
               >
             </v-col>
@@ -53,12 +75,13 @@
             v-for="(rel, index) in relationshipTypes"
             :key="index"
             close
+            :close-icon="mdiCloseCircle"
             @click:close="remove(rel)"
             >{{ rel }}</v-chip
           >
         </v-col>
         <v-col cols="12" md="2">
-          <v-btn color="primary" @click="searchSecondaryPathways">Search</v-btn>
+          <v-btn :dark="darkmode"  class="primaryBtn" @click="searchSecondaryPathways">Search</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -70,8 +93,9 @@
 
 <script>
 import PairwiseService from "../../../service/PairwiseService";
-import { VCard, VCardText, VCol, VRow, VBtn, VCombobox, VChip } from "vuetify/lib";
+import { VCard, VCardText, VCol, VRow, VBtn, /*VCombobox,*/ VChip } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify"
+import {mdiMenuDown, mdiCloseCircle} from "@mdi/js";
 export default {
   name: "SecondaryPathwayForm",
   components: {
@@ -80,7 +104,7 @@ export default {
     VCol,
     VRow,
     VBtn,
-    VCombobox,
+    // VCombobox,
     VChip
   },
   vuetify,
@@ -93,8 +117,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    darkmode: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   data: () => ({
+    mdiMenuDown,
+    mdiCloseCircle,
     dataDescs: [],
     relationshipTypes: [],
     error: "",
@@ -226,5 +256,28 @@ export default {
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 .errors {
   color: red;
+}
+.selectionDropDownDark{
+  text-align: left;
+  color: white;
+  border-bottom: 1px solid white;
+  width: 100%;
+}
+.selectionDropDownDark:disabled {
+  border-bottom: 1px dotted white;
+}
+.selectionDropDown {
+color: black;
+border-bottom: 1px solid darkgrey;
+width: 100%; 
+}
+.selectionDropDown:disabled{
+border-bottom: 1px dotted darkgrey;
+}
+.primaryBtn {
+  background-color: #1976D2;
+}
+.secondaryBtn {
+  background-color: #424242;
 }
 </style>

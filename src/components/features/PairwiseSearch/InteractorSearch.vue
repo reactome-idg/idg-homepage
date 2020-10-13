@@ -1,4 +1,4 @@
-<template>
+<template :dark="darkmode">
   <v-container fluid>
     <div class="text-left">
       <span class="larger">Secondary Pathways</span>
@@ -6,7 +6,7 @@
       <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
     </div>
     <v-container fluid v-if="secondaryPathwaysLoading">
-      <v-card outlined>
+      <v-card :dark="darkmode" outlined>
         <v-card-text>
           <v-progress-circular
             indeterminate
@@ -15,7 +15,7 @@
         </v-card-text>
       </v-card>
     </v-container>
-    <v-card outlined v-if="secondaryPathways && secondaryPathways.length > 0">
+    <v-card :dark="darkmode" outlined v-if="secondaryPathways && secondaryPathways.length > 0">
       <v-btn
         icon
         style="float: left"
@@ -31,10 +31,13 @@
           :items="filteredSecondaryPathways"
           item-key="stId"
           show-expand
+          :expand-icon="mdiChevronDown"
           :search="secondarySearch"
           :single-expand="true"
           :footer-props="{
             'items-per-page-options': [20, 40, 50, 100, -1],
+            'next-icon':mdiChevronRight,
+            'prev-icon':mdiChevronLeft
           }"
           :hide-default-footer="hideSecondaryPagination"
           @item-expanded="loadSecondaryDetails"
@@ -79,6 +82,7 @@
               </v-col>
             </v-row>
           </template>
+          <v-data-footer :next-icon="mdiChevronRight" :prev-icon="mdiChevronLeft"></v-data-footer>
         </v-data-table>
       </v-card-text>
     </v-card>
@@ -86,6 +90,7 @@
       v-else-if="secondaryPathways.length === 0 && !secondaryPathwaysLoading"
       :errors="secondarySearchErrors"
       :initialDescs="currentSecondarySearchDescs"
+      :darkmode="darkmode"
       @searchSecondaryPathways="searchSecondaryPathways"
     />
   </v-container>
@@ -98,7 +103,7 @@ import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import TableDetails from "./TableDetails";
 import {VContainer, VDataTable, VCardText, VTextField, VCol, VRow, VCard, VProgressCircular, } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify";
-import {mdiClose} from "@mdi/js";
+import {mdiClose, mdiChevronLeft, mdiChevronRight, mdiChevronDown} from "@mdi/js";
 
 export default {
   name: "InteractorSearch",
@@ -120,6 +125,9 @@ export default {
   },
   data: () => ({
     mdiClose,
+    mdiChevronLeft,
+    mdiChevronRight,
+    mdiChevronDown,
     browserLink: "/PathwayBrowser/#/",
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
@@ -224,19 +232,4 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
-@import "https://fonts.googleapis.com/css?family=Comfortaa&display=swap";
-* {
-  font-family: Comfortaa, curisve;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-}
 </style>

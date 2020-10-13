@@ -7,7 +7,7 @@
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "build-AnnotatedPathwaySearch": "vue-cli-service build --mode searchwc --target wc --name reactome-gene-hierarchy src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue",
-    "build-InteractorSearch": "vue-cli-service build --mode development --target wc --name reactome-interactor-search src/components/features/PairwiseSearch/InteractorSearchWC.vue"
+    "build-InteractorSearch": "vue-cli-service build --mode searchwc --target wc --name reactome-interactor-search src/components/WebComponents/InteractorSearchWC.vue"
   },
   "dependencies": {
     "@mdi/js": "^5.6.55",

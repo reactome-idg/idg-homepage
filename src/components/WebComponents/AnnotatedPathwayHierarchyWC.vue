@@ -33,4 +33,16 @@ export default {
 .v-application--wrap{
     min-height:1vh !important;
 }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
 </style>
