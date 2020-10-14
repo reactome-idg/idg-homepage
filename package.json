@@ -6,8 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "build-AnnotatedPathwaySearch": "vue-cli-service build --mode searchwc --target wc --name reactome-gene-hierarchy src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue",
-    "build-InteractorSearch": "vue-cli-service build --mode searchwc --target wc --name reactome-interactor-search src/components/WebComponents/InteractorSearchWC.vue"
+    "build-AnnotatedPathwaySearch": "vue-cli-service build --mode searchwc --target wc --dest dist/wc/annotatedPathwaySearch/ --name reactome-gene-hierarchy src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue",
+    "build-InteractorSearch": "vue-cli-service build --mode searchwc --target wc --dest dist/wc/interactorSearch/ --name reactome-interactor-search src/components/WebComponents/InteractorSearchWC.vue",
+    "build-production": "npm run build && npm run build-AnnotatedPathwaySearch && npm run build-InteractorSearch"
   },
   "dependencies": {
     "@mdi/js": "^5.6.55",

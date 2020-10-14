@@ -225,6 +225,7 @@ export default {
     },
     closeSecondaryPathways() {
       this.secondaryPathways = [];
+      this.currentSecondarySearchDescs = [];
     },
   },
 };
