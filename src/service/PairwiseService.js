@@ -2,7 +2,7 @@ import axios from "axios";
 
 const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 
-class CompanyService {
+class PairwiseService {
   static searchHierarchyForTerm(term){
     return new Promise((resolve, reject) =>{
       axios.get(`${url}relationships/hierarchyForTerm/${term}`).then((res) => {
@@ -30,7 +30,7 @@ class CompanyService {
   static getDataDescs() {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}/datadesc`)
+        .get(`${url}datadesc`)
         .then((res) => {
           resolve(res.data);
         })
@@ -108,4 +108,4 @@ class CompanyService {
   }
 }
 
-export default CompanyService;
+export default PairwiseService;
