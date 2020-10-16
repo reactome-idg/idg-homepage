@@ -1,8 +1,8 @@
 <template :dark="darkmode">
   <v-container fluid>
     <div class="text-left">
-      <span class="larger">Secondary Pathways</span>
-      <small class="pl-2">Reachable through interactors</small>
+      <span class="larger">Interacting Pathways</span>
+      <small class="pl-2">Reachable Through Interactors</small>
       <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
     </div>
     <v-container fluid v-if="secondaryPathwaysLoading">
@@ -15,14 +15,18 @@
         </v-card-text>
       </v-card>
     </v-container>
-    <v-card :dark="darkmode" outlined v-if="secondaryPathways && secondaryPathways.length > 0">
+    <v-card
+      :dark="darkmode"
+      outlined
+      v-if="secondaryPathways && secondaryPathways.length > 0"
+    >
       <v-btn
         icon
         style="float: left"
         class="mx-1"
         @click="closeSecondaryPathways"
       >
-        <v-icon>{{mdiClose}}</v-icon>
+        <v-icon>{{ mdiClose }}</v-icon>
       </v-btn>
       <v-card-text>
         <v-data-table
@@ -36,15 +40,19 @@
           :single-expand="true"
           :footer-props="{
             'items-per-page-options': [20, 40, 50, 100, -1],
-            'next-icon':mdiChevronRight,
-            'prev-icon':mdiChevronLeft
+            'next-icon': mdiChevronRight,
+            'prev-icon': mdiChevronLeft,
           }"
           :hide-default-footer="hideSecondaryPagination"
           @item-expanded="loadSecondaryDetails"
           :must-sort="true"
         >
           <template v-slot:item.stId="{ item }">
-            <a :href="getSecondaryLink(item.stId)">{{ item.stId }}</a>
+            <a
+              :href="getSecondaryLink(item.stId)"
+              :target="linkTarget"
+              >{{ item.stId }}</a
+            >
           </template>
           <template v-slot:item.fdr="{ item }">{{
             item.fdr.toExponential(2)
@@ -82,7 +90,10 @@
               </v-col>
             </v-row>
           </template>
-          <v-data-footer :next-icon="mdiChevronRight" :prev-icon="mdiChevronLeft"></v-data-footer>
+          <v-data-footer
+            :next-icon="mdiChevronRight"
+            :prev-icon="mdiChevronLeft"
+          ></v-data-footer>
         </v-data-table>
       </v-card-text>
     </v-card>
@@ -101,16 +112,37 @@ import PairwiseService from "../../../service/PairwiseService";
 import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import TableDetails from "./TableDetails";
-import {VContainer, VDataTable, VCardText, VTextField, VCol, VRow, VCard, VProgressCircular, } from "vuetify/lib";
+import {
+  VContainer,
+  VDataTable,
+  VCardText,
+  VTextField,
+  VCol,
+  VRow,
+  VCard,
+  VProgressCircular,
+} from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify";
-import {mdiClose, mdiChevronLeft, mdiChevronRight, mdiChevronDown} from "@mdi/js";
+import {
+  mdiClose,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
+} from "@mdi/js";
 
 export default {
   name: "InteractorSearch",
   components: {
     SecondaryPathwaysForm,
     TableDetails,
-    VContainer, VDataTable, VCardText, VTextField, VCol, VRow, VCard, VProgressCircular,
+    VContainer,
+    VDataTable,
+    VCardText,
+    VTextField,
+    VCol,
+    VRow,
+    VCard,
+    VProgressCircular,
   },
   vuetify,
   props: {
@@ -121,14 +153,15 @@ export default {
     darkmode: {
       type: Boolean,
       default: () => false,
-    }
+    },
   },
   data: () => ({
     mdiClose,
     mdiChevronLeft,
     mdiChevronRight,
     mdiChevronDown,
-    browserLink: "/PathwayBrowser/#/",
+    browserLink: process.env.VUE_APP_BROWSER_LINK,
+    linkTarget: process.env.VUE_APP_LINK_TARGET,
     secondaryHeaders: [
       { text: "Pathway Stable id", value: "stId" },
       { text: "Pathway Name", value: "name" },
@@ -194,7 +227,7 @@ export default {
         );
       } catch (err) {
         this.secondaryPathwaysLoading = false;
-        this.secondaryPathwaysError()
+        this.secondaryPathwaysError();
       }
 
       this.secondaryPathwaysLoading = false;
@@ -202,11 +235,11 @@ export default {
         this.secondaryPatwhaysError();
       }
     },
-    secondaryPathwaysError(){
+    secondaryPathwaysError() {
       this.currentSecondarySearchDescs = [];
-        this.secondarySearchErrors.push(
-          "No pathways for this selection. Please try another."
-        );
+      this.secondarySearchErrors.push(
+        "No pathways for this selection. Please try another."
+      );
     },
     updateFDR() {
       const newFDR = Number.parseFloat(this.fdrInput).isNaN

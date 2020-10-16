@@ -27,6 +27,7 @@
               style="font-size: larger"
               :href="getPrimaryLink(item.stId)"
               :class="darkmode === true ? 'linkDark' : 'link'"
+              :target="linkTarget"
               >{{ item.name }}</a
             >
             <a
@@ -34,12 +35,14 @@
               style="font-weight: bolder; text-decoration: underline"
               :href="getPrimaryLink(item.stId)"
               :class="darkmode === true ? 'linkDark' : 'link'"
+              :target="linkTarget"
               >{{ item.name }}</a
             >
             <a
               v-else
               :href="getPrimaryLink(item.stId)"
               :class="darkmode === true ? 'linkDark' : 'link'"
+              :target="linkTarget"
               >{{ item.name }}</a
             >
           </template>
@@ -79,7 +82,8 @@ export default {
   },
   data: () => ({
     mdiChevronDown,
-    browserLink: "/PathwayBrowser/#/",
+    browserLink: process.env.VUE_APP_BROWSER_LINK,
+    linkTarget: process.env.VUE_APP_LINK_TARGET,
     primaryPathways: [],
     secondaryPathways: [],
     loadingPrimary: false,
