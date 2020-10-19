@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <InteractorSearch :term="term" :darkmode="darkmode" />
+    <InteractorSearch :term="term" :darkmode="darkmode" :title="title" :subtitle="subtitle" />
   </v-app>
 </template>
 
@@ -24,6 +24,14 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    title: {
+      type: String,
+      default: () => "Interacting Pathways"
+    },
+    subtitle: {
+      type: String,
+      default: () => "Reachable Through Interactors"
+    }
   },
 };
 </script>

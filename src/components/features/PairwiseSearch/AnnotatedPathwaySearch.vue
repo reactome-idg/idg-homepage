@@ -1,5 +1,5 @@
 <template :dark="darkmode">
-  <v-container :dark="darkmode" fluid>
+  <div>
     <v-card :dark="darkmode" outlined v-if="loadingPrimary">
       <v-card-text>
         <LoadingCircularProgress />
@@ -7,12 +7,14 @@
     </v-card>
     <v-container
       fluid
-      v-if="primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0"
-      class="mb-5"
+      v-if="
+        (primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0) ||
+        loadingPrimary
+      "
     >
       <div class="text-left">
-        <span class="text-left">Annotated Pathways</span>
-        <small class="paddingL">Reactome annotated</small>
+        <span class="larger">{{ title }}</span>
+        <small class="pl-2">{{ subtitle }}</small>
       </div>
       <v-card outlined :dark="darkmode" class="text-left">
         <v-treeview
@@ -24,17 +26,17 @@
           <template v-slot:label="{ item }">
             <a
               v-if="item.type === 'TopLevelPathway'"
-              style="font-size: larger"
-              :href="getPrimaryLink(item.stId)"
               :class="darkmode === true ? 'linkDark' : 'link'"
+              style="font-size: larger; text-decoration: none"
+              :href="getPrimaryLink(item.stId)"
               :target="linkTarget"
               >{{ item.name }}</a
             >
             <a
               v-else-if="!item.children || item.children.length === 0"
+              :class="darkmode === true ? 'linkDark' : 'link'"
               style="font-weight: bolder; text-decoration: underline"
               :href="getPrimaryLink(item.stId)"
-              :class="darkmode === true ? 'linkDark' : 'link'"
               :target="linkTarget"
               >{{ item.name }}</a
             >
@@ -50,7 +52,7 @@
       </v-card>
     </v-container>
     <p v-else>No primary pathways found.</p>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -78,6 +80,14 @@ export default {
     darkmode: {
       type: Boolean,
       default: () => false,
+    },
+    title: {
+      type: String,
+      default: () => "Annotated Pathways",
+    },
+    subtitle: {
+      type: String,
+      default: () => "Manually curated based on literature references",
     },
   },
   data: () => ({
@@ -137,7 +147,6 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
-@import "https://fonts.googleapis.com/css?family=Comfortaa&display=swap";
 .linkDark {
   text-decoration: none;
   color: white;
@@ -157,8 +166,5 @@ export default {
 }
 .link:active:hover {
   color: lightgrey;
-}
-.paddingL {
-  padding-left: 1em;
 }
 </style>

@@ -1,7 +1,7 @@
 <template :dark="darkmode">
   <v-card :dark="darkmode" outlined>
     <v-card-text>
-      <h2 class="text-left pb-2">Choose sources</h2>
+      <h2 class="text-left pb-2">Choose pairwise relationship data sources</h2>
       <v-card :dark="darkmode" outlined>
         <v-card-text>
           <v-row align="center" justify="center">

@@ -1,8 +1,8 @@
 <template :dark="darkmode">
   <v-container fluid>
     <div class="text-left">
-      <span class="larger">Interacting Pathways</span>
-      <small class="pl-2">Reachable Through Interactors</small>
+      <span class="larger">{{title}}</span>
+      <small class="pl-2">{{subtitle}}</small>
       <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
     </div>
     <v-container fluid v-if="secondaryPathwaysLoading">
@@ -154,6 +154,14 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    title: {
+      type: String,
+      default: () => "Interacting Pathways"
+    },
+    subtitle: {
+      type: String,
+      default: () => "Reachable through interactions"
+    }
   },
   data: () => ({
     mdiClose,

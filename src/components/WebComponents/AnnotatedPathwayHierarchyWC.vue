@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <AnnotatedPathwaySearch :term="term" :darkmode="darkmode" />
+    <AnnotatedPathwaySearch :term="term" :darkmode="darkmode" :title="title" :subtitle="subtitle" />
   </v-app>
 </template>
 
@@ -24,6 +24,14 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    title: {
+      type: String,
+      default: () => "Annotated Pathways"
+    },
+    subtitle: {
+      type: String,
+      default: () => "Manually curated based on literature references"
+    }
   },
 };
 </script>
