@@ -3,17 +3,20 @@ import axios from "axios";
 const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 
 class PairwiseService {
-  static searchHierarchyForTerm(term){
-    return new Promise((resolve, reject) =>{
-      axios.get(`${url}relationships/hierarchyForTerm/${term}`).then((res) => {
-        resolve(res.data);
-      }).catch((err) => {
-        reject(err);
-      })
+  static searchHierarchyForTerm(term) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${url}relationships/hierarchyForTerm/${term}`)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
-  static searchTermSecondaryPathways(postData){
+  static searchTermSecondaryPathways(postData) {
     return new Promise((resolve, reject) => {
       axios
         .post(`${url}relationships/enrichedSecondaryPathwaysForTerm`, postData)
@@ -24,6 +27,16 @@ class PairwiseService {
         .catch((err) => {
           reject(err);
         });
+    });
+  }
+
+  static loadCombinedScores(postData){
+    return new Promise((resolve, reject) => {
+      axios.post(`${url}relationships/combinedScoreForTerm`, postData).then((res)=> {
+        resolve(res.data.filter((p) => p.bottomLevel));
+      }).catch((err)=> {
+        reject(err);
+      })
     })
   }
 
