@@ -1,13 +1,31 @@
 <template :dark="darkmode">
   <v-card :dark="darkmode" outlined>
     <v-card-text>
-      <h2 class="text-left pb-2">Choose pairwise relationship data sources</h2>
+      <v-row class="pl-5 pr-5">
+          <v-col cols="12" md="6">
+                    <h4 class="text-left pb-2">Show Combines Score</h4>
+            <v-text-field
+              prefix="Cutoff ≤"
+              v-model="prd"
+              hide-details
+              type="number"
+              min="0"
+              max="1"
+              step="0.1"
+            ></v-text-field>
+          </v-col>
+           <v-col cols="12" md="6">
+            <v-btn class="ma-1 float-right" @click="searchCombinedScores">SHOW COMBINED SCORES</v-btn>
+          </v-col>
+        </v-row>
+        <hr class="mt-5 mb-5">
+      <h4 class="text-left pb-2">Choose pairwise relationship data sources</h4>
       <v-card :dark="darkmode" outlined>
         <v-card-text>
           <v-row align="center" justify="center">
             <v-col cols="12" md="6">
-              <label for="types" class="left">Select an interaction type</label>
-              <select name="types" id="types" @change="cascadeDataType" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
+              <label for="types" class="left">Select a relationship type</label>
+              <select name="types" id="types" @change="cascadeDataType" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
                 <option v-for="(type, index) in types" :key="index" :value="type">{{type}}</option>
               </select>
               <!-- <v-combobox
@@ -19,8 +37,8 @@
               ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="6">
-              <label for="provenances">Select an interactor source</label>
-              <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
+              <label for="provenances">Select a data resource</label>
+              <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
                 <option v-for="(provenance, index) in provenances" :key="index" :value="provenance">{{provenance}}</option>
               </select>
               <!-- <v-combobox
@@ -34,7 +52,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <label for="bioSources">Select a biosource</label>
-              <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
+              <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
                 <option v-for="(bioSource, index) in bioSources" :key="index" :value="bioSource">{{bioSource}}</option>
               </select>
               <!-- <v-combobox
@@ -48,8 +66,8 @@
             </v-col>
             <v-col cols="12" md="4">
               <div v-if="bioSource && origins.length > 0">
-                <label for="origin">Select an origin</label>
-                <select name="origin" id="origin" class="ma-2" :class="darkmode === true ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="origin">
+                <label for="origin">Select a data source</label>
+                <select name="origin" id="origin" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="origin">
                   <option v-for="(origin, index) in origins" :key="index" :value="origin">{{origin}}</option>
                 </select>
               </div>
@@ -93,7 +111,7 @@
 
 <script>
 import PairwiseService from "../../../service/PairwiseService";
-import { VCard, VCardText, VCol, VRow, VBtn, /*VCombobox,*/ VChip } from "vuetify/lib";
+import { VCard, VCardText, VCol, VRow, VBtn, VChip } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify"
 import {mdiMenuDown, mdiCloseCircle} from "@mdi/js";
 export default {
@@ -104,7 +122,6 @@ export default {
     VCol,
     VRow,
     VBtn,
-    // VCombobox,
     VChip
   },
   vuetify,
@@ -132,6 +149,7 @@ export default {
     provenance: null,
     bioSource: null,
     origin: null,
+    prd: 0.9
   }),
   computed: {
     types() {
@@ -205,6 +223,9 @@ export default {
       }
       this.$emit("searchSecondaryPathways", this.relationshipTypes);
     },
+    searchCombinedScores() {
+      this.$emit("searchCombinedScores", this.prd)
+    },
     addRelationship() {
       this.error = "";
       var desc = `${this.provenance}|${this.bioSource}|${this.dataType}`;
@@ -252,7 +273,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 .errors {
   color: red;

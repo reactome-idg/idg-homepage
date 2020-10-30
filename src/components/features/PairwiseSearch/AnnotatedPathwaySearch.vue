@@ -27,7 +27,6 @@
             <a
               v-if="item.type === 'TopLevelPathway'"
               :class="darkmode === true ? 'linkDark' : 'link'"
-              style="font-size: larger; text-decoration: none"
               :href="getPrimaryLink(item.stId)"
               :target="linkTarget"
               >{{ item.name }}</a
@@ -35,7 +34,6 @@
             <a
               v-else-if="!item.children || item.children.length === 0"
               :class="darkmode === true ? 'linkDark' : 'link'"
-              style="font-weight: bolder; text-decoration: underline"
               :href="getPrimaryLink(item.stId)"
               :target="linkTarget"
               >{{ item.name }}</a
@@ -123,6 +121,7 @@ export default {
       if (!this.term || this.term === "") return;
 
       this.loadingPrimary = true;
+      this.primaryPathways = [];
 
       try {
         this.primaryPathways = await PairwiseService.searchHierarchyForTerm(

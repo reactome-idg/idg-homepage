@@ -53,4 +53,30 @@ export default {
   padding: 0;
   background-color: transparent;
 }
+.errors {
+  color: red;
+}
+.selectionDropDownDark{
+  text-align: left;
+  color: white;
+  border-bottom: 1px solid white;
+  width: 100%;
+}
+.selectionDropDownDark:disabled {
+  border-bottom: 1px dotted white;
+}
+.selectionDropDown {
+color: black;
+border-bottom: 1px solid darkgrey;
+width: 100%; 
+}
+.selectionDropDown:disabled{
+border-bottom: 1px dotted darkgrey;
+}
+.primaryBtn {
+  background-color: #1976D2;
+}
+.secondaryBtn {
+  background-color: #424242;
+}
 </style>

@@ -1,8 +1,8 @@
 <template :dark="darkmode">
   <v-container fluid>
     <div class="text-left">
-      <span class="larger">{{title}}</span>
-      <small class="pl-2">{{subtitle}}</small>
+      <span class="larger">{{ title }}</span>
+      <small class="pl-2">{{ subtitle }}</small>
       <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
     </div>
     <v-container fluid v-if="secondaryPathwaysLoading">
@@ -19,15 +19,32 @@
       :dark="darkmode"
       outlined
       v-if="secondaryPathways && secondaryPathways.length > 0"
+      class="text-left justify-left"
     >
-      <v-btn
-        icon
-        style="float: left"
-        class="mx-1"
-        @click="closeSecondaryPathways"
-      >
-        <v-icon>{{ mdiClose }}</v-icon>
-      </v-btn>
+      <div v-if="currentSecondarySearchDescs.length > 0">
+        <v-btn icon class="mx-1" @click="closeIndividualSourcesEvent">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-row class="pl-5 pr-5">
+          <v-col cols="12" md="6">
+            <v-text-field
+              prefix="Significance Cutoff ≤"
+              v-model="prd"
+              @keyup.enter="updatePRD"
+              hide-details
+              type="number"
+              min="0"
+              max="1"
+              step="0.1"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-btn class="ma-1 float-right" @click="chooseIndividualSourcesEvent">Choose Individual Sources</v-btn>
+          </v-col>
+        </v-row>
+      </div>
       <v-card-text>
         <v-data-table
           dense
@@ -48,11 +65,9 @@
           :must-sort="true"
         >
           <template v-slot:item.stId="{ item }">
-            <a
-              :href="getSecondaryLink(item.stId)"
-              :target="linkTarget"
-              >{{ item.stId }}</a
-            >
+            <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
+              item.stId
+            }}</a>
           </template>
           <template v-slot:item.fdr="{ item }">{{
             item.fdr.toExponential(2)
@@ -103,6 +118,7 @@
       :initialDescs="currentSecondarySearchDescs"
       :darkmode="darkmode"
       @searchSecondaryPathways="searchSecondaryPathways"
+      @searchCombinedScores="searchCombinedScores"
     />
   </v-container>
 </template>
@@ -117,6 +133,7 @@ import {
   VDataTable,
   VCardText,
   VTextField,
+  VIcon,
   VCol,
   VRow,
   VCard,
@@ -139,6 +156,7 @@ export default {
     VDataTable,
     VCardText,
     VTextField,
+    VIcon,
     VCol,
     VRow,
     VCard,
@@ -156,12 +174,12 @@ export default {
     },
     title: {
       type: String,
-      default: () => "Interacting Pathways"
+      default: () => "Interacting Pathways",
     },
     subtitle: {
       type: String,
-      default: () => "Reachable through interactions"
-    }
+      default: () => "Reachable through interactions",
+    },
   },
   data: () => ({
     mdiClose,
@@ -179,6 +197,8 @@ export default {
     secondaryPathways: [],
     fdr: 1.0,
     fdrInput: "1.00",
+    prd: 0.90,
+    currentCombinedScorePathways: [],
     secondarySearch: "",
     secondarySearchErrors: [],
     currentSecondarySearchDescs: [],
@@ -188,10 +208,12 @@ export default {
     term() {
       this.secondaryPathways = [];
       this.fdr = 1.0;
-      this.secondarySearch = "";
       this.fdrInput = "1.00";
+      this.prd = 0.5;
+      this.secondarySearch = "";
       this.secondarySearchErrors = [];
       this.currentSecondarySearchDescs = [];
+      this.loadCombinedScores();
     },
   },
   computed: {
@@ -204,10 +226,12 @@ export default {
       });
     },
   },
+  async created() {
+    this.loadCombinedScores();
+  },
   methods: {
     async loadSecondaryDetails({ item, value }) {
       if (!value) return;
-
       try {
         if (!item.details) {
           const data = await ReactomeService.fetchPathwayDetails(item.stId);
@@ -221,15 +245,37 @@ export default {
         console.log(err);
       }
     },
+    searchCombinedScores(prd) {
+      this.prd = prd;
+      this.loadCombinedScores();
+    },
+    async loadCombinedScores() {
+      this.secondaryPathwaysLoading = true;
+      this.secondarySearchErrors = [];
+      this.secondaryPathways = [];
+      try {
+        this.currentCombinedScorePathways = await PairwiseService.loadCombinedScores({
+          term: this.term,
+          prd: this.prd,
+        });
+        this.secondaryPathways = this.currentCombinedScorePathways;
+        if(this.secondaryPathways.length === 0)
+          this.secondaryPathwaysError();
+      } catch (err) {
+        this.secondaryPathwaysLoading = false;
+        this.secondaryPathwaysError();
+      }
+      this.secondaryPathwaysLoading = false;
+    },
     async searchSecondaryPathways(dataDescs) {
       this.secondaryPathwaysLoading = true;
       this.secondarySearchErrors = [];
+      this.secondaryPathways = [];
       this.currentSecondarySearchDescs = dataDescs;
-
       try {
         this.secondaryPathways = await PairwiseService.searchTermSecondaryPathways(
           {
-            gene: this.term,
+            term: this.term,
             dataDescs: dataDescs,
           }
         );
@@ -240,7 +286,7 @@ export default {
 
       this.secondaryPathwaysLoading = false;
       if (this.secondaryPathways.length === 0) {
-        this.secondaryPatwhaysError();
+        this.secondaryPathwaysError();
       }
     },
     secondaryPathwaysError() {
@@ -255,6 +301,9 @@ export default {
         : Number.parseFloat(this.fdrInput);
       this.fdr = newFDR;
     },
+    updatePRD() {
+      this.loadCombinedScores();
+    },
     getSecondaryLink(stId) {
       var descs = [];
       this.currentSecondarySearchDescs.forEach((desc) => {
@@ -264,10 +313,14 @@ export default {
         ","
       )}&FLGINT`;
     },
-    closeSecondaryPathways() {
+    chooseIndividualSourcesEvent() {
       this.secondaryPathways = [];
       this.currentSecondarySearchDescs = [];
     },
+    closeIndividualSourcesEvent() {
+      this.secondaryPathways = this.currentCombinedScorePathways;
+      this.currentSecondarySearchDescs = [];
+    }
   },
 };
 </script>
