@@ -48,12 +48,9 @@ export default {
 }
 .link {
     text-decoration: none;
-    color: white;
 }
 .link:hover{
-    color:lightgrey;
 }
 .link:active:hover{
-    color:grey;
 }
 </style>

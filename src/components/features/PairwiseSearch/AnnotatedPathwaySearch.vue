@@ -148,22 +148,22 @@ export default {
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 .linkDark {
   text-decoration: none;
-  color: white;
+  /* color: white; */
 }
 .linkDark:hover {
-  color: lightgrey;
+  /* color: lightgrey; */
 }
 .linkDark:active:hover {
   color: grey;
 }
 .link {
   text-decoration: none;
-  color: black;
+  /* color: black; */
 }
 .link:hover {
-  color: grey;
+  /* color: grey; */
 }
 .link:active:hover {
-  color: lightgrey;
+  /* color: lightgrey; */
 }
 </style>

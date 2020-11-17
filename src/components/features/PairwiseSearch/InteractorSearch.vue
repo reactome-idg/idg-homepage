@@ -31,7 +31,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="3" md="3" align-self="end">
-            <v-btn class="ma-1" small @click="updatePRD">UPDATE</v-btn>
+            <v-btn class="ml-2" small @click="updatePRD">UPDATE</v-btn>
           </v-col>
           <v-col cols="12" md="3" align-self="end">
             <v-btn class="ma-1 float-right" @click="openInteractorSearchForm">Choose Individual Sources</v-btn>
