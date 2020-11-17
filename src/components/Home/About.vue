@@ -1,6 +1,5 @@
 <template>
-  <v-container fluid>
-      <v-card class="" dark raised>
+      <v-card class="mb-5" dark raised>
         <v-card-title>
           Illuminating the Druggable Genome with Reactome
           <v-spacer></v-spacer>
@@ -26,7 +25,6 @@
           </div>
         </v-expand-transition>
       </v-card>
-    </v-container>
 </template>
 
 <script>

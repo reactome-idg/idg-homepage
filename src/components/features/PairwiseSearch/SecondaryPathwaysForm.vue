@@ -1,25 +1,12 @@
 <template :dark="darkmode">
   <v-card :dark="darkmode" outlined>
-    <v-card-text>
-      <v-row class="pl-5 pr-5">
-          <v-col cols="12" md="6">
-                    <h4 class="text-left pb-2">Show Combines Score</h4>
-            <v-text-field
-              prefix="Cutoff ≤"
-              v-model="prd"
-              hide-details
-              type="number"
-              min="0"
-              max="1"
-              step="0.1"
-            ></v-text-field>
-          </v-col>
-           <v-col cols="12" md="6">
-            <v-btn class="ma-1 float-right" @click="searchCombinedScores">SHOW COMBINED SCORES</v-btn>
-          </v-col>
-        </v-row>
-        <hr class="mt-5 mb-5">
-      <h4 class="text-left pb-2">Choose pairwise relationship data sources</h4>
+    <v-card-text class="text-left justify-left">
+      <div>
+        <v-btn icon class="ml-n4 mt-n5" @click="closeForm">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+        </div>
+      <h4 class="text-left pb-2">Choose individual pairwise relationship data sources</h4>
       <v-card :dark="darkmode" outlined>
         <v-card-text>
           <v-row align="center" justify="center">
@@ -113,7 +100,7 @@
 import PairwiseService from "../../../service/PairwiseService";
 import { VCard, VCardText, VCol, VRow, VBtn, VChip } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify"
-import {mdiMenuDown, mdiCloseCircle} from "@mdi/js";
+import {mdiMenuDown, mdiCloseCircle, mdiClose} from "@mdi/js";
 export default {
   name: "SecondaryPathwayForm",
   components: {
@@ -122,7 +109,7 @@ export default {
     VCol,
     VRow,
     VBtn,
-    VChip
+    VChip,
   },
   vuetify,
   props: {
@@ -142,6 +129,7 @@ export default {
   data: () => ({
     mdiMenuDown,
     mdiCloseCircle,
+    mdiClose,
     dataDescs: [],
     relationshipTypes: [],
     error: "",
@@ -149,7 +137,6 @@ export default {
     provenance: null,
     bioSource: null,
     origin: null,
-    prd: 0.9
   }),
   computed: {
     types() {
@@ -223,8 +210,8 @@ export default {
       }
       this.$emit("searchSecondaryPathways", this.relationshipTypes);
     },
-    searchCombinedScores() {
-      this.$emit("searchCombinedScores", this.prd)
+    closeForm() {
+      this.$emit("closeForm")
     },
     addRelationship() {
       this.error = "";

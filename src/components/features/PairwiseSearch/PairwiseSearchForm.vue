@@ -1,6 +1,5 @@
 <template>
-  <v-container fluid>
-    <v-card dark raised>
+    <v-card dark raised class="mb-5">
       <v-card-text class="pa-3">
         <v-row align="center" justify="center">
           <v-col cols="12" md="10">
@@ -23,7 +22,6 @@
         <span style="color:red;" v-if="error">{{error}}</span>
       </v-card-text>
     </v-card>
-  </v-container>
 </template>
 
 <script>

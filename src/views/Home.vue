@@ -1,6 +1,7 @@
 <template>
   <v-container fluid class="mb-5">
     <MainLinks />
+    <v-container fluid>
     <About />
     <PairwiseSearchForm @searchPathways = "searchPathways"/>
     <v-card dark raised v-if="term !== null" class="pa-5 mb-5">
@@ -8,6 +9,7 @@
       <AnnotatedPathwaySearch :term="this.term" :darkmode="true"/>
       <InteractorSearch :term="this.term" :darkmode="true"/>
     </v-card>
+    </v-container>
   </v-container>
 </template>
 

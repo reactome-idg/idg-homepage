@@ -5,32 +5,22 @@
       <small class="pl-2">{{ subtitle }}</small>
       <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
     </div>
-    <v-container fluid v-if="secondaryPathwaysLoading">
-      <v-card :dark="darkmode" outlined>
-        <v-card-text>
-          <v-progress-circular
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
-        </v-card-text>
-      </v-card>
-    </v-container>
     <v-card
       :dark="darkmode"
+      v-if="!showSecondarySearchForm"
       outlined
-      v-if="secondaryPathways && secondaryPathways.length > 0"
       class="text-left justify-left"
     >
       <div v-if="currentSecondarySearchDescs.length > 0">
-        <v-btn icon class="mx-1" @click="closeIndividualSourcesEvent">
+        <v-btn icon class="mx-1" @click="closeIndividualSources">
           <v-icon>{{ mdiClose }}</v-icon>
         </v-btn>
       </div>
       <div v-else>
-        <v-row class="pl-5 pr-5">
-          <v-col cols="12" md="6">
+        <v-row no-gutters class="pl-5 pr-5">
+          <v-col cols="9" md="6">
             <v-text-field
-              prefix="Significance Cutoff ≤"
+              prefix="Functional Interaction Score ="
               v-model="prd"
               @keyup.enter="updatePRD"
               hide-details
@@ -40,8 +30,11 @@
               step="0.1"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
-            <v-btn class="ma-1 float-right" @click="chooseIndividualSourcesEvent">Choose Individual Sources</v-btn>
+          <v-col cols="3" md="3" align-self="end">
+            <v-btn class="ma-1" small @click="updatePRD">UPDATE</v-btn>
+          </v-col>
+          <v-col cols="12" md="3" align-self="end">
+            <v-btn class="ma-1 float-right" @click="openInteractorSearchForm">Choose Individual Sources</v-btn>
           </v-col>
         </v-row>
       </div>
@@ -63,6 +56,7 @@
           :hide-default-footer="hideSecondaryPagination"
           @item-expanded="loadSecondaryDetails"
           :must-sort="true"
+          :loading="secondaryPathwaysLoading"
         >
           <template v-slot:item.stId="{ item }">
             <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
@@ -85,25 +79,28 @@
               ></v-progress-circular>
             </td>
           </template>
-          <template v-slot:footer="{}">
-            <v-row>
-              <v-col cols="2">
-                <v-text-field
+          <template v-slot:body.append>
+            <tr >
+              <td colspan="2"><v-text-field
                   v-if="!hideSecondaryPagination"
                   v-model="secondarySearch"
                   label="Search"
                   hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="2">
-                <v-text-field
+                ></v-text-field></td>
+                <td colspan="2"></td>
+                <td colspan="1">
+                  <v-text-field
                   prefix="FDR ≤"
-                  v-model="fdrInput"
-                  @keyup.enter="updateFDR"
+                  v-model="fdr"
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.01"
                   hide-details
                 ></v-text-field>
-              </v-col>
-            </v-row>
+                </td>
+            </tr>
+            <tr></tr>
           </template>
           <v-data-footer
             :next-icon="mdiChevronRight"
@@ -113,12 +110,12 @@
       </v-card-text>
     </v-card>
     <SecondaryPathwaysForm
-      v-else-if="secondaryPathways.length === 0 && !secondaryPathwaysLoading"
+      v-if="showSecondarySearchForm"
       :errors="secondarySearchErrors"
       :initialDescs="currentSecondarySearchDescs"
       :darkmode="darkmode"
       @searchSecondaryPathways="searchSecondaryPathways"
-      @searchCombinedScores="searchCombinedScores"
+      @closeForm="closeIndividualSources"
     />
   </v-container>
 </template>
@@ -196,23 +193,23 @@ export default {
     ],
     secondaryPathways: [],
     fdr: 1.0,
-    fdrInput: "1.00",
     prd: 0.90,
-    currentCombinedScorePathways: [],
+    currentPRD: 0.9,
     secondarySearch: "",
     secondarySearchErrors: [],
     currentSecondarySearchDescs: [],
     secondaryPathwaysLoading: false,
+    showSecondarySearchForm: false
   }),
   watch: {
     term() {
       this.secondaryPathways = [];
       this.fdr = 1.0;
-      this.fdrInput = "1.00";
       this.prd = 0.5;
       this.secondarySearch = "";
       this.secondarySearchErrors = [];
       this.currentSecondarySearchDescs = [];
+      this.showSecondarySearchForm = false;
       this.loadCombinedScores();
     },
   },
@@ -254,11 +251,10 @@ export default {
       this.secondarySearchErrors = [];
       this.secondaryPathways = [];
       try {
-        this.currentCombinedScorePathways = await PairwiseService.loadCombinedScores({
+        this.secondaryPathways = await PairwiseService.loadCombinedScores({
           term: this.term,
           prd: this.prd,
         });
-        this.secondaryPathways = this.currentCombinedScorePathways;
         if(this.secondaryPathways.length === 0)
           this.secondaryPathwaysError();
       } catch (err) {
@@ -269,6 +265,7 @@ export default {
     },
     async searchSecondaryPathways(dataDescs) {
       this.secondaryPathwaysLoading = true;
+      this.showSecondarySearchForm = false;
       this.secondarySearchErrors = [];
       this.secondaryPathways = [];
       this.currentSecondarySearchDescs = dataDescs;
@@ -295,13 +292,9 @@ export default {
         "No pathways for this selection. Please try another."
       );
     },
-    updateFDR() {
-      const newFDR = Number.parseFloat(this.fdrInput).isNaN
-        ? this.fdr
-        : Number.parseFloat(this.fdrInput);
-      this.fdr = newFDR;
-    },
     updatePRD() {
+      if(this.prd === this.currentPRD) return;
+      this.currentPRD = this.prd;
       this.loadCombinedScores();
     },
     getSecondaryLink(stId) {
@@ -313,13 +306,14 @@ export default {
         ","
       )}&FLGINT`;
     },
-    chooseIndividualSourcesEvent() {
-      this.secondaryPathways = [];
+    openInteractorSearchForm() {
       this.currentSecondarySearchDescs = [];
+      this.showSecondarySearchForm = true;
     },
-    closeIndividualSourcesEvent() {
-      this.secondaryPathways = this.currentCombinedScorePathways;
+    closeIndividualSources() {
+      this.showSecondarySearchForm = false;
       this.currentSecondarySearchDescs = [];
+      this.loadCombinedScores();
     }
   },
 };
