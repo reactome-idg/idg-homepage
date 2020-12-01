@@ -130,7 +130,8 @@ export default {
       } catch (err) {
         this.loadingPrimary = false;
         this.error = err.message;
-        if (err.response.status == 404) {
+        if(!this.err.response) this.error = "Internal Server Error. We are working to correct this.";
+        else if (err.response.status == 404) {
           this.error = "No recorded term. Please try another.";
         }
       }

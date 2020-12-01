@@ -205,7 +205,7 @@ export default {
     term() {
       this.secondaryPathways = [];
       this.fdr = 1.0;
-      this.prd = 0.5;
+      this.prd = 0.9;
       this.secondarySearch = "";
       this.secondarySearchErrors = [];
       this.currentSecondarySearchDescs = [];
@@ -248,6 +248,7 @@ export default {
     },
     async loadCombinedScores() {
       this.secondaryPathwaysLoading = true;
+      this.showSecondarySearchForm = false
       this.secondarySearchErrors = [];
       this.secondaryPathways = [];
       try {
@@ -276,15 +277,15 @@ export default {
             dataDescs: dataDescs,
           }
         );
+        if (this.secondaryPathways.length === 0) {
+        this.secondaryPathwaysError();
+      }
       } catch (err) {
         this.secondaryPathwaysLoading = false;
         this.secondaryPathwaysError();
       }
 
       this.secondaryPathwaysLoading = false;
-      if (this.secondaryPathways.length === 0) {
-        this.secondaryPathwaysError();
-      }
     },
     secondaryPathwaysError() {
       this.currentSecondarySearchDescs = [];
@@ -314,7 +315,7 @@ export default {
       this.showSecondarySearchForm = false;
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
-    }
+    },
   },
 };
 </script>

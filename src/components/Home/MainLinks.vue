@@ -16,7 +16,7 @@
           </v-card-title>
           <v-card-text>
             <v-container>
-              <p class="font-weight-bold">Lauch the IDG Pathway Browser</p>
+              <p class="font-weight-bold">Launch the IDG Pathway Browser</p>
             </v-container>
           </v-card-text>
         </v-card>
