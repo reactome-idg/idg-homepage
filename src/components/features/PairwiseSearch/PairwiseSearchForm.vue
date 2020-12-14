@@ -5,7 +5,7 @@
           <v-col cols="12" md="10">
             <v-text-field
               dark
-              label="Search a Gene Name or Uniprot"
+              label="Search a Gene qor Uniprot"
               v-model="search"
               placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import PairwiseService from "../../../service/PairwiseService";
 export default {
   name: "PairwiseSearch",
   components: {
@@ -50,32 +49,6 @@ export default {
         term: this.search.toUpperCase(),
         uniprotBoolean: this.uniprotCheckBox
         });
-      
-    },
-    async searchGene() {
-      try {
-        this.primaryPathways = await PairwiseService.searchGeneNameHierarchy(
-          this.search.toUpperCase()
-        );
-      } catch (err) {
-        this.error = err.message;
-        if (err.response.status == 404) {
-          this.error =
-            "No recorded gene. Please use standard human gene symbol.";
-        }
-      }
-      this.loading = false;
-    },
-    async searchUniprot() {
-      try {
-        this.primaryPathways = await PairwiseService.searchUniprotHierarchy(this.search.toUpperCase());
-      } catch (err) {
-        this.error = err.message;
-        if (err.response.status == 404) {
-          this.error = "No recorded uniprot";
-        }
-      }
-      this.loading = false;
     },
   },
 };

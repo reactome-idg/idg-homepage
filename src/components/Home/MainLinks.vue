@@ -65,4 +65,7 @@ export default {
 </script>
 
 <style>
+.navigationButton{
+  font-weight: bold;
+}
 </style>
