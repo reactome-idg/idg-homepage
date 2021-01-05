@@ -151,20 +151,11 @@ export default {
   text-decoration: none;
   /* color: white; */
 }
-.linkDark:hover {
-  /* color: lightgrey; */
-}
 .linkDark:active:hover {
   color: grey;
 }
 .link {
   text-decoration: none;
   /* color: black; */
-}
-.link:hover {
-  /* color: grey; */
-}
-.link:active:hover {
-  /* color: lightgrey; */
 }
 </style>

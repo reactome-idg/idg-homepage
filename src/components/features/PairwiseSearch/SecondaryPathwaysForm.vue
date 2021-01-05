@@ -208,7 +208,10 @@ export default {
         this.error = "Choose at least one source";
         return;
       }
-      this.$emit("searchSecondaryPathways", this.relationshipTypes);
+      this.$emit("searchSecondaryPathways", {
+        dataDescriptions: this.relationshipTypes,
+        digitalKeys: this.dataDescs.filter(desc => this.relationshipTypes.includes(desc.id)).map(desc => desc.digitalKey)
+      });
     },
     closeForm() {
       this.$emit("closeForm")

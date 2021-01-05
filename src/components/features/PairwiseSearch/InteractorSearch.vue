@@ -3,7 +3,7 @@
     <div class="text-left">
       <span class="larger">{{ title }}</span>
       <small class="pl-2">{{ subtitle }}</small>
-      <small class="pl-2">{{ currentSecondarySearchDescs.join(", ") }}</small>
+      <small class="pl-2">{{ relationshipTypesString }}</small>
     </div>
     <v-card
       :dark="darkmode"
@@ -112,7 +112,7 @@
     <SecondaryPathwaysForm
       v-if="showSecondarySearchForm"
       :errors="secondarySearchErrors"
-      :initialDescs="currentSecondarySearchDescs"
+      :initialDescs="currentSecondarySearchDescs.dataDescriptions"
       :darkmode="darkmode"
       @searchSecondaryPathways="searchSecondaryPathways"
       @closeForm="closeIndividualSources"
@@ -222,6 +222,9 @@ export default {
         return i.fdr <= this.fdr;
       });
     },
+    relationshipTypesString() {
+      return this.currentSecondarySearchDescs.dataDescriptions ? this.currentSecondarySearchDescs.dataDescriptions.join(", ") : ""
+    }
   },
   async created() {
     this.loadCombinedScores();
@@ -264,17 +267,17 @@ export default {
       }
       this.secondaryPathwaysLoading = false;
     },
-    async searchSecondaryPathways(dataDescs) {
+    async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
       this.showSecondarySearchForm = false;
       this.secondarySearchErrors = [];
       this.secondaryPathways = [];
-      this.currentSecondarySearchDescs = dataDescs;
+      this.currentSecondarySearchDescs = dataDescriptions;
       try {
         this.secondaryPathways = await PairwiseService.searchTermSecondaryPathways(
           {
             term: this.term,
-            dataDescs: dataDescs,
+            dataDescKeys: dataDescriptions.digitalKeys,
           }
         );
         if (this.secondaryPathways.length === 0) {
@@ -299,16 +302,16 @@ export default {
       this.loadCombinedScores();
     },
     getSecondaryLink(stId) {
-      var descs = [];
-      this.currentSecondarySearchDescs.forEach((desc) => {
-        descs.push(desc.replace(/\|/g, "%7C"));
-      });
-      return `${this.browserLink}${stId}&FLG=${this.term},${descs.join(
-        ","
-      )}&FLGINT`;
+      var descKeys = [];
+      if(this.currentSecondarySearchDescs.digitalKeys && this.currentSecondarySearchDescs.digitalKeys.length > 0){
+        descKeys = this.currentSecondarySearchDescs.digitalKeys;
+        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}`;
+      }
+      else {
+        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}`;
+      }
     },
     openInteractorSearchForm() {
-      this.currentSecondarySearchDescs = [];
       this.showSecondarySearchForm = true;
     },
     closeIndividualSources() {
