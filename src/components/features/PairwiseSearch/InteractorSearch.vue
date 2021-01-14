@@ -11,7 +11,7 @@
       outlined
       class="text-left justify-left"
     >
-      <div v-if="currentSecondarySearchDescs.length > 0">
+      <div v-if="currentSecondarySearchDescs.dataDescriptions && currentSecondarySearchDescs.dataDescriptions.length > 0">
         <v-btn icon class="mx-1" @click="closeIndividualSources">
           <v-icon>{{ mdiClose }}</v-icon>
         </v-btn>
