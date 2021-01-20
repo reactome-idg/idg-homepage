@@ -8,7 +8,7 @@
     <v-container
       fluid
       v-if="
-        (primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0)"
+        (primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0) || loadingPrimary"
     >
       <div class="text-left">
         <span class="larger">{{ title }}</span>

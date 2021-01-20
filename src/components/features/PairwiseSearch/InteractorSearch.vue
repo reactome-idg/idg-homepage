@@ -20,7 +20,7 @@
         <v-row no-gutters class="pl-5 pr-5">
           <v-col cols="9" md="6">
             <v-text-field
-              prefix="Functional Interaction Score ="
+              prefix="Functional Interaction Score ≥"
               v-model="prd"
               @keyup.enter="updatePRD"
               hide-details
