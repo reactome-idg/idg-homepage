@@ -22,6 +22,14 @@ const routes = [
     }
   },
   {
+    path: "/documentation/userguide",
+    name: "User Guide",
+    component: () => import ('../views/Docs/UserGuide.vue'),
+    meta: {
+      title: "User Guide"
+    }
+  },
+  {
     path: "/cite",
     name: "Cite",
     component: () => import ('../views/Docs/Cite.vue'),

@@ -53,6 +53,18 @@ class PairwiseService {
     });
   }
 
+  static getInteractorScoresForTerm(term) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${url}relationships/combinedScoreGenesForTerm/${term}`)
+      .then((res) => {
+        resolve(Object.entries(res.data).map(([gene, score]) => ({"gene": gene, "score":score})))
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    })
+  }
+
   /**
    * Structures FiData and PathwayObjects from server return
    * @param {*} data

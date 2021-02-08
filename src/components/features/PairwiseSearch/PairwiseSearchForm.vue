@@ -5,7 +5,7 @@
           <v-col cols="12" md="10">
             <v-text-field
               dark
-              label="Search a Gene qor Uniprot"
+              label="Search a Gene or Uniprot"
               v-model="search"
               placeholder="e.g. NTN1, EGFR, O95631"
               :outlined="true"
