@@ -18,23 +18,11 @@
       </div>
       <div v-else>
         <v-row no-gutters class="pl-5 pr-5">
-          <v-col cols="9" md="6">
-            <v-text-field
-              prefix="Functional Interaction Score ≥"
-              v-model="prd"
-              @keyup.enter="updatePRD"
-              hide-details
-              type="number"
-              min="0"
-              max="1"
-              step="0.1"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" align-self="end">
-            <v-btn class="ml-2" small @click="updatePRD">UPDATE</v-btn>
+          <v-col cols="12" md="9">
+            <FuncInteractionScoreFilter :interactingGenes="interactingGenes" @updatePRD="updatePRD"/>
           </v-col>
           <v-col cols="12" md="3" align-self="end">
-            <v-btn class="ma-1 float-right" @click="openInteractorSearchForm">Choose Individual Sources</v-btn>
+            <v-btn class="ma-1 float-right" @click="openInteractorSearchForm">Choose Sources</v-btn>
           </v-col>
         </v-row>
       </div>
@@ -105,8 +93,10 @@
           <v-data-footer
             :next-icon="mdiChevronRight"
             :prev-icon="mdiChevronLeft"
-          ></v-data-footer>
+          >
+          </v-data-footer>
         </v-data-table>
+                  <a :href="getOverViewLink"><v-btn class="ma-2" small>Open Pathway Overview</v-btn></a>
       </v-card-text>
     </v-card>
     <SecondaryPathwaysForm
@@ -124,6 +114,7 @@
 import PairwiseService from "../../../service/PairwiseService";
 import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
+import FuncInteractionScoreFilter from './FuncInteractionScoreFilter'
 import TableDetails from "./TableDetails";
 import {
   VContainer,
@@ -158,6 +149,7 @@ export default {
     VRow,
     VCard,
     VProgressCircular,
+    FuncInteractionScoreFilter
   },
   vuetify,
   props: {
@@ -192,8 +184,8 @@ export default {
       { text: "FDR", value: "fdr" },
     ],
     secondaryPathways: [],
+    interactingGenes: null,
     fdr: 1.0,
-    prd: 0.90,
     currentPRD: 0.9,
     secondarySearch: "",
     secondarySearchErrors: [],
@@ -204,6 +196,7 @@ export default {
   watch: {
     term() {
       this.secondaryPathways = [];
+      this.interactingGenes = null;
       this.fdr = 1.0;
       this.prd = 0.9;
       this.secondarySearch = "";
@@ -224,7 +217,17 @@ export default {
     },
     relationshipTypesString() {
       return this.currentSecondarySearchDescs.dataDescriptions ? this.currentSecondarySearchDescs.dataDescriptions.join(", ") : ""
-    }
+    },
+    getOverViewLink(){
+      var descKeys = [];
+      if(this.currentSecondarySearchDescs.digitalKeys && this.currentSecondarySearchDescs.digitalKeys.length > 0){
+        descKeys = this.currentSecondarySearchDescs.digitalKeys;
+        return `${this.browserLink}FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}&FLGFDR=${this.fdr}`;
+      }
+      else {
+        return `${this.browserLink}FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
+      }
+    },
   },
   async created() {
     this.loadCombinedScores();
@@ -250,14 +253,14 @@ export default {
       this.loadCombinedScores();
     },
     async loadCombinedScores() {
+      this.loadInteractingGenes();
       this.secondaryPathwaysLoading = true;
-      this.showSecondarySearchForm = false
+      this.showSecondarySearchForm = false;
       this.secondarySearchErrors = [];
-      this.secondaryPathways = [];
       try {
         this.secondaryPathways = await PairwiseService.loadCombinedScores({
           term: this.term,
-          prd: this.prd,
+          prd: this.currentPRD,
         });
         if(this.secondaryPathways.length === 0)
           this.secondaryPathwaysError();
@@ -266,6 +269,14 @@ export default {
         this.secondaryPathwaysError();
       }
       this.secondaryPathwaysLoading = false;
+    },
+    async loadInteractingGenes() {
+      try {
+        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(this.term)
+      } catch (err) {
+        this.interactingGenes = []
+        console.log(err)
+      }
     },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
@@ -296,19 +307,19 @@ export default {
         "No pathways for this selection. Please try another."
       );
     },
-    updatePRD() {
-      if(this.prd === this.currentPRD) return;
-      this.currentPRD = this.prd;
+    updatePRD(prd) {
+      if(prd === this.currentPRD) return;
+      this.currentPRD = prd;
       this.loadCombinedScores();
     },
     getSecondaryLink(stId) {
       var descKeys = [];
       if(this.currentSecondarySearchDescs.digitalKeys && this.currentSecondarySearchDescs.digitalKeys.length > 0){
         descKeys = this.currentSecondarySearchDescs.digitalKeys;
-        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}`;
+        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}&FLGFDR=${this.fdr}`;
       }
       else {
-        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}`;
+        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
       }
     },
     openInteractorSearchForm() {
@@ -325,4 +336,7 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+a {
+  text-decoration: none
+}
 </style>
