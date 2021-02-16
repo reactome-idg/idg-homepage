@@ -15,6 +15,14 @@ const routes = [
     },
   },
   {
+    path: "/search/:term",
+    name: "Search",
+    component: Home,
+    meta: {
+      title: "Home"
+    }
+  },
+  {
     path: "/documentation",
     name: "Documentation",
     component: () => import("../views/Docs/Documentation.vue"),

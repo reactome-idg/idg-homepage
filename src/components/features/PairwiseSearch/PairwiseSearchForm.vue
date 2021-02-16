@@ -25,30 +25,33 @@
 </template>
 
 <script>
+import router from "../../../router"; 
 export default {
   name: "PairwiseSearch",
-  components: {
-  },
   data: () => ({
     search: "",
     uniprotCheckBox: false,
     relationshipRtn: null,
-    primaryPathways: null,
-    loading: false,
     error: "",
   }),
+  watch: {
+    $route() {
+      this.search = "";
+    }
+  },
   methods: {
     async searchPairwise() {
       if (this.search === "") {
         this.error = "Please enter a search term";
         return;
       }
-      this.primaryPathways = null;
       this.error = "";
-      this.$emit("searchPathways", {
-        term: this.search.toUpperCase(),
-        uniprotBoolean: this.uniprotCheckBox
-        });
+
+      //Only push new search if not the same as current search
+      const newRoute = `/search/${this.search.toUpperCase()}`;
+      if(this.$route.path !== newRoute)
+        router.push(`/search/${this.search.toUpperCase()}`)
+
     },
   },
 };

@@ -4,7 +4,7 @@
       <p class="display-2">IDG Reactome Dcumentation</p>
     </v-container>
     <DocumentationLinks />
-    <v-content class="text-left">
+    <v-main class="text-left">
       <v-container>
         <h2 class="borderBottom">Funtional Interaction View</h2>
         <img :src="'/assets/doc/images/FIView.png'" class="images" />
@@ -51,7 +51,7 @@
           <span v-html="docs.IDGPopupDoc"></span>
         </v-container>
       </v-container>
-    </v-content>
+    </v-main>
   </v-container>
 </template>
 
@@ -79,13 +79,14 @@ export default {
       }
     };
   },
-  beforeCreate: () => {
-    document.body.className = "normal"
-  }
 };
 </script>
 
 <style scoped>
+body {
+  background: none;
+  background-color: red;
+}
 .borderBottom {
   border-bottom: 1px solid #c0c0c0;
   margin-bottom: 1em;
