@@ -1,11 +1,11 @@
 <template :dark="darkmode">
-  <v-card :dark="darkmode" outlined>
+<div>
+  <v-dialog v-model="dialog" max-width="900px" overlay-color="#000">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn color="primary" v-bind="attrs" v-on="on">Choose Sources</v-btn>
+    </template>
+  <v-card :dark="darkmode" outlined class="pt-5">
     <v-card-text class="text-left justify-left">
-      <div>
-        <v-btn icon class="ml-n4 mt-n5" @click="closeForm">
-          <v-icon>{{ mdiClose }}</v-icon>
-        </v-btn>
-        </div>
       <h4 class="text-left pb-2">Choose individual pairwise relationship data sources</h4>
       <v-card :dark="darkmode" outlined>
         <v-card-text>
@@ -15,41 +15,18 @@
               <select name="types" id="types" @change="cascadeDataType" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
                 <option v-for="(type, index) in types" :key="index" :value="type">{{type}}</option>
               </select>
-              <!-- <v-combobox
-                :append-icon="mdiMenuDown"
-                v-model="dataType"
-                label="Select an interaction type"
-                :items="types"
-                @change="cascadeDataType"
-              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="6">
               <label for="provenances">Select a data resource</label>
               <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
                 <option v-for="(provenance, index) in provenances" :key="index" :value="provenance">{{provenance}}</option>
               </select>
-              <!-- <v-combobox
-                :append-icon="mdiMenuDown"
-                v-model="provenance"
-                label="Select an interactor source"
-                :items="provenances"
-                :disabled="!dataType"
-                @change="cascadeProvenance"
-              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="6">
               <label for="bioSources">Select a biosource</label>
               <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
                 <option v-for="(bioSource, index) in bioSources" :key="index" :value="bioSource">{{bioSource}}</option>
               </select>
-              <!-- <v-combobox
-                :append-icon="mdiMenuDown"
-                v-model="bioSource"
-                label="Select a biosource"
-                :items="bioSources"
-                :disabled="!provenance"
-                @change="cascadeBioSource"
-              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="4">
               <div v-if="bioSource && origins.length > 0">
@@ -58,13 +35,6 @@
                   <option v-for="(origin, index) in origins" :key="index" :value="origin">{{origin}}</option>
                 </select>
               </div>
-              <!-- <v-combobox
-                :append-icon="mdiMenuDown"
-                v-if="bioSource && origins.length > 0"
-                v-model="origin"
-                label="Select an origin"
-                :items="origins"
-              ></v-combobox> -->
             </v-col>
             <v-col cols="12" md="2">
               <v-btn small class="secondaryBtn" @click="addRelationship"
@@ -74,8 +44,8 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-row align="center" justify="center">
-        <v-col cols="12" md="10">
+      <v-row align="center" justify="center" class="mt-5">
+        <v-col cols="12" md="8">
           <v-chip
             v-for="(rel, index) in relationshipTypes"
             :key="index"
@@ -86,7 +56,7 @@
           >
         </v-col>
         <v-col cols="12" md="2">
-          <v-btn :dark="darkmode"  class="primaryBtn" @click="searchSecondaryPathways">Search</v-btn>
+          <v-btn :dark="darkmode" class="primaryBtn" @click="searchSecondaryPathways">Search</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -94,6 +64,8 @@
       </v-row>
     </v-card-text>
   </v-card>
+  </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -137,6 +109,7 @@ export default {
     provenance: null,
     bioSource: null,
     origin: null,
+    dialog:false,
   }),
   computed: {
     types() {
@@ -212,9 +185,7 @@ export default {
         dataDescriptions: this.relationshipTypes,
         digitalKeys: this.dataDescs.filter(desc => this.relationshipTypes.includes(desc.id)).map(desc => desc.digitalKey)
       });
-    },
-    closeForm() {
-      this.$emit("closeForm")
+      this.dialog=false;
     },
     addRelationship() {
       this.error = "";

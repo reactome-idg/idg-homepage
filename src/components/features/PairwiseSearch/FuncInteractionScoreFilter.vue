@@ -12,7 +12,7 @@
         step="0.1"
         :suffix="numberOfGenesLabel"
       ></v-text-field>
-      <p style="color:red;">{{error}}</p>
+      <p style="color:red;">{{errors}} {{error}}</p>
     </v-col>
     <v-col cols="3" align-self="center">
       <v-btn class="ml-2" small @click="updatePRD">UPDATE</v-btn>
@@ -28,6 +28,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    errors: {
+      type: String,
+      default: () => ""
+    }
   },
   data: () => ({
     prd: 0.9,

@@ -11,7 +11,12 @@
       outlined
       class="text-left justify-left"
     >
-      <div v-if="currentSecondarySearchDescs.dataDescriptions && currentSecondarySearchDescs.dataDescriptions.length > 0">
+      <div
+        v-if="
+          currentSecondarySearchDescs.dataDescriptions &&
+          currentSecondarySearchDescs.dataDescriptions.length > 0
+        "
+      >
         <v-btn icon class="mx-1" @click="closeIndividualSources">
           <v-icon>{{ mdiClose }}</v-icon>
         </v-btn>
@@ -19,10 +24,19 @@
       <div v-else>
         <v-row no-gutters class="pl-5 pr-5">
           <v-col cols="12" md="9">
-            <FuncInteractionScoreFilter :interactingGenes="interactingGenes" @updatePRD="updatePRD"/>
+            <FuncInteractionScoreFilter
+              :interactingGenes="interactingGenes"
+              :errors="FuncInteractionScoreFilterErrors"
+              @updatePRD="updatePRD"
+            />
           </v-col>
-          <v-col cols="12" md="3" align-self="end">
-            <v-btn class="ma-1 float-right" @click="openInteractorSearchForm">Choose Sources</v-btn>
+          <v-col cols="12" md="3" align-self="center">
+            <SecondaryPathwaysForm
+              :errors="secondarySearchErrors"
+              :initialDescs="currentSecondarySearchDescs.dataDescriptions"
+              :darkmode="darkmode"
+              @searchSecondaryPathways="searchSecondaryPathways"
+            />
           </v-col>
         </v-row>
       </div>
@@ -59,7 +73,7 @@
           }}</template>
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
-              <TableDetails v-if="item.details" :details="item.details" />
+              <TableDetails v-if="item.details" :details="item.details" :urlFlagSuffix="getURLFlagSuffix"/>
               <v-progress-circular
                 v-else
                 indeterminate
@@ -68,16 +82,18 @@
             </td>
           </template>
           <template v-slot:body.append>
-            <tr >
-              <td colspan="2"><v-text-field
+            <tr>
+              <td colspan="2">
+                <v-text-field
                   v-if="!hideSecondaryPagination"
                   v-model="secondarySearch"
                   label="Search"
                   hide-details
-                ></v-text-field></td>
-                <td colspan="2"></td>
-                <td colspan="1">
-                  <v-text-field
+                ></v-text-field>
+              </td>
+              <td colspan="2"></td>
+              <td colspan="1">
+                <v-text-field
                   prefix="FDR ≤"
                   v-model="fdr"
                   type="number"
@@ -86,7 +102,7 @@
                   step="0.01"
                   hide-details
                 ></v-text-field>
-                </td>
+              </td>
             </tr>
             <tr></tr>
           </template>
@@ -96,17 +112,11 @@
           >
           </v-data-footer>
         </v-data-table>
-                  <a :href="getOverViewLink"><v-btn class="ma-2" small>Open Pathway Overview</v-btn></a>
+        <a :href="getOverViewLink"
+          ><v-btn class="ma-2" small>Open Pathway Overview</v-btn></a
+        >
       </v-card-text>
     </v-card>
-    <SecondaryPathwaysForm
-      v-if="showSecondarySearchForm"
-      :errors="secondarySearchErrors"
-      :initialDescs="currentSecondarySearchDescs.dataDescriptions"
-      :darkmode="darkmode"
-      @searchSecondaryPathways="searchSecondaryPathways"
-      @closeForm="closeIndividualSources"
-    />
   </v-container>
 </template>
 
@@ -114,7 +124,7 @@
 import PairwiseService from "../../../service/PairwiseService";
 import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
-import FuncInteractionScoreFilter from './FuncInteractionScoreFilter'
+import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
 import {
   VContainer,
@@ -149,7 +159,7 @@ export default {
     VRow,
     VCard,
     VProgressCircular,
-    FuncInteractionScoreFilter
+    FuncInteractionScoreFilter,
   },
   vuetify,
   props: {
@@ -191,7 +201,8 @@ export default {
     secondarySearchErrors: [],
     currentSecondarySearchDescs: [],
     secondaryPathwaysLoading: false,
-    showSecondarySearchForm: false
+    showSecondarySearchForm: false,
+    FuncInteractionScoreFilterErrors:""
   }),
   watch: {
     term() {
@@ -216,18 +227,27 @@ export default {
       });
     },
     relationshipTypesString() {
-      return this.currentSecondarySearchDescs.dataDescriptions ? this.currentSecondarySearchDescs.dataDescriptions.join(", ") : ""
+      return this.currentSecondarySearchDescs.dataDescriptions
+        ? this.currentSecondarySearchDescs.dataDescriptions.join(", ")
+        : "";
     },
-    getOverViewLink(){
+    getOverViewLink() {
+      return `${this.browserLink}${this.getURLFlagSuffix}`; 
+    },
+    getURLFlagSuffix() {
       var descKeys = [];
-      if(this.currentSecondarySearchDescs.digitalKeys && this.currentSecondarySearchDescs.digitalKeys.length > 0){
+      if (
+        this.currentSecondarySearchDescs.digitalKeys &&
+        this.currentSecondarySearchDescs.digitalKeys.length > 0
+      ) {
         descKeys = this.currentSecondarySearchDescs.digitalKeys;
-        return `${this.browserLink}FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}&FLGFDR=${this.fdr}`;
+        return `FLG=${
+          this.term
+        }&FLGINT&DSKEYS=${descKeys.join(",")}&FLGFDR=${this.fdr}`;
+      } else {
+        return `FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
       }
-      else {
-        return `${this.browserLink}FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
-      }
-    },
+    }
   },
   async created() {
     this.loadCombinedScores();
@@ -248,22 +268,20 @@ export default {
         console.log(err);
       }
     },
-    searchCombinedScores(prd) {
+    async loadCombinedScores(prd) {
       this.prd = prd;
-      this.loadCombinedScores();
-    },
-    async loadCombinedScores() {
-      this.loadInteractingGenes();
       this.secondaryPathwaysLoading = true;
       this.showSecondarySearchForm = false;
       this.secondarySearchErrors = [];
+      this.FuncInteractionScoreFilterErrors = ""
       try {
-        this.secondaryPathways = await PairwiseService.loadCombinedScores({
-          term: this.term,
-          prd: this.currentPRD,
-        });
-        if(this.secondaryPathways.length === 0)
-          this.secondaryPathwaysError();
+        this.loadInteractingGenes();
+          this.secondaryPathways = await PairwiseService.loadCombinedScores({
+            term: this.term,
+            prd: this.currentPRD,
+          });
+          if (this.secondaryPathways.length === 0)
+            this.secondaryPathwaysError();
       } catch (err) {
         this.secondaryPathwaysLoading = false;
         this.secondaryPathwaysError();
@@ -272,10 +290,12 @@ export default {
     },
     async loadInteractingGenes() {
       try {
-        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(this.term)
+        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(
+          this.term
+        );
       } catch (err) {
-        this.interactingGenes = []
-        console.log(err)
+        this.interactingGenes = [];
+        console.log(err);
       }
     },
     async searchSecondaryPathways(dataDescriptions) {
@@ -292,8 +312,8 @@ export default {
           }
         );
         if (this.secondaryPathways.length === 0) {
-        this.secondaryPathwaysError();
-      }
+          this.secondaryPathwaysError();
+        }
       } catch (err) {
         this.secondaryPathwaysLoading = false;
         this.secondaryPathwaysError();
@@ -306,27 +326,23 @@ export default {
       this.secondarySearchErrors.push(
         "No pathways for this selection. Please try another."
       );
+      if(this.currentSecondarySearchDescs.length === 0) {
+        this.FuncInteractionScoreFilterErrors = "No pathways. Try a lower score."
+      }
     },
     updatePRD(prd) {
-      if(prd === this.currentPRD) return;
+      if (prd === this.currentPRD) return;
       this.currentPRD = prd;
+      this.fdrDialog = false;
       this.loadCombinedScores();
     },
     getSecondaryLink(stId) {
-      var descKeys = [];
-      if(this.currentSecondarySearchDescs.digitalKeys && this.currentSecondarySearchDescs.digitalKeys.length > 0){
-        descKeys = this.currentSecondarySearchDescs.digitalKeys;
-        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=${descKeys.join(',')}&FLGFDR=${this.fdr}`;
-      }
-      else {
-        return `${this.browserLink}${stId}&FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
-      }
+      return `${this.browserLink}${stId}&${this.getURLFlagSuffix}`
     },
     openInteractorSearchForm() {
       this.showSecondarySearchForm = true;
     },
     closeIndividualSources() {
-      this.showSecondarySearchForm = false;
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
     },
@@ -337,6 +353,6 @@ export default {
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 a {
-  text-decoration: none
+  text-decoration: none;
 }
 </style>
