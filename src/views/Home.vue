@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="mb-5">
+  <v-container fluid class="pb-5">
     <MainLinks />
     <v-container fluid>
     <About />
@@ -32,8 +32,17 @@ export default {
     term: null,
     uniprotBoolean: false
   }),
-  beforeCreate: () => {
-    document.body.className = "home";
+  // mount() {
+  //   document.body.className = "home";
+  // },
+  created() {
+    this.term = this.$route.params.term ? this.$route.params.term : null
+  },
+  watch: {
+    $route() {
+      if(!this.$route.params.term) this.term = null;
+      else if(this.$route.params.term !== this.term) this.term = this.$route.params.term;
+    },
   },
   methods: {
     searchPathways(search){
