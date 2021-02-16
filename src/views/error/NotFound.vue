@@ -12,9 +12,6 @@
 <script>
 export default {
   name: "NotFound",
-  beforeCreate: () => {
-    document.body.className = "normal";
-  },
 };
 </script>
 

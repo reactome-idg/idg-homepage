@@ -1,6 +1,6 @@
 <template>
   <header class="pa-3 header">
-    <router-link class="logo-container" to="/">
+    <router-link to="/">
       <img :src="'/assets/images/logo.svg'" alt="Reactome Logo" class="logo" />
     </router-link>
     <router-link to="/documentation" class="links">Docs</router-link>
@@ -15,7 +15,13 @@ export default {
 
 <style scoped>
 .header {
+  width:100%;
+  margin: 0 auto;
+  padding: 40px;
   background-color: #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 a {
   text-decoration: none;
@@ -23,18 +29,11 @@ a {
 .logo {
   width: 15em;
 }
-.logo-container {
-  float: left;
-}
 .links {
-  float: right;
   color: white;
   font-weight: bolder;
-  height: 100%;
-}
-.links a {
-  float: right;
   text-decoration: none;
-  height: 100%;
+
 }
+
 </style>
