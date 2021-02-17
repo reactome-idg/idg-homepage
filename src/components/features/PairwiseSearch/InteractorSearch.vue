@@ -35,6 +35,7 @@
               :errors="secondarySearchErrors"
               :initialDescs="currentSecondarySearchDescs.dataDescriptions"
               :darkmode="darkmode"
+              :term="term"
               @searchSecondaryPathways="searchSecondaryPathways"
             />
           </v-col>

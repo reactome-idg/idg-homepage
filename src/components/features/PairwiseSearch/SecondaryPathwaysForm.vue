@@ -96,6 +96,10 @@ export default {
     darkmode: {
       type: Boolean,
       default: () => false,
+    },
+    term: {
+      type:String,
+      default: () => null
     }
   },
   data: () => ({
@@ -170,7 +174,7 @@ export default {
   },
   async created() {
     try {
-      this.dataDescs = await PairwiseService.getDataDescs();
+      this.dataDescs = await PairwiseService.getDataDescs(this.term);
     } catch (err) {
       this.error = err.message;
     }

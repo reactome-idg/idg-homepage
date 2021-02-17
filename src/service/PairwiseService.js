@@ -40,10 +40,10 @@ class PairwiseService {
     })
   }
 
-  static getDataDescs() {
+  static getDataDescs(term) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}datadesc`)
+        .get(`${url}datadesc` + (term && `/${term}`))
         .then((res) => {
           resolve(res.data);
         })
