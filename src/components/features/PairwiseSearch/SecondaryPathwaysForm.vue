@@ -1,10 +1,10 @@
 <template :dark="darkmode">
 <div>
-  <v-dialog v-model="dialog" max-width="900px" overlay-color="#000">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" v-bind="attrs" v-on="on">Choose Sources</v-btn>
-    </template>
   <v-card :dark="darkmode" outlined class="pt-5">
+    <v-btn icon class="closeBtn" title="close" 
+    @click="$emit('close')">
+          <v-icon>{{mdiClose}}</v-icon>
+    </v-btn>
     <v-card-text class="text-left justify-left">
       <h4 class="text-left pb-2">Choose individual pairwise relationship data sources</h4>
       <v-card :dark="darkmode" outlined>
@@ -64,7 +64,6 @@
       </v-row>
     </v-card-text>
   </v-card>
-  </v-dialog>
   </div>
 </template>
 
@@ -165,6 +164,22 @@ export default {
     },
   },
   watch: {
+    types(val) {
+      if(val.length > 0)
+      this.dataType = val[0];
+    },
+    provenances(val) {
+      if(val.length > 0)
+      this.provenance = val[0];
+    },
+    bioSources(val) {
+      if(val.length > 0)
+      this.bioSource = val[0];
+    },
+    origins(val) {
+      if(val.length > 0)
+      this.origin = val[0]
+    },
     relationshipTypes(val) {
       if (val.length > 6) this.$nextTick(() => this.relationshipTypes.pop());
     },
@@ -244,7 +259,6 @@ export default {
   color: red;
 }
 .selectionDropDownDark{
-  text-align: left;
   color: white;
   border-bottom: 1px solid white;
   width: 100%;
@@ -265,5 +279,9 @@ border-bottom: 1px dotted darkgrey;
 }
 .secondaryBtn {
   background-color: #424242;
+}
+.closeBtn {
+  position: absolute;
+  top:0;
 }
 </style>

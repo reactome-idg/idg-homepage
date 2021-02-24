@@ -2,6 +2,7 @@
   <v-row no-gutters class="pl-5 pr-5">
     <v-col cols="9">
       <v-text-field
+        id="prdInputBox"
         prefix="Functional Interaction Score ≥"
         v-model="prd"
         @keyup.enter="updatePRD"
@@ -14,7 +15,7 @@
       ></v-text-field>
       <p style="color:red;">{{errors}} {{error}}</p>
     </v-col>
-    <v-col cols="3" align-self="center">
+    <v-col cols="3" align-self="center" justify="center">
       <v-btn class="ml-2" small @click="updatePRD">UPDATE</v-btn>
     </v-col>
   </v-row>
@@ -24,6 +25,10 @@
 export default {
   name: "FuncInteractionScoreFilter",
   props: {
+    term: {
+      type: String,
+      default: () => null
+    },
     interactingGenes: {
       type: Array,
       default: () => [],
@@ -35,7 +40,7 @@ export default {
   },
   data: () => ({
     prd: 0.9,
-    error: ""
+    error: "",
   }),
   computed: {
       numberOfGenes() {
@@ -44,8 +49,9 @@ export default {
       },
       numberOfGenesLabel() {
         if(!this.interactingGenes) return "Loading...";
-        return this.numberOfGenes + " genes";
-      }
+        if(window.innerWidth < 1190) return (this.numberOfGenes + " gene" + (this.numberOfGenes === 1 ? "":"s"));
+        return this.numberOfGenes + " genes interacting" + (this.term ? ` with ${this.term}` : '');
+      },
   },
   methods: {
       updatePRD() {
@@ -56,7 +62,7 @@ export default {
         else{
             this.error = "Please choose a cutoff with at least 1 gene";
         }
-      }
+      },
   }
 };
 </script>

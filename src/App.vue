@@ -51,6 +51,9 @@ export default {
   margin: 0;
   padding: 0;
 }
+a {
+  text-decoration: none;
+}
 body {
     background:none;
     background-color: #eee;
