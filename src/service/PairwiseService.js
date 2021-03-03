@@ -3,6 +3,16 @@ import axios from "axios";
 const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 
 class PairwiseService {
+  static checkforTerm(term) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${url}checkTerm/${term}`).then((res) => {
+        resolve(res.data)
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+  }
+
   static searchHierarchyForTerm(term) {
     return new Promise((resolve, reject) => {
       axios
@@ -30,14 +40,17 @@ class PairwiseService {
     });
   }
 
-  static loadCombinedScores(postData){
+  static loadCombinedScores(postData) {
     return new Promise((resolve, reject) => {
-      axios.post(`${url}relationships/combinedScoreForTerm`, postData).then((res)=> {
-        resolve(res.data.filter((p) => p.bottomLevel));
-      }).catch((err)=> {
-        reject(err);
-      })
-    })
+      axios
+        .post(`${url}relationships/combinedScoreForTerm`, postData)
+        .then((res) => {
+          resolve(res.data.filter((p) => p.bottomLevel));
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   static getDataDescs(term) {
@@ -55,14 +68,20 @@ class PairwiseService {
 
   static getInteractorScoresForTerm(term) {
     return new Promise((resolve, reject) => {
-      axios.get(`${url}relationships/combinedScoreGenesForTerm/${term}`)
-      .then((res) => {
-        resolve(Object.entries(res.data).map(([gene, score]) => ({"gene": gene, "score":score})))
-      })
-      .catch((err) => {
-        reject(err)
-      })
-    })
+      axios
+        .get(`${url}relationships/combinedScoreGenesForTerm/${term}`)
+        .then((res) => {
+          resolve(
+            Object.entries(res.data).map(([gene, score]) => ({
+              gene: gene,
+              score: score,
+            }))
+          );
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   /**

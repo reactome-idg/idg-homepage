@@ -1,31 +1,28 @@
 <template>
-    <v-card dark raised class="mb-5">
-      <v-card-text class="pa-3">
-        <v-row align="center" justify="center">
-          <v-col cols="12" md="10">
-            <v-text-field
-              dark
-              label="Search a Gene or Uniprot"
-              v-model="search"
-              placeholder="e.g. NTN1, EGFR, O95631"
-              :outlined="true"
-              class="searchContainer" 
-              text-uppercase
-              @keyup.enter="searchPairwise"
-              hide-details="auto"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="2">
-            <v-btn color="primary" @click="searchPairwise">Search</v-btn>
-          </v-col>
-        </v-row>
-        <span style="color:red;" v-if="error">{{error}}</span>
-      </v-card-text>
-    </v-card>
+  <div class="search">
+    <div class="container grid">
+      <div>
+        <v-text-field
+          label="Search a Gene or Uniprot"
+          v-model="search"
+          placeholder="e.g. NTN1, EGFR, O95631"
+          :outlined="true"
+          class="searchContainer"
+          text-uppercase
+          @keyup.enter="searchPairwise"
+          hide-details="auto"
+        ></v-text-field>
+        <p class="errorText">{{error}}</p>
+      </div>
+      <v-btn color="var(--primary-color)" class="searchBtn" @click="searchPairwise">Search</v-btn>
+      <!-- <div class="btn">Search</div> -->
+    </div>
+  </div>
 </template>
 
 <script>
-import router from "../../../router"; 
+import PairwiseService from "../../../service/PairwiseService";
+import router from "../../../router";
 export default {
   name: "PairwiseSearch",
   data: () => ({
@@ -37,28 +34,60 @@ export default {
   watch: {
     $route() {
       this.search = "";
-    }
+    },
   },
   methods: {
     async searchPairwise() {
+      this.error = "";
       if (this.search === "") {
         this.error = "Please enter a search term";
         return;
       }
       this.error = "";
 
+      try{
+      const exists = await PairwiseService.checkforTerm(this.search);
+
+      if(exists === false){
+        this.error = "This term is not recorded. Please try a Gene Symbol or Uniprot Identifier";
+        return
+      }
+      }catch(err) {
+        this.error = "This term is not recorded. Please try a Gene Symbol or Uniprot Identifier";
+        return
+      }
+
       //Only push new search if not the same as current search
       const newRoute = `/search/${this.search.toUpperCase()}`;
-      if(this.$route.path !== newRoute)
-        router.push(`/search/${this.search.toUpperCase()}`)
-
+      if (this.$route.path !== newRoute)
+        router.push(`/search/${this.search.toUpperCase()}`);
     },
   },
 };
 </script>
 
 <style scoped>
-.searchContainer{
+.search {
+  background-color: #eee;
+  height: 120px;
+}
+.search .grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+.search .grid > *:first-child {
+  grid-column: 1 / span 3;
+}
+.searchContainer {
   text-transform: uppercase;
+  width: 100%;
+}
+.searchBtn {
+  color: white !important;
+  font-weight: bold;
+}
+.errorText {
+  color: red;
+  text-align: left;
+  font-size: small;
 }
 </style>
