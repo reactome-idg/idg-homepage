@@ -5,8 +5,8 @@
         <LoadingCircularProgress />
       </v-card-text>
     </v-card>
-    <v-container
-      fluid
+    <div
+      
       v-if="
         (primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0) || loadingPrimary"
     >
@@ -46,7 +46,7 @@
           </template>
         </v-treeview>
       </v-card>
-    </v-container>
+    </div>
     <p v-else>No primary pathways found.</p>
   </div>
 </template>
@@ -54,7 +54,7 @@
 <script>
 import PairwiseService from "../../../service/PairwiseService";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
-import { VContainer, VCard, VCardText, VTreeview } from "vuetify/lib";
+import { VCard, VCardText, VTreeview } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify";
 import { mdiChevronDown } from "@mdi/js";
 
@@ -63,7 +63,6 @@ export default {
   vuetify,
   components: {
     LoadingCircularProgress,
-    VContainer,
     VCard,
     VCardText,
     VTreeview,

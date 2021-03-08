@@ -37,7 +37,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn small class="secondaryBtn" @click="addRelationship"
+              <v-btn small color="var(--secondary-color)" @click="addRelationship"
                 >Add</v-btn
               >
             </v-col>
@@ -56,7 +56,7 @@
           >
         </v-col>
         <v-col cols="12" md="2">
-          <v-btn :dark="darkmode" class="primaryBtn" @click="searchSecondaryPathways">Search</v-btn>
+          <v-btn :dark="darkmode" color="var(--primary-color)" class="btn-primary" @click="searchSecondaryPathways">Search</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -209,7 +209,7 @@ export default {
     addRelationship() {
       this.error = "";
       var desc = `${this.provenance}|${this.bioSource}|${this.dataType}`;
-      if (this.origin != "") {
+      if (this.origin != null) {
         desc = `${desc}|${this.origin}`;
       }
       if (desc.length > 100) desc = desc.substring(0, 100);
@@ -225,24 +225,18 @@ export default {
       if (this.relationshipTypes.indexOf(desc) === -1) {
         this.relationshipTypes.push(desc);
       } else this.error = "This interactor set has already been added.";
-
-      //reset form
-      this.dataType = "";
-      this.provenance = "";
-      this.bioSource = "";
-      this.origin = "";
     },
     cascadeDataType() {
-      this.provenance = "";
-      this.bioSource = "";
-      this.origin = "";
+      this.provenance = null;
+      this.bioSource = null;
+      this.origin = null;
     },
     cascadeProvenance() {
-      this.bioSource = "";
-      this.origin = "";
+      this.bioSource = null;
+      this.origin = null;
     },
     cascadeBioSource() {
-      this.origin = "";
+      this.origin = null;
     },
     remove(rel) {
       this.relationshipTypes = this.relationshipTypes.filter(

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <div class="my-5">
     <v-row>
       <v-col cols="12" md="4">
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
@@ -7,7 +7,7 @@
             <a :href="browserLink">
               <v-btn
                 large
-                color="primary"
+                color="var(--primary-color)"
                 height="50px"
                 width="100px"
                 class="navigationButton"
@@ -25,7 +25,7 @@
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
           <v-card-title class="justify-center">
             <a v-bind:href="reactomeLink">
-              <v-btn large color="primary" height="50px" width="100px" class="navigationButton">Go!</v-btn>
+              <v-btn large color="var(--primary-color)" height="50px" width="100px" class="navigationButton">Go!</v-btn>
             </a>
           </v-card-title>
           <v-card-text>
@@ -40,7 +40,7 @@
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
           <v-card-title class="justify-center">
             <router-link to="/documentation">
-              <v-btn color="primary" height="50px" width="100px" class="navigationButton">View!</v-btn>
+              <v-btn color="var(--primary-color)" height="50px" width="100px" class="navigationButton">View!</v-btn>
             </router-link>
           </v-card-title>
           <v-card-text>
@@ -51,7 +51,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -67,5 +67,6 @@ export default {
 <style>
 .navigationButton{
   font-weight: bold;
+  color: white !important;
 }
 </style>

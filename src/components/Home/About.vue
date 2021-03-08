@@ -1,5 +1,5 @@
 <template>
-      <v-card class="mb-5" dark raised>
+      <v-card class="mb-5" raised>
         <v-card-title>
           Illuminating the Druggable Genome with Reactome
           <v-spacer></v-spacer>

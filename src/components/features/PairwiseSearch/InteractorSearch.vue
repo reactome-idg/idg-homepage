@@ -1,138 +1,135 @@
 <template :dark="darkmode">
-  <v-container fluid>
-    <div>
-      <div class="text-left">
-        <span class="larger">{{ title }}</span>
-        <small class="pl-2">{{ subtitle }}</small>
-        <small class="pl-2">{{ relationshipTypesString }}</small>
-      </div>
-      <v-card
-        :dark="darkmode"
-        outlined
-        class="text-left justify-left"
-      >
-        <div
-          v-if="
-            currentSecondarySearchDescs.dataDescriptions &&
-            currentSecondarySearchDescs.dataDescriptions.length > 0
-          "
-        >
-          <v-btn icon class="mx-1" @click="closeIndividualSources">
-            <v-icon>{{ mdiClose }}</v-icon>
-          </v-btn>
-        </div>
-        <div v-else>
-          <v-row no-gutters class="pl-5 pr-5">
-            <v-col cols="12" md="9">
-              <FuncInteractionScoreFilter
-              :term="term"
-                :interactingGenes="interactingGenes"
-                :errors="FuncInteractionScoreFilterErrors"
-                @updatePRD="updatePRD"
-              />
-            </v-col>
-            <v-col cols="12" md="3" align-self="center">
-              <v-btn
-                class="btn-primary"
-                :dark="darkmode"
-                @click="showSecondarySearchForm = true"
-                >Choose Sources</v-btn
-              >
-            </v-col>
-          </v-row>
-        </div>
-        <v-card-text class="interactingPathwaysCard">
-          <v-data-table
-            dense
-            :headers="secondaryHeaders"
-            :items="filteredSecondaryPathways"
-            item-key="stId"
-            show-expand
-            :expand-icon="mdiChevronDown"
-            :search="secondarySearch"
-            :single-expand="true"
-            :footer-props="{
-              'items-per-page-options': [20, 40, 50, 100, -1],
-              'next-icon': mdiChevronRight,
-              'prev-icon': mdiChevronLeft,
-            }"
-            :hide-default-footer="hideSecondaryPagination"
-            @item-expanded="loadSecondaryDetails"
-            :must-sort="true"
-            :loading="secondaryPathwaysLoading"
-          >
-            <template v-slot:item.stId="{ item }">
-              <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
-                item.stId
-              }}</a>
-            </template>
-            <template v-slot:item.fdr="{ item }">{{
-              item.fdr.toExponential(2)
-            }}</template>
-            <template v-slot:item.pVal="{ item }">{{
-              item.pVal.toExponential(2)
-            }}</template>
-            <template v-slot:expanded-item="{ headers, item }">
-              <td :colspan="headers.length">
-                <TableDetails
-                  v-if="item.details"
-                  :details="item.details"
-                  :urlFlagSuffix="getURLFlagSuffix"
-                />
-                <v-progress-circular
-                  v-else
-                  indeterminate
-                  color="primary"
-                ></v-progress-circular>
-              </td>
-            </template>
-            <template v-slot:body.append>
-              <tr>
-                <td colspan="2">
-                  <v-text-field
-                    v-if="!hideSecondaryPagination"
-                    v-model="secondarySearch"
-                    label="Search"
-                    hide-details
-                  ></v-text-field>
-                </td>
-                <td colspan="2"></td>
-                <td colspan="1">
-                  <v-text-field
-                    prefix="FDR ≤"
-                    v-model="fdr"
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    hide-details
-                  ></v-text-field>
-                </td>
-              </tr>
-              <tr></tr>
-            </template>
-            <v-data-footer
-              :next-icon="mdiChevronRight"
-              :prev-icon="mdiChevronLeft"
-            >
-            </v-data-footer>
-          </v-data-table>
-          <a :href="getOverViewLink"
-            ><v-btn class="ma-2" small>Open Pathway Overview</v-btn></a
-          >
-        </v-card-text>
-        <v-overlay absolute :value="showSecondarySearchForm" :dark="darkmode">
-          <SecondaryPathwaysForm
-            :initialDescs="currentSecondarySearchDescs.dataDescriptions"
-            :darkmode="darkmode"
-            :term="term"
-            @searchSecondaryPathways="searchSecondaryPathways"
-            @close="showSecondarySearchForm = false"
-          />
-        </v-overlay>
-      </v-card>
+  <div>
+    <div class="text-left">
+      <span class="larger">{{ title }}</span>
+      <small class="pl-2">{{ subtitle }}</small>
+      <small class="pl-2">{{ relationshipTypesString }}</small>
     </div>
-  </v-container>
+    <v-card :dark="darkmode" outlined class="text-left justify-left">
+      <div
+        v-if="
+          currentSecondarySearchDescs.dataDescriptions &&
+          currentSecondarySearchDescs.dataDescriptions.length > 0
+        "
+      >
+        <v-btn icon class="mx-1" @click="closeIndividualSources">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-row no-gutters class="pl-5 pr-5">
+          <v-col cols="12" md="9">
+            <FuncInteractionScoreFilter
+              :term="term"
+              :interactingGenes="interactingGenes"
+              :errors="FuncInteractionScoreFilterErrors"
+              @updatePRD="updatePRD"
+            />
+          </v-col>
+          <v-col cols="12" md="3" align-self="center">
+            <v-btn
+              color="var(--primary-color)"
+              class="btn-primary"
+              :dark="darkmode"
+              @click="showSecondarySearchForm = true"
+              >Choose Sources</v-btn
+            >
+          </v-col>
+        </v-row>
+      </div>
+      <v-card-text class="interactingPathwaysCard">
+        <v-data-table
+          dense
+          :headers="secondaryHeaders"
+          :items="filteredSecondaryPathways"
+          item-key="stId"
+          show-expand
+          :expand-icon="mdiChevronDown"
+          :search="secondarySearch"
+          :single-expand="true"
+          :footer-props="{
+            'items-per-page-options': [20, 40, 50, 100, -1],
+            'next-icon': mdiChevronRight,
+            'prev-icon': mdiChevronLeft,
+          }"
+          :hide-default-footer="hideSecondaryPagination"
+          @item-expanded="loadSecondaryDetails"
+          :must-sort="true"
+          :loading="secondaryPathwaysLoading"
+        >
+          <template v-slot:item.stId="{ item }">
+            <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
+              item.stId
+            }}</a>
+          </template>
+          <template v-slot:item.fdr="{ item }">{{
+            item.fdr.toExponential(2)
+          }}</template>
+          <template v-slot:item.pVal="{ item }">{{
+            item.pVal.toExponential(2)
+          }}</template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <TableDetails
+                v-if="item.details"
+                :details="item.details"
+                :urlFlagSuffix="getURLFlagSuffix"
+              />
+              <v-progress-circular
+                v-else
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </td>
+          </template>
+          <template v-slot:body.append>
+            <tr>
+              <td colspan="2">
+                <v-text-field
+                  v-if="!hideSecondaryPagination"
+                  v-model="secondarySearch"
+                  label="Search"
+                  hide-details
+                ></v-text-field>
+              </td>
+              <td colspan="2"></td>
+              <td colspan="1">
+                <v-text-field
+                  prefix="FDR ≤"
+                  v-model="fdr"
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  hide-details
+                ></v-text-field>
+              </td>
+            </tr>
+            <tr></tr>
+          </template>
+          <v-data-footer
+            :next-icon="mdiChevronRight"
+            :prev-icon="mdiChevronLeft"
+          >
+          </v-data-footer>
+        </v-data-table>
+        <a :href="getOverViewLink"
+          ><v-btn color="var(--secondary-color)" class="ma-2" small
+            >Open Pathway Overview</v-btn
+          ></a
+        >
+      </v-card-text>
+      <v-overlay absolute :value="showSecondarySearchForm" :dark="darkmode">
+        <SecondaryPathwaysForm
+          :initialDescs="currentSecondarySearchDescs.dataDescriptions"
+          :darkmode="darkmode"
+          :term="term"
+          @searchSecondaryPathways="searchSecondaryPathways"
+          @close="showSecondarySearchForm = false"
+        />
+      </v-overlay>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -142,7 +139,6 @@ import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
 import {
-  VContainer,
   VDataTable,
   VCardText,
   VTextField,
@@ -165,7 +161,6 @@ export default {
   components: {
     SecondaryPathwaysForm,
     TableDetails,
-    VContainer,
     VDataTable,
     VCardText,
     VTextField,
@@ -364,7 +359,7 @@ a {
   text-decoration: none;
 }
 .btn-primary {
-  background-color: #1976D2;
+  background-color: #1976d2;
 }
 .interactingPathwaysCard {
   min-height: 300px;

@@ -1,27 +1,31 @@
 <template>
-  <header class="pa-3 header">
-    <router-link to="/">
-      <img :src="'/assets/images/logo.svg'" alt="Reactome Logo" class="logo" />
-    </router-link>
-    <router-link to="/documentation" class="links">Docs</router-link>
-  </header>
+  <div class="navbar">
+    <div class="container flex">
+      <router-link to="/">
+        <img
+          :src="'/assets/images/logo.svg'"
+          alt="Reactome Logo"
+          class="logo"
+        />
+      </router-link>
+      <router-link to="/documentation" class="links">Docs</router-link>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
 };
 </script>
 
 <style scoped>
-.header {
-  width:100%;
-  margin: 0 auto;
-  padding: 40px;
-  background-color: #222;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.navbar {
+  background-color: #fff;
+  height: 70px;
+}
+.navbar .flex {
+  justify-content:space-between;
 }
 a {
   text-decoration: none;
@@ -30,10 +34,8 @@ a {
   width: 15em;
 }
 .links {
-  color: white;
+  color: #333;
   font-weight: bolder;
   text-decoration: none;
-
 }
-
 </style>

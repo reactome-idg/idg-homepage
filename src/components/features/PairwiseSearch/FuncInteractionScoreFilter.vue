@@ -16,7 +16,7 @@
       <p style="color:red;">{{errors}} {{error}}</p>
     </v-col>
     <v-col cols="3" align-self="center" justify="center">
-      <v-btn class="ml-2" small @click="updatePRD">UPDATE</v-btn>
+      <v-btn color="var(--secondary-color)" class="ml-2" small @click="updatePRD">UPDATE</v-btn>
     </v-col>
   </v-row>
 </template>
