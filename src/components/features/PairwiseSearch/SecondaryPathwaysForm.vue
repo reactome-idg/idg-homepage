@@ -1,5 +1,5 @@
 <template :dark="darkmode">
-<div>
+<div class="full-width">
   <v-card :dark="darkmode" outlined class="pt-5">
     <v-btn icon class="closeBtn" title="close" 
     @click="$emit('close')">
@@ -277,5 +277,8 @@ border-bottom: 1px dotted darkgrey;
 .closeBtn {
   position: absolute;
   top:0;
+}
+.full-width {
+  width: 100%;
 }
 </style>

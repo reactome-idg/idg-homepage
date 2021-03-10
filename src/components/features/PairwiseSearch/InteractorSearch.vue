@@ -119,7 +119,7 @@
           ></a
         >
       </v-card-text>
-      <v-overlay absolute :value="showSecondarySearchForm" :dark="darkmode">
+      <v-overlay absolute :value="showSecondarySearchForm" :dark="darkmode" class="overlay-form">
         <SecondaryPathwaysForm
           :initialDescs="currentSecondarySearchDescs.dataDescriptions"
           :darkmode="darkmode"
@@ -363,5 +363,8 @@ a {
 }
 .interactingPathwaysCard {
   min-height: 300px;
+}
+.overlay-form{
+  padding: 0 10%;
 }
 </style>
