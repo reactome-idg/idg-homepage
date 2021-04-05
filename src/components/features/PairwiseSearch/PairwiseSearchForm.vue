@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="container grid">
+    <div class="grid">
       <div>
         <v-text-field
           label="Search a Gene or Uniprot"
@@ -27,6 +27,7 @@ export default {
   name: "PairwiseSearch",
   data: () => ({
     search: "",
+    searchTerm: "",
     uniprotCheckBox: false,
     relationshipRtn: null,
     error: "",
@@ -35,18 +36,21 @@ export default {
     $route() {
       this.search = "";
     },
+    search(newVal) {
+      this.searchTerm = newVal.toUpperCase()
+    }
   },
   methods: {
     async searchPairwise() {
       this.error = "";
-      if (this.search === "") {
+      if (this.searchTerm === "") {
         this.error = "Please enter a search term";
         return;
       }
       this.error = "";
 
       try{
-      const exists = await PairwiseService.checkforTerm(this.search);
+      const exists = await PairwiseService.checkforTerm(this.searchTerm);
 
       if(exists === false){
         this.error = "This term is not recorded. Please try a Gene Symbol or Uniprot Identifier";
@@ -58,9 +62,9 @@ export default {
       }
 
       //Only push new search if not the same as current search
-      const newRoute = `/search/${this.search.toUpperCase()}`;
+      const newRoute = `/search/${this.searchTerm}`;
       if (this.$route.path !== newRoute)
-        router.push(`/search/${this.search.toUpperCase()}`);
+        router.push(`/search/${this.searchTerm}`);
     },
   },
 };

@@ -1,12 +1,12 @@
 <template>
   <div class="pb-5">
     <section>
-      <div class="container">
+      <div class="pa-5">
         <MainLinks />
         <About />
       </div>
     </section>
-    <PairwiseSearchForm @searchPathways="searchPathways" />
+    <PairwiseSearchForm @searchPathways="searchPathways" class="px-5" />
     <v-expand-transition>
       <div v-if="term !== null" class="searchContainer pa-5">
         <v-card raised class="pa-5 mb-5">

@@ -14,8 +14,9 @@
         <span class="larger">{{ title }}</span>
         <small class="pl-2">{{ subtitle }}</small>
       </div>
-      <v-card outlined :dark="darkmode" class="text-left">
+      <v-card outlined :dark="darkmode" class="text-left annotaedPathwaysCard">
         <v-treeview
+          v-if="primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0"
           dense
           :items="primaryPathways.hierarchy"
           :expand-icon="mdiChevronDown"
@@ -23,21 +24,6 @@
         >
           <template v-slot:label="{ item }">
             <a
-              v-if="item.type === 'TopLevelPathway'"
-              :class="darkmode === true ? 'linkDark' : 'link'"
-              :href="getPrimaryLink(item.stId)"
-              :target="linkTarget"
-              >{{ item.name }}</a
-            >
-            <a
-              v-else-if="!item.children || item.children.length === 0"
-              :class="darkmode === true ? 'linkDark' : 'link'"
-              :href="getPrimaryLink(item.stId)"
-              :target="linkTarget"
-              >{{ item.name }}</a
-            >
-            <a
-              v-else
               :href="getPrimaryLink(item.stId)"
               :class="darkmode === true ? 'linkDark' : 'link'"
               :target="linkTarget"
@@ -144,15 +130,23 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+
 .linkDark {
   text-decoration: none;
-  /* color: white; */
+  color: white !important;
 }
 .linkDark:active:hover {
-  color: grey;
+  color: gray !important;
 }
 .link {
   text-decoration: none;
-  /* color: black; */
+  color: var(--primary-color) !important;
+}
+.link:hover {
+  color: var(--dark-color) !important;
+}
+.annotaedPathwaysCard {
+  max-height: 385px;
+  overflow: scroll;
 }
 </style>

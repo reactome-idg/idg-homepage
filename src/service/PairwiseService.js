@@ -5,12 +5,15 @@ const url = process.env.VUE_APP_IDG_PAIRWISE_SERVICE;
 class PairwiseService {
   static checkforTerm(term) {
     return new Promise((resolve, reject) => {
-      axios.get(`${url}checkTerm/${term}`).then((res) => {
-        resolve(res.data)
-      }).catch((err) => {
-        reject(err);
-      })
-    })
+      axios
+        .get(`${url}checkTerm/${term}`)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   static searchHierarchyForTerm(term) {
@@ -23,6 +26,15 @@ class PairwiseService {
         .catch((err) => {
           reject(err);
         });
+    });
+  }
+
+  static loadPathwayStIdsForTerm(term) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${url}realtionships/pathwayStIdsForTerm/${term}`)
+        .then((res) => resolve(res.data))
+        .catch((err) => reject(err));
     });
   }
 

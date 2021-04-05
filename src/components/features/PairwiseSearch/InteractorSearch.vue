@@ -18,13 +18,20 @@
       </div>
       <div v-else>
         <v-row no-gutters class="pl-5 pr-5">
-          <v-col cols="12" md="9">
+          <v-col cols="12" md="6">
             <FuncInteractionScoreFilter
               :term="term"
               :interactingGenes="interactingGenes"
               :errors="FuncInteractionScoreFilterErrors"
               @updatePRD="updatePRD"
             />
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-checkbox
+              v-model="showAnnotatedPathwaysInput"
+              :label="`Include ${term}'s annotated pathways`"
+              color="var(--light-color)"
+            ></v-checkbox>
           </v-col>
           <v-col cols="12" md="3" align-self="center">
             <v-btn
@@ -119,7 +126,12 @@
           ></a
         >
       </v-card-text>
-      <v-overlay absolute :value="showSecondarySearchForm" :dark="darkmode" class="overlay-form">
+      <v-overlay
+        absolute
+        :value="showSecondarySearchForm"
+        :dark="darkmode"
+        class="overlay-form"
+      >
         <SecondaryPathwaysForm
           :initialDescs="currentSecondarySearchDescs.dataDescriptions"
           :darkmode="darkmode"
@@ -197,12 +209,6 @@ export default {
     mdiChevronDown,
     browserLink: process.env.VUE_APP_BROWSER_LINK,
     linkTarget: process.env.VUE_APP_LINK_TARGET,
-    secondaryHeaders: [
-      { text: "Pathway Stable id", value: "stId" },
-      { text: "Pathway Name", value: "name" },
-      { text: "pValue", value: "pVal" },
-      { text: "FDR", value: "fdr" },
-    ],
     secondaryPathways: [],
     interactingGenes: null,
     fdr: 1.0,
@@ -211,6 +217,8 @@ export default {
     currentSecondarySearchDescs: [],
     secondaryPathwaysLoading: false,
     showSecondarySearchForm: false,
+    showAnnotatedPathwaysInput: true,
+    pathwayStIdsForGene: [],
     FuncInteractionScoreFilterErrors: "",
   }),
   watch: {
@@ -222,17 +230,33 @@ export default {
       this.secondarySearch = "";
       this.currentSecondarySearchDescs = [];
       this.showSecondarySearchForm = false;
-      this.loadCombinedScores();
+      this.showAnnotatedPathwaysInput = true;
+      this.pathwayStIdsForGene = [];
+      this.getInitialData();
     },
   },
   computed: {
-    hideSecondaryPagination() {
-      return this.secondaryPathways.length < 20;
+    secondaryHeaders() {
+      return [
+        { text: "Pathway Stable id", value: "stId" },
+        { text: "Pathway Name", value: "name" },
+        { text: "pValue", value: "pVal" },
+        {
+          text: "FDR",
+          value: "fdr",
+          filter: (value) => {
+            if (!this.fdr) return true;
+            return value <= this.fdr;
+          },
+        },
+      ];
     },
     filteredSecondaryPathways() {
-      return this.secondaryPathways.filter((i) => {
-        return i.fdr <= this.fdr;
-      });
+      if (this.showAnnotatedPathwaysInput) return this.secondaryPathways;
+      return this.secondaryPathways.filter((pw) => pw.isAnnotated === false);
+    },
+    hideSecondaryPagination() {
+      return this.secondaryPathways.length < 20;
     },
     relationshipTypesString() {
       return this.currentSecondarySearchDescs.dataDescriptions
@@ -257,10 +281,23 @@ export default {
       }
     },
   },
-  async created() {
-    this.loadCombinedScores();
+  created() {
+    this.getInitialData();
   },
   methods: {
+    async getInitialData() {
+      await this.loadPathwaysForGene();
+      this.loadCombinedScores();
+    },
+    async loadPathwaysForGene() {
+      try {
+        this.pathwayStIdsForGene = await PairwiseService.loadPathwayStIdsForTerm(
+          this.term
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async loadSecondaryDetails({ item, value }) {
       if (!value) return;
       try {
@@ -287,22 +324,13 @@ export default {
           term: this.term,
           prd: this.currentPRD,
         });
+        this.addIsAnnotatedToPathways();
         if (this.secondaryPathways.length === 0) this.secondaryPathwaysError();
       } catch (err) {
         this.secondaryPathwaysLoading = false;
         this.secondaryPathwaysError();
       }
       this.secondaryPathwaysLoading = false;
-    },
-    async loadInteractingGenes() {
-      try {
-        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(
-          this.term
-        );
-      } catch (err) {
-        this.interactingGenes = [];
-        console.log(err);
-      }
     },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
@@ -316,6 +344,7 @@ export default {
             dataDescKeys: dataDescriptions.digitalKeys,
           }
         );
+        this.addIsAnnotatedToPathways();
         if (this.secondaryPathways.length === 0) {
           this.secondaryPathwaysError();
         }
@@ -325,6 +354,21 @@ export default {
       }
 
       this.secondaryPathwaysLoading = false;
+    },
+    addIsAnnotatedToPathways() {
+      this.secondaryPathways.forEach((pathway) => {
+        pathway.isAnnotated = this.pathwayStIdsForGene.includes(pathway.stId);
+      });
+    },
+    async loadInteractingGenes() {
+      try {
+        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(
+          this.term
+        );
+      } catch (err) {
+        this.interactingGenes = [];
+        console.log(err);
+      }
     },
     secondaryPathwaysError() {
       this.currentSecondarySearchDescs = [];
@@ -357,6 +401,10 @@ export default {
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 a {
   text-decoration: none;
+  color: var(--primary-color) !important;
+}
+a:hover {
+  color: var(--dark-color) !important;
 }
 .btn-primary {
   background-color: #1976d2;
@@ -364,7 +412,10 @@ a {
 .interactingPathwaysCard {
   min-height: 300px;
 }
-.overlay-form{
+.overlay-form {
   padding: 0 10%;
+}
+.d-none {
+  display: none !important;
 }
 </style>

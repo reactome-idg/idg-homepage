@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters class="pl-5 pr-5">
+  <v-row no-gutters class="">
     <v-col cols="9">
       <v-text-field
         id="prdInputBox"
@@ -11,9 +11,9 @@
         min="0"
         max="1"
         step="0.1"
-        :suffix="numberOfGenesLabel"
       ></v-text-field>
-      <p style="color:red;">{{errors}} {{error}}</p>
+      {{numberOfGenesLabel}}
+      <span style="color:red;"> {{errors}} {{error}}</span>
     </v-col>
     <v-col cols="3" align-self="center" justify="center">
       <v-btn color="var(--secondary-color)" class="ml-2" small @click="updatePRD">UPDATE</v-btn>

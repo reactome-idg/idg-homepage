@@ -38,10 +38,10 @@ export default {
 <style>
 
 :root {
-  --primary-color: #509dbe;
-  --secondary-color: #bbb;
-  --dark-color: #002240;
-  --light-color: #f4f4f4;
+  --primary-color: #44318d;
+  --secondary-color: #e98074;
+  --dark-color: #2A1B3D;
+  --light-color: #D83F87;
   --success-color: #5cb85c;
   --error-color: #d9534f;
 }
@@ -61,7 +61,7 @@ export default {
   margin: 0;
   padding: 0;
 }
-a {
+a{
   text-decoration: none;
 }
 body {
