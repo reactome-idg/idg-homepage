@@ -4,7 +4,7 @@
       <v-text-field
         id="prdInputBox"
         prefix="Functional Interaction Score ≥"
-        v-model="prd"
+        v-model="prdInput"
         @keyup.enter="updatePRD"
         hide-details
         type="number"
@@ -36,16 +36,29 @@ export default {
     errors: {
       type: String,
       default: () => ""
+    },
+    prd: {
+      type: Number,
+      default: () => .9
     }
   },
   data: () => ({
-    prd: 0.9,
+    prdInput: 0.9,
     error: "",
   }),
+  created() {
+    this.prdInput = this.prd
+  },
+  watch: {
+    prd(newVal, oldVal) {
+      if(newVal === oldVal) return;
+      this.prdInput = this.prd
+    }
+  },
   computed: {
       numberOfGenes() {
           return this.interactingGenes !== null &&
-           this.interactingGenes.filter(({score}) => score>= this.prd).length
+           this.interactingGenes.filter(({score}) => score>= this.prdInput).length
       },
       numberOfGenesLabel() {
         if(!this.interactingGenes) return "Loading...";
@@ -57,7 +70,7 @@ export default {
       updatePRD() {
         if(this.numberOfGenes > 0){
           this.error = "";
-          this.$emit('updatePRD', this.prd);
+          this.$emit('updatePRD', parseFloat(this.prdInput));
         }
         else{
             this.error = "Please choose a cutoff with at least 1 gene";

@@ -23,6 +23,7 @@
               :term="term"
               :interactingGenes="interactingGenes"
               :errors="FuncInteractionScoreFilterErrors"
+              :prd="currentPRD"
               @updatePRD="updatePRD"
             />
           </v-col>
@@ -226,7 +227,6 @@ export default {
       this.secondaryPathways = [];
       this.interactingGenes = null;
       this.fdr = 1.0;
-      this.prd = 0.9;
       this.secondarySearch = "";
       this.currentSecondarySearchDescs = [];
       this.showSecondarySearchForm = false;
@@ -287,6 +287,17 @@ export default {
   methods: {
     async getInitialData() {
       await this.loadPathwaysForGene();
+      await this.loadInteractingGenes();
+
+      //want to effectively truncate the largest PRD available to 1 decimal place
+      //all Math functions in javascript end up rounding, so parsing to string, truncating there,
+      //and parsing back is fastest and avoids any floating point errors.
+      this.currentPRD = parseFloat(
+        Math.max(...this.interactingGenes.map((gene) => gene.score))
+          .toString()
+          .slice(0, 3)
+      );
+
       this.loadCombinedScores();
     },
     async loadPathwaysForGene() {
@@ -313,13 +324,12 @@ export default {
         console.log(err);
       }
     },
-    async loadCombinedScores(prd) {
-      this.prd = prd;
+    async loadCombinedScores() {
       this.secondaryPathwaysLoading = true;
       this.showSecondarySearchForm = false;
       this.FuncInteractionScoreFilterErrors = "";
+
       try {
-        this.loadInteractingGenes();
         this.secondaryPathways = await PairwiseService.loadCombinedScores({
           term: this.term,
           prd: this.currentPRD,
@@ -380,7 +390,6 @@ export default {
     updatePRD(prd) {
       if (prd === this.currentPRD) return;
       this.currentPRD = prd;
-      this.fdrDialog = false;
       this.loadCombinedScores();
     },
     getSecondaryLink(stId) {
