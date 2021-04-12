@@ -297,18 +297,16 @@ export default {
       await this.loadPathwaysForGene();
       await this.loadInteractingGenes();
 
-      //want to effectively truncate the largest PRD available to 1 decimal place
-      //all Math functions in javascript end up rounding, so parsing to string, truncating there,
-      //and parsing back is fastest and avoids any floating point errors.
-      this.currentPRD = parseFloat(
-        Math.max(...this.interactingGenes.map((gene) => gene.score))
-          .toString()
-          .slice(0, 3)
-      );
+      await this.loadCombinedScores();
 
-      this.loadCombinedScores();
+      //when loading initial data, always want to start with something loaded
+      //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
+      while(this.secondaryPathways.length === 0){
+        this.currentPRD  = this.currentPRD - .1
+        await this.loadCombinedScores()
+      }
     },
-    async loadPathwaysForGene() {z
+    async loadPathwaysForGene() {
       try {
         this.pathwayStIdsForGene = await PairwiseService.loadPathwayStIdsForTerm(
           this.term
