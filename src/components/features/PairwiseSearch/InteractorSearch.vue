@@ -22,7 +22,6 @@
             <FuncInteractionScoreFilter
               :term="term"
               :interactingGenes="interactingGenes"
-              :errors="FuncInteractionScoreFilterErrors"
               :prd="currentPRD"
               @updatePRD="updatePRD"
             />
@@ -47,6 +46,7 @@
       </div>
       <v-card-text class="interactingPathwaysCard">
         <v-data-table
+        v-if="secondaryPathways.length > 0"
           dense
           :headers="secondaryHeaders"
           :items="filteredSecondaryPathways"
@@ -64,6 +64,7 @@
           @item-expanded="loadSecondaryDetails"
           :must-sort="true"
           :loading="secondaryPathwaysLoading"
+          no-results-text="No pathways. Try a higher FDR"
         >
           <template v-slot:item.stId="{ item }">
             <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
@@ -121,7 +122,10 @@
           >
           </v-data-footer>
         </v-data-table>
-        <a :href="getOverViewLink"
+        <p v-else class="errorMessage">{{ noSecondaryPathwaysText }}</p>
+        <a
+         v-if="secondaryPathways > 0"
+         :href="getOverViewLink"
           ><v-btn color="var(--secondary-color)" class="ma-2" small
             >Open Pathway Overview</v-btn
           ></a
@@ -212,7 +216,7 @@ export default {
     linkTarget: process.env.VUE_APP_LINK_TARGET,
     secondaryPathways: [],
     interactingGenes: null,
-    fdr: 1.0,
+    fdr: 0.05,
     currentPRD: 0.9,
     secondarySearch: "",
     currentSecondarySearchDescs: [],
@@ -220,7 +224,6 @@ export default {
     showSecondarySearchForm: false,
     showAnnotatedPathwaysInput: true,
     pathwayStIdsForGene: [],
-    FuncInteractionScoreFilterErrors: "",
   }),
   watch: {
     term() {
@@ -280,6 +283,11 @@ export default {
         return `FLG=${this.term}&FLGINT&DSKEYS=0&SIGCUTOFF=${this.currentPRD}&FLGFDR=${this.fdr}`;
       }
     },
+    noSecondaryPathwaysText() {
+      if(this.currentSecondarySearchDescs.length === 0)
+      return 'No pathways available. Try a lower Functional Interaction score.'
+      else return "No pathways available. Try a different interactor set."
+    }
   },
   created() {
     this.getInitialData();
@@ -300,7 +308,7 @@ export default {
 
       this.loadCombinedScores();
     },
-    async loadPathwaysForGene() {
+    async loadPathwaysForGene() {z
       try {
         this.pathwayStIdsForGene = await PairwiseService.loadPathwayStIdsForTerm(
           this.term
@@ -382,10 +390,6 @@ export default {
     },
     secondaryPathwaysError() {
       this.currentSecondarySearchDescs = [];
-      if (this.currentSecondarySearchDescs.length === 0) {
-        this.FuncInteractionScoreFilterErrors =
-          "No pathways. Try a lower score.";
-      }
     },
     updatePRD(prd) {
       if (prd === this.currentPRD) return;
@@ -426,5 +430,9 @@ a:hover {
 }
 .d-none {
   display: none !important;
+}
+.errorMessage {
+  color: red;
+  text-align: center;
 }
 </style>
