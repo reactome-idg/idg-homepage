@@ -18,6 +18,7 @@
         <v-treeview
           v-if="primaryPathways.hierarchy && primaryPathways.hierarchy.length > 0"
           dense
+          open-all
           :items="primaryPathways.hierarchy"
           :expand-icon="mdiChevronDown"
           transition
