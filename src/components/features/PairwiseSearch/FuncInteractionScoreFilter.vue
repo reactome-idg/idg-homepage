@@ -63,7 +63,7 @@ export default {
       numberOfGenesLabel() {
         if(!this.interactingGenes) return "Loading...";
         if(window.innerWidth < 1190) return (this.numberOfGenes + " gene" + (this.numberOfGenes === 1 ? "":"s"));
-        return this.numberOfGenes + " genes interacting" + (this.term ? ` with ${this.term}` : '');
+        return this.numberOfGenes + (this.numberOfGenes === 1 ? " gene":" genes" )+ " interacting" + (this.term ? ` with ${this.term}` : '');
       },
   },
   methods: {
