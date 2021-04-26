@@ -17,36 +17,46 @@
         </v-btn>
       </div>
       <div v-else>
-        <v-row no-gutters class="pl-5 pr-5">
-          <v-col cols="12" md="6">
+        <div class="flex pa-4">
+          <div>
             <FuncInteractionScoreFilter
               :term="term"
               :interactingGenes="interactingGenes"
               :prd="currentPRD"
               @updatePRD="updatePRD"
             />
-          </v-col>
-          <v-col cols="12" md="3">
+          </div>
+          <div>
             <v-checkbox
               v-model="showAnnotatedPathwaysInput"
               :label="`Include ${term}'s annotated pathways`"
               color="var(--light-color)"
             ></v-checkbox>
-          </v-col>
-          <v-col cols="12" md="3" align-self="center">
+          </div>
+          <div>
             <v-btn
               color="var(--primary-color)"
-              class="btn-primary"
               :dark="darkmode"
               @click="showSecondarySearchForm = true"
+              class="btn-primary"
               >Choose Sources</v-btn
             >
-          </v-col>
-        </v-row>
+          </div>
+          <div>
+            <a
+              v-if="secondaryPathways.length > 0"
+              class="float-left"
+              :href="getOverViewLink"
+              ><v-btn color="var(--secondary-color)" class="ma-2" small
+                >Open Pathway Overview</v-btn
+              ></a
+            >
+          </div>
+        </div>
       </div>
       <v-card-text class="interactingPathwaysCard">
         <v-data-table
-        v-if="secondaryPathways.length > 0"
+          v-if="secondaryPathways.length > 0"
           dense
           :headers="secondaryHeaders"
           :items="filteredSecondaryPathways"
@@ -123,13 +133,6 @@
           </v-data-footer>
         </v-data-table>
         <p v-else class="errorMessage">{{ noSecondaryPathwaysText }}</p>
-        <a
-         v-if="secondaryPathways > 0"
-         :href="getOverViewLink"
-          ><v-btn color="var(--secondary-color)" class="ma-2" small
-            >Open Pathway Overview</v-btn
-          ></a
-        >
       </v-card-text>
       <v-overlay
         absolute
@@ -160,8 +163,6 @@ import {
   VCardText,
   VTextField,
   VIcon,
-  VCol,
-  VRow,
   VCard,
   VProgressCircular,
 } from "vuetify/lib";
@@ -182,8 +183,6 @@ export default {
     VCardText,
     VTextField,
     VIcon,
-    VCol,
-    VRow,
     VCard,
     VProgressCircular,
     FuncInteractionScoreFilter,
@@ -284,10 +283,10 @@ export default {
       }
     },
     noSecondaryPathwaysText() {
-      if(this.currentSecondarySearchDescs.length === 0)
-      return 'No pathways available. Try a lower Functional Interaction score.'
-      else return "No pathways available. Try a different interactor set."
-    }
+      if (this.currentSecondarySearchDescs.length === 0)
+        return "No pathways available. Try a lower Functional Interaction score.";
+      else return "No pathways available. Try a different interactor set.";
+    },
   },
   created() {
     this.getInitialData();
@@ -301,9 +300,9 @@ export default {
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
-      while(this.secondaryPathways.length === 0){
-        this.currentPRD  = this.currentPRD - .1
-        await this.loadCombinedScores()
+      while (this.secondaryPathways.length === 0) {
+        this.currentPRD = this.currentPRD - 0.1;
+        await this.loadCombinedScores();
       }
     },
     async loadPathwaysForGene() {
@@ -410,15 +409,21 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+.flex{
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-primary{
+  color: white;
+}
 a {
   text-decoration: none;
   color: var(--primary-color) !important;
 }
 a:hover {
   color: var(--dark-color) !important;
-}
-.btn-primary {
-  background-color: #1976d2;
 }
 .interactingPathwaysCard {
   min-height: 300px;

@@ -10,9 +10,9 @@
           class="searchContainer"
           text-uppercase
           @keyup.enter="searchPairwise"
-          hide-details="auto"
+          :error-messages="error.length > 0 ? [error] : []"
+          :hide-details="error.length > 0 ? false : true"
         ></v-text-field>
-        <p class="errorText">{{error}}</p>
       </div>
       <v-btn color="var(--primary-color)" class="searchBtn" @click="searchPairwise">Search</v-btn>
       <!-- <div class="btn">Search</div> -->
@@ -77,6 +77,7 @@ export default {
 }
 .search .grid {
   grid-template-columns: repeat(4, 1fr);
+  align-items: center;
 }
 .search .grid > *:first-child {
   grid-column: 1 / span 3;

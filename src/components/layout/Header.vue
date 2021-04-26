@@ -1,6 +1,6 @@
 <template>
-  <div class="navbar">
-    <div class="container flex">
+  <div class="navbar pa-5">
+    <div class="flex">
       <router-link to="/">
         <img
           :src="'/assets/images/logo.svg'"
