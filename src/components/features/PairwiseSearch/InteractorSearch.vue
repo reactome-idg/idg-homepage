@@ -28,6 +28,7 @@
           </div>
           <div>
             <v-checkbox
+              v-if="this.secondaryPathways.some((pw) => pw.isAnnotated === true)"
               v-model="showAnnotatedPathwaysInput"
               :label="`Include ${term}'s annotated pathways`"
               color="var(--light-color)"
