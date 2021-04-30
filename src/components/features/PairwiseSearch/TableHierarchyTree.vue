@@ -6,6 +6,7 @@
         :children="child.children"
         :ancestor="child"
         :depth="depth + 1"
+        :urlFlagSuffix="urlFlagSuffix"
       ></hierarchy-tree>
   </div>
 </template>
