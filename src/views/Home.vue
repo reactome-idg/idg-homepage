@@ -10,7 +10,12 @@
     <v-expand-transition>
       <div v-if="term !== null" class="searchContainer pa-5">
         <v-card raised class="pa-5 mb-5">
-          <h2 class="text-left mb-3">Showing Results For: {{ term }}</h2>
+          <div class="flex mb-3">
+          <h2 class="text-left">Showing Results For: {{ term }}</h2>
+          <a target="_blank" :href="`${pharosURL}${term}`">
+          <v-btn color="var(--secondary-color)">Pharos Target</v-btn>
+          </a>
+          </div>
           <AnnotatedPathwaySearch :term="this.term" :darkmode="false" class="mb-5"/>
           <InteractorSearch :term="this.term" :darkmode="false" />
         </v-card>
@@ -38,6 +43,7 @@ export default {
   data: () => ({
     term: null,
     uniprotBoolean: false,
+    pharosURL:"https://pharos.ncats.nih.gov/targets/"
   }),
   created() {
     this.term = this.$route.params.term ? this.$route.params.term : null;
@@ -58,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+.flex {
+  justify-content: space-between;
+}
 section {
   align-items: center;
   background-color: #eee;
