@@ -15,9 +15,9 @@
             </a>
           </v-card-title>
           <v-card-text>
-            <v-container>
+            <div>
               <p class="font-weight-bold">Launch the IDG Pathway Browser</p>
-            </v-container>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -29,9 +29,9 @@
             </a>
           </v-card-title>
           <v-card-text>
-            <v-container>
+            <div>
               <p class="font-weight-bold">Vist Reactome</p>
-            </v-container>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -44,9 +44,9 @@
             </router-link>
           </v-card-title>
           <v-card-text>
-            <v-container>
+            <div>
               <p class="font-weight-bold">Documentation</p>
-            </v-container>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
