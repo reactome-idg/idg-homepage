@@ -7,11 +7,10 @@
 </template>
 
 <script>
-import userGuide from "@/components/Documentation/userGuide.md";
 export default {
   name: "UserGuide",
   components: {
-    userGuide,
+    userGuide: () => import('../../components/documentation/userGuide.md'),
   },
   data: () => ({}),
 };

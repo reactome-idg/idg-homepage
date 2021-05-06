@@ -1,23 +1,31 @@
+
+
 # UserGuide
 
+
 ### Contents
+
+
 [TOC]
+
+
 
 ## Overview {#overview}
 
-Due to a bias in biological research towards already druggable genes, there is very limited knowledge about one third of protein coding genes. These understudied (or dark) proteins may offer therapeutic opportunities for many diseases. [idg.reactome.org](https://idg.reactome.org) contains a collection of web-based tools created to help researchers place understudied proteins in the context of manually curated, high-quality Reactome curated pathways. [Reactome](https://reactome.org/) is the most comprehensive, open access biological pathway knowledgebase, and is widely used in the community. The IDG specific tools are designed to help facilitate the generation of experimentally testable hypotheses and further the illumination of the druggable genome. The homepage of idg.reactome.org allows users to search any gene name or uniprot identifier and view where it is contained in Reactome’s annotated pathways, as well as interacting pathways reachable via one-hop pairwise relationships, if it is a dark proteina or not annotated. By default, users can view scored interacting pathways based on functional interactions predicted from a random forest model trained with 106 protein/gene pairwise relationship features covering tissue and cancer specific gene co-expression, protein/protein interactions, protein domain interactions and [GO](http://geneontology.org/) biological process annotation. In order to enhance the visualization of these interactions, we have extended the functionality of the Reactome Pathway Browser with new overlays and visualisers. In the pathway overview, users can view interacting pathways of the protein searched on the homepage. When a pathway is opened, users are presented with an extended version of the diagram viewer, allowing them to view the knowledge levels of proteins annotated in the displayed pathway, overlay multiple tissue specific gene or protein expression values from 19 data sources collected in the [target central resource database (TCRD)](http://juniper.health.unm.edu/tcrd/) at the same time, and overlay protein/protein pairwise relationships or drug/target interactions.  Furthermore, Reactome’s [SBGN](https://sbgn.github.io/)-based pathway diagrams can be converted into functional interaction networks visualized with [Cytoscape.js](https://js.cytoscape.org/). With these additional features, the idg.reactome.org offers an integrative web-based platform for researchers to study dark proteins in the context of Reactome pathways and learn potential functions of these proteins.
+Due to a bias in biological research towards already druggable genes, there is very limited knowledge about one third of protein coding genes. These understudied (or dark) proteins may offer therapeutic opportunities for many diseases. [idg.reactome.org](idg.reactome.org) contains a collection of web-based tools created to help researchers place understudied proteins in the context of manually curated, high-quality Reactome curated pathways. [Reactome](https://reactome.org/) is the most comprehensive, open access biological pathway knowledgebase, and is widely used in the community. The IDG specific tools are designed to help facilitate the generation of experimentally testable hypotheses and further the illumination of the druggable genome. The homepage of idg.reactome.org allows users to search any gene name or uniprot identifier and view where it is contained in Reactome’s annotated pathways, as well as interacting pathways reachable via one-hop pairwise relationships, if it is a dark proteina or not annotated. By default, users can view scored interacting pathways based on functional interactions predicted from a random forest model trained with 106 protein/gene pairwise relationship features covering tissue and cancer specific gene co-expression, protein/protein interactions, protein domain interactions and [GO](http://geneontology.org/) biological process annotation. In order to enhance the visualization of these interactions, we have extended the functionality of the Reactome Pathway Browser with new overlays and visualisers. In the pathway overview, users can view interacting pathways of the protein searched on the homepage. When a pathway is opened, users are presented with an extended version of the diagram viewer, allowing them to view the knowledge levels of proteins annotated in the displayed pathway, overlay multiple tissue specific gene or protein expression values from 19 data sources collected in the [target central resource database (TCRD)](http://juniper.health.unm.edu/tcrd/) at the same time, and overlay protein/protein pairwise relationships or drug/target interactions.  Furthermore, Reactome’s [SBGN](https://sbgn.github.io/)-based pathway diagrams can be converted into functional interaction networks visualized with [Cytoscape.js](https://js.cytoscape.org/). With these additional features, the idg.reactome.org offers an integrative web-based platform for researchers to study dark proteins in the context of Reactome pathways and learn potential functions of these proteins.
 
 This user guide is meant to serve as a reference and walkthrough for how to research and gain some understanding about a dark protein using the [IDG Reactome Portal](https://idg.reactome.org/PathwayBrowser/#/). It covers how to search for a protein on the homepage, how to choose and understand interactor sets for secondary pathway interactions, how to overlay tissue specific expression data, and how to navigate the IDG specific features of the Reactome Pathway Browser.
 
 
 ## Using the Homepage {#using-the-homepage}
 
+{insert video}
 
 The homepage consists of three main components. These components allow users to search for a protein and visualize its Reactome annotated pathways and pathways accessible via one hop pairwise interaction.
 
 
 
-1. Searching a term[GeneSearchBox.png]: Users can input a gene name or [Uniprot](https://www.uniprot.org/) identifier to search. After searching for a protein, the user will be presented with a card containing two sections.
+1. Searching a term[GeneSearchBox.png: Users can input a gene name or [Uniprot](https://www.uniprot.org/) identifier to search. After searching for a protein, the user will be presented with a card containing two sections.
 2. Understanding Annotated Pathways: The first section will be a hierarchical view of Reactome annotated pathways[ReactomeAnnotatedPathway.png] containing the searched term. By default, the last present top level pathway will be expanded. Each top level pathway can be expanded to show mid- and bottom-level pathways containing the searched term. Clicking on a pathway will open it in the Pathway Browser webapp with the searched term flagged in the display. 
 3. Understanding Interacting Pathways[InteractingPathwaysCard.png]: Below the annotated pathways card is a list of interacting pathways. By default, users can view scored interacting pathways based on functional interactions predicted from a random forest model trained with 106 protein/gene pairwise relationship features covering tissue and cancer specific gene co-expression, protein/protein interactions, protein domain interactions and [GO](http://geneontology.org/) biological process annotation. After assessing which interacting genes meet the filter criteria, a pathway enrichment analysis is performed to generate hit pathways. The significance level of these "combined score" interactors can be adjusted at the top left of the secondary pathways display[FIScoreFilter.png].
     1. Choosing individual sources[IndividualSourcesSelection.png]: Individual sources can be used to generate interacting pathways by clicking on the “choose individual sources” button in the top right of the Interacting Pathways card. The selection form guides users through choosing individual interactor sets. Up to 6 sources can be added for a single analysis. 
@@ -26,7 +34,7 @@ The homepage consists of three main components. These components allow users to 
 5. Opening the Pathway Browser from an interacting pathway: Opening a pathway in the Pathway Browser webapp from the Interacting Pathways card will open the pathway with a special flagging setting. In this case, pathways and entities inside diagrams will be highlighted if they contain an interactor to the searched term on the home screen. To learn more, see the section on [Flagging with Interactors](#flagging-with-interactors).
 
 
-## Functional Interaction View {#functional-interaction-view}
+## Functional Interaction View
 
 {insert video}
 
@@ -98,7 +106,7 @@ After overlaying a selection of pairwise interactors, diagram entities or FI Net
 3. Drug Targets Table: This table allows users to view information for each displayed drug including the protein it interacts with, the action and activity type, and the interaction value.
 
 
-## Flagging with Interactors {#flagging-with-interactors}
+## Flagging with Interactors
 
 {insert video}
 
