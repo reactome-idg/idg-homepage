@@ -10,24 +10,24 @@ This user guide is meant to serve as a reference and walkthrough for how to rese
 
 The homepage consists of three main components. These components allow users to search for a protein and visualize its Reactome annotated pathways and pathways accessible via one hop pairwise interaction.
 
-<img src="/assets/doc/images/UserGuideScreenshots/GeneSearchBox.png" width="100%" title="Gene Search Box" class="pa-5"/>
+![Gene Search Box](/assets/doc/images/UserGuideScreenshots/GeneSearchBox.png 'Gene Search Box')
 
 1. Searching a term: Users can input a gene name or [Uniprot](https://www.uniprot.org/) identifier to search. After searching for a protein, the user will be presented with a card containing two sections.
 
-<img src="/assets/doc/images/UserGuideScreenshots/ReactomeAnnotatedPathways.png" width="100%" title="Reactome Annotated Pathway" class="pa-5"/>
+![Reactome Annotated Pathway](/assets/doc/images/UserGuideScreenshots/ReactomeAnnotatedPathways.png "Reactome Annotated Pathway")
 
 2. Understanding Annotated Pathways: The first section will be a hierarchical view of Reactome annotated pathways containing the searched term. By default, the last present top level pathway will be expanded. Each top level pathway can be expanded to show mid- and bottom-level pathways containing the searched term. Clicking on a pathway will open it in the Pathway Browser webapp with the searched term flagged in the display.
 
-<img src="/assets/doc/images/UserGuideScreenshots/InteractingPathwaysCard.png" width="100%" title="Interacting Pathways Card" class="pa-5"/>
+![Interacting Pathways Card](/assets/doc/images/UserGuideScreenshots/InteractingPathwaysCard.png "Interacting Pathways Card")
 
 3. Understanding Interacting Pathways: Below the annotated pathways card is a list of interacting pathways. By default, users can view scored interacting pathways based on functional interactions predicted from a random forest model trained with 106 protein/gene pairwise relationship features covering tissue and cancer specific gene co-expression, protein/protein interactions, protein domain interactions and [GO](http://geneontology.org/) biological process annotation. After assessing which interacting genes meet the filter criteria, a pathway enrichment analysis is performed to generate hit pathways. The significance level of these "combined score" interactors can be adjusted at the top left of the secondary pathways display.
 
-<img src="/assets/doc/images/UserGuideScreenshots/IndividualSourcesSelection.png" width="100%" title="FI Score Filter" class="pa-5"/>
+![FI Score Filter](/assets/doc/images/UserGuideScreenshots/IndividualSourcesSelection.png "FI Score Filter")
 
 4. Choosing individual sources: Individual sources can be used to generate interacting pathways by clicking on the “choose individual sources” button in the top right of the Interacting Pathways card. The selection form guides users through choosing individual interactor sets. Up to 6 sources can be added for a single analysis. 
     **Note**: Users can return to the combined score table or choose a new set of individual sources by clicking the x icon in the top left corner of the interacting pathways card.
 
-<img src="/assets/doc/images/UserGuideScreenshots/InteractingPathwayDetails.png" width="100%" title="Interacting Pathway Details" class="pa-5"/>
+![Interacting Pathway Details](/assets/doc/images/UserGuideScreenshots/InteractingPathwayDetails.png "Interacting Pathway Details")
 
 5. Interacting Pathways Details: Users can view details about any interacting pathway by clicking the carrot at the left side of each show. After expanding, users will be able to see a shortened description of the pathway and where it exists inside the pathway hierarchy. The full description of a pathway can be viewed by clicking “[more]” at the end of the shortened description.
 6. Opening the Pathway Browser from an interacting pathway: Opening a pathway in the Pathway Browser webapp from the Interacting Pathways card will open the pathway with a special flagging setting. In this case, pathways and entities inside diagrams will be highlighted if they contain an interactor to the searched term on the home screen. To learn more, see the section on [Flagging with Interactors](#flagging-with-interactors).
@@ -61,11 +61,11 @@ Two types of data can be overlaid on the existing pathway diagrams and FIView. T
 1. Target Development Level Overlay: By default, the diagram view and the FIView both have a persistent, default overlay of [Target Development Level](https://druggablegenome.net/ProteinFam) when no tissue specific expression data is overlaid. This is meant to help users understand the level of knowledge about each protein present in a pathway. 
 2. Overlay Tool: The overlay tool contains two tabs. The first tab allows users to choose sets of tissue specific expression data to overlay on the diagram and FIView. The second tab allows users to choose sets of pairwise interactors to overlay. The Overlay Tool can be opened by clicking on the Overlay Tool button on the top left of the Diagram or FIView display. ![Overlay Tool Button](/assets/doc/images/UserGuideScreenshots/OverlayToolButton.png "Overlay Tool Button")
 
-    <img src="/assets/doc/images/UserGuideScreenshots/OverlayDataPanel.png" width="100%" title="Data Overlay Panel" class="pa-5"/>
+    ![Data Overlay Panel](/assets/doc/images/UserGuideScreenshots/OverlayDataPanel.png "Data Overlay Panel")
     1. Overlay Data menu: This menu allows users to overlay tissue specific expression data. Users can select an expression type from the “Select Expression Type” drop down. After selecting an expression type, users can select up to 12 tissues or cell lines to overlay data for at a time. Selections can be made from the list containing all tissues present for an expression type. Holding control(command on a mac) allows selection of multiple tissues. Holding shift and clicking on two tissues will select everything in between the two selections, as well. The filter box above the tissue selection list allows users to filter for specific tissue.
         **Note**: when filtering the tissues, hold control(command on a mac) to avoid de-selecting other tissues selected before applying the filter.
 
-    <img src="/assets/doc/images/UserGuideScreenshots/OverlayRelationships.png" width="100%" title="Pairwise Relationship Panel" class="pa-5"/>
+    ![Pairwise Relationship Panel](/assets/doc/images/UserGuideScreenshots/OverlayRelationships.png "Pairwise Relationship Panel")
 
     2. Overlay Relationships menu: Interaction sets are added through selection of a relationship type, data source, bioSource, and quaternary options, in that order. The available options of each dropdown will update automatically when user selections are made. In addition to these selections, users can select a line color to differentiate between positive and negative interactions for each added interactor set. Users can add up to 6 sets of interactors at a time.
 3. Tissue Expression Overlay Visualization: In either visualiser, a legend is added to the right side of the window to help users visualize expression values. A control is added to the bottom of the window, as well. This control allows users to cycle through the selected tissues one at a time by pressing forward or backward or sequentially by hitting the play button. The overlay can be removed by  clicking the close button on the right of the control panel.

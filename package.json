@@ -15,11 +15,10 @@
     "axios": "^0.21.1",
     "babel-runtime": "^6.26.0",
     "core-js": "^3.8.3",
-    "markdown-loader": "^6.0.0",
     "material-design-icons-iconfont": "^6.1.0",
     "vue": "^2.6.12",
     "vue-cytoscape": "^1.0.8",
-    "vue-markdown": "^2.2.4",
+    "vue-markdown-render": "^1.1.1",
     "vue-router": "^3.5.1",
     "vuetify": "^2.4.3"
   },
