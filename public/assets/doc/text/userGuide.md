@@ -69,18 +69,24 @@ Two types of data can be overlaid on the existing pathway diagrams and FIView. T
 
     2. Overlay Relationships menu: Interaction sets are added through selection of a relationship type, data source, bioSource, and quaternary options, in that order. The available options of each dropdown will update automatically when user selections are made. In addition to these selections, users can select a line color to differentiate between positive and negative interactions for each added interactor set. Users can add up to 6 sets of interactors at a time.
 3. Tissue Expression Overlay Visualization: In either visualiser, a legend is added to the right side of the window to help users visualize expression values. A control is added to the bottom of the window, as well. This control allows users to cycle through the selected tissues one at a time by pressing forward or backward or sequentially by hitting the play button. The overlay can be removed by  clicking the close button on the right of the control panel.
-    3. Diagram View: In the diagram view, complexes are recolored in accordance with the average expression value of the proteins in the complex. If a user zooms in on a complex, the overlay will become segmented. Each segment’s color represents the expression value of a single protein in that complex. Expression values for individual proteins across all selected tissues can be viewed by right clicking on any complex or protein.
+    1. Diagram View: In the diagram view, complexes are recolored in accordance with the average expression value of the proteins in the complex. If a user zooms in on a complex, the overlay will become segmented. Each segment’s color represents the expression value of a single protein in that complex. Expression values for individual proteins across all selected tissues can be viewed by right clicking on any complex or protein.
+
     ![FI View Context Expression Panel](/assets/doc/images/UserGuideScreenshots/FIViewContextExpressionPanel.png "FI View Context Expression Panel")
-    4. Functional Interaction View: in the FIView, each protein is recolored in accordance with its expression. Proteins with no recorded expression for a given expression type will remain uncolored (green). Right clicking on a protein and selecting the overlay tab will list the expression for that protein across all selected tissues.
+
+    2. Functional Interaction View: in the FIView, each protein is recolored in accordance with its expression. Proteins with no recorded expression for a given expression type will remain uncolored (green). Right clicking on a protein and selecting the overlay tab will list the expression for that protein across all selected tissues.
 4. Pairwise Interactor Overlay Visualization: After overlaying a set of pairwise interactors, a control will appear at the bottom of the current visualiser with a close button to remove the interactors and a message about the currently loaded interactor sets.
+
     ![Diagram Object Decorator](/assets/doc/images/UserGuideScreenshots/DiagramObjectDecorator.png "Diagram Object Decorator")
+
     5. Diagram View: Complexes and entities that have associated pairwise interactors will have a red, circular decorator in the top right corner. The number or the decorator indicates how many pairwise interactors exist for that entity. Clicking on a decorator will open the pairwise popup for that entity. [See section 6](#pairwise-popup) for information on the pairwise popup.
     6. Functional Interaction View: Right clicking on a protein node while a set of pairwise interactors are loaded allows users to view which overlaid interactor sets have interactors with the protein. In the top right of the menu, a pairwise popup button will open a pairwise popup for the selected protein. [See section 6](#pairwise-popup) for information on the pairwise popup.
 
 ## Drug/Target Interactions
 
 {insert video}
+
 ![Diagram Object Drug Decorator](/assets/doc/images/UserGuideScreenshots/DiagramObjectDrugDecorator.png "Diagram Object Drug Decorator")
+
 Drug/Target interactions are overlaid by default on the Pathway Diagram. They are represented as a purple decorator in the top left corner of any entity containing Drug/Target interactions. Decorators can be clicked to open them in a Pairwise Popup ([see section 6](#pairwise-popup)). Drug/Target interactions can also be overlaid on the Functional Interaction View. In this view, drug interactions are overlaid directly onto the functional interaction network for the open pathway. Drugs can be overlaid through the FIViewSettings panel mentioned in [Section 3](#functional-interaction-view).
 
 ## Pairwise Popup
@@ -105,7 +111,9 @@ After overlaying a selection of pairwise interactors, diagram entities or FI Net
 {insert video}
 
 Users who select a pathway from the Interacting Pathways table on the new idg.reactome.org homepage will be presented with a new type of flagging.
+
 ![Fireworks Flag Control](/assets/doc/images/UserGuideScreenshots/FireworksFlagControl.png "Fireworks Flag Control")
+
 1. Flagging in the Pathway Overview: Pathways containing interactors with the searched gene will be highlighted pink. With any set of interactors, users are able to adjust the FDR for which interactions are considered significant on a control panel at the bottom of the viewport. If the current flag is for a combined score of all interactors, users can also adjust the significance level required for an interactor to be included in the pathway enrichment analysis used to flag the pathways.
 ![Diagram Flagging Control](/assets/doc/images/UserGuideScreenshots/DiagramFlaggingControl.png "Diagram Flagging Control")
 2. Diagram View: Entities in the diagram that contain interactors with the flagged term will be highlighted in pink. Similar to the pathway overview, if the current flag is for a combined score of all interactions, users can adjust the significance value required for an interaction to be flagged on a control panel at the bottom of the viewport. Some diagrams include encapsulated pathways. In these cases, users will also be able to filter by FDR to include more or less significant included pathways.
