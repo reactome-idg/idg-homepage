@@ -6,7 +6,7 @@ This user guide is meant to serve as a reference and walkthrough for how to rese
 
 ## Using the Homepage
 
-{insert video}
+
 
 The homepage consists of three main components. These components allow users to search for a protein and visualize its Reactome annotated pathways and pathways accessible via one hop pairwise interaction.
 
@@ -34,7 +34,7 @@ The homepage consists of three main components. These components allow users to 
 
 ## Functional Interaction View
 
-{insert video}
+
 
 The functional interaction view (FIView) provides an alternative way to visualize Pathway Diagrams. This view converts the normal diagram into a set of functional interactions that are displayed using the popular [Cytoscape.js](https://js.cytoscape.org/) plugin. 
 
@@ -54,7 +54,7 @@ The functional interaction view (FIView) provides an alternative way to visualiz
 
 ## Overlaying Data
 
-{insert video}
+
 
 Two types of data can be overlaid on the existing pathway diagrams and FIView. These two overlay types can be added through the Overlay tool. We support overlay of tissue specific expression data from 19 data sources provided by the [Target Central Resource Database (TCRD)](http://juniper.health.unm.edu/tcrd/) and pairwise interactor sets from multiple sources.
 
@@ -83,7 +83,7 @@ Two types of data can be overlaid on the existing pathway diagrams and FIView. T
 
 ## Drug/Target Interactions
 
-{insert video}
+
 
 ![Diagram Object Drug Decorator](/assets/doc/images/UserGuideScreenshots/DiagramObjectDrugDecorator.png "Diagram Object Drug Decorator")
 
@@ -91,7 +91,7 @@ Drug/Target interactions are overlaid by default on the Pathway Diagram. They ar
 
 ## Pairwise Popup
 
-{insert video}
+
 
 After overlaying a selection of pairwise interactors, diagram entities or FI Network nodes can be opened in a Pairwise popup to visualise its interactors. This popup offers a network view of the selected interactions and drug/target interactions. It also offers tabulated data on the present interactors and drugs. 
 
@@ -108,7 +108,7 @@ After overlaying a selection of pairwise interactors, diagram entities or FI Net
 
 ## Flagging with Interactors
 
-{insert video}
+
 
 Users who select a pathway from the Interacting Pathways table on the new idg.reactome.org homepage will be presented with a new type of flagging.
 
