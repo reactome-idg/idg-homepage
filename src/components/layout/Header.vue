@@ -8,7 +8,10 @@
           class="logo"
         />
       </router-link>
-      <router-link to="/documentation" class="links">Docs</router-link>
+      <div>
+      <router-link to="/documentation" class="links pr-5">Docs</router-link>
+      <router-link to="/documentation/userguide" class="links">User Guide</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -34,8 +37,11 @@ a {
   width: 15em;
 }
 .links {
-  color: #333;
+  color:#666;
   font-weight: bolder;
   text-decoration: none;
+}
+.links:hover{
+  color: #222;
 }
 </style>
