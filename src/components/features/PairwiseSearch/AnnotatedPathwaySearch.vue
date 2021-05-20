@@ -34,7 +34,7 @@
         </v-treeview>
       </v-card>
     </div>
-    <p v-else>No primary pathways found.</p>
+    <p v-else>No annotated pathways found.</p>
   </div>
 </template>
 

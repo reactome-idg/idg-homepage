@@ -96,6 +96,18 @@ class PairwiseService {
     });
   }
 
+  static downloadFeaturesForInteractors(postData){
+      axios.post(`${url}download/FeaturesForTermAndInteractors`,postData, {responseType:'blob'})
+      .then((res)=> {
+        const blob = new Blob([res.data], {type: res.headers['content-type']});
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `InteractorFeaturesFor${postData.term}.csv`;
+        link.click();
+        
+      }).catch((err)=> console.log(err));
+  }
+
   /**
    * Structures FiData and PathwayObjects from server return
    * @param {*} data
