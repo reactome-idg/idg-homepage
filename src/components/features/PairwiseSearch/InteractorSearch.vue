@@ -48,7 +48,7 @@
               v-if="secondaryPathways.length > 0"
               class="float-left"
               :href="getOverViewLink"
-              ><v-btn color="var(--secondary-color)" class="ma-2" small
+              ><v-btn color="var(--secondary-color)" class="ma-2"
                 >Open Pathway Overview</v-btn
               ></a
             >
