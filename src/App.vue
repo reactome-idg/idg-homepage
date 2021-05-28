@@ -79,6 +79,7 @@ body {
   margin: 0 auto;
   overflow: auto;
   padding: 0 50px;
+  text-align: left;
 }
 .flex {
   display: flex;
