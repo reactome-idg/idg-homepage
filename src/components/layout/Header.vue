@@ -10,7 +10,8 @@
       </router-link>
       <div>
       <router-link to="/documentation" class="links pr-5">Docs</router-link>
-      <router-link to="/documentation/userguide" class="links">User Guide</router-link>
+      <router-link to="/documentation/userguide" class="links pr-5">User Guide</router-link>
+      <!-- <router-link to="/documentation/downloads" class="links">Downloads</router-link> -->
       </div>
     </div>
   </div>
