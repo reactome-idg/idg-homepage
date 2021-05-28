@@ -301,7 +301,7 @@ export default {
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
-      while (this.secondaryPathways.length === 0) {
+      while (this.secondaryPathways.length === 0 && this.currentPRD >= 0) {
         this.currentPRD = this.currentPRD - 0.1;
         await this.loadCombinedScores();
       }
