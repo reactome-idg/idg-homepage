@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import NotFound from '../views/error/NotFound.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import NotFound from "../views/error/NotFound.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -19,8 +19,8 @@ const routes = [
     name: "Search",
     component: Home,
     meta: {
-      title: "Home"
-    }
+      title: "Home",
+    },
   },
   {
     path: "/documentation",
@@ -36,6 +36,14 @@ const routes = [
     component: () => import("../views/Docs/UserGuide.vue"),
     meta: {
       title: "User Guide",
+    },
+  },
+  {
+    path: "/documentation/downloads",
+    name: "Downloads",
+    component: () => import("../views/Docs/Downloads.vue"),
+    meta: {
+      title: "Downloads",
     },
   },
   {
@@ -57,9 +65,9 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
