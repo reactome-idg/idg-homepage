@@ -31,12 +31,12 @@
               v-if="this.secondaryPathways.some((pw) => pw.isAnnotated === true)"
               v-model="showAnnotatedPathwaysInput"
               :label="`Include ${term}'s annotated pathways`"
-              color="var(--light-color)"
+              color="var(--idg-alt-blue)"
             ></v-checkbox>
           </div>
           <div>
             <v-btn
-              color="var(--primary-color)"
+              color="var(--idg-alt-dark-blue)"
               :dark="darkmode"
               @click="showSecondarySearchForm = true"
               class="btn-primary"
@@ -48,7 +48,7 @@
               v-if="secondaryPathways.length > 0"
               class="float-left"
               :href="getOverViewLink"
-              ><v-btn color="var(--secondary-color)" class="ma-2"
+              ><v-btn color="var(--idg-dark-blue)" class="ma-2 white--text"
                 >Open Pathway Overview</v-btn
               ></a
             >
@@ -421,10 +421,10 @@ export default {
 }
 a {
   text-decoration: none;
-  color: var(--primary-color) !important;
+  color: var(--idg-hyperlink-color) !important;
 }
 a:hover {
-  color: var(--dark-color) !important;
+  color: var(--idg-alt-dark-blue) !important;
 }
 .interactingPathwaysCard {
   min-height: 300px;
@@ -436,7 +436,7 @@ a:hover {
   display: none !important;
 }
 .errorMessage {
-  color: red;
+  color: var(--idg-red);
   text-align: center;
 }
 </style>

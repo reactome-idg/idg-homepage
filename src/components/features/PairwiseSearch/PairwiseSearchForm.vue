@@ -1,7 +1,7 @@
 <template>
   <div class="search">
-    <div class="grid">
-      <div>
+    <div class="grid mx-15">
+      <div class="text-field-div">
         <v-text-field
           label="Search a Gene or Uniprot"
           v-model="search"
@@ -9,12 +9,13 @@
           :outlined="true"
           class="searchContainer"
           text-uppercase
+          color="var(--idg-alt-blue)"
           @keyup.enter="searchPairwise"
           :error-messages="error.length > 0 ? [error] : []"
           :hide-details="error.length > 0 ? false : true"
         ></v-text-field>
       </div>
-      <v-btn color="var(--primary-color)" class="searchBtn" @click="searchPairwise">Search</v-btn>
+      <v-btn color="var(--idg-corporate-blue)" class="searchBtn" @click="searchPairwise">Search</v-btn>
       <!-- <div class="btn">Search</div> -->
     </div>
   </div>
@@ -94,5 +95,9 @@ export default {
   color: red;
   text-align: left;
   font-size: small;
+}
+.text-field-div{
+  background-color:white;
+  border-radius: 5px;
 }
 </style>

@@ -137,14 +137,14 @@ export default {
   color: white !important;
 }
 .linkDark:active:hover {
-  color: gray !important;
+  color: var(--idg-alt-light-blue) !important;
 }
 .link {
   text-decoration: none;
-  color: var(--primary-color) !important;
+  color: var(--idg-hyperlink-color) !important;
 }
 .link:hover {
-  color: var(--dark-color) !important;
+  color: var(--idg-alt-dark-blue) !important;
 }
 .annotaedPathwaysCard {
   max-height: 385px;

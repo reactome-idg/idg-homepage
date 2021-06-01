@@ -1,7 +1,7 @@
 <template>
   <div class="pb-5">
     <section>
-      <div class="pa-5">
+      <div class="pa-5 mx-15">
         <MainLinks />
         <About />
       </div>
@@ -9,11 +9,11 @@
     <PairwiseSearchForm @searchPathways="searchPathways" class="px-5" />
     <v-expand-transition>
       <div v-if="term !== null" class="searchContainer pa-5">
-        <v-card raised class="pa-5 mb-5">
+        <v-card raised class="pa-5 mb-5 mx-15" elevation="15">
           <div class="flex mb-3">
           <h2 class="text-left">Showing Results For: {{ term }}</h2>
           <a target="_blank" :href="`${pharosURL}${term}`">
-          <v-btn color="var(--secondary-color)">Pharos Target</v-btn>
+          <v-btn color="var(--idg-dark-blue)" class="white--text">Pharos Target</v-btn>
           </a>
           </div>
           <AnnotatedPathwaySearch :term="this.term" :darkmode="false" class="mb-5"/>
@@ -72,8 +72,7 @@ section {
   background-color: #eee;
 }
 .searchContainer {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.unsplash.com/photo-1545987796-200677ee1011?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80") !important;
+  background: white !important;
   background-attachment: fixed;
 }
 /* Enter and leave animations can use different */

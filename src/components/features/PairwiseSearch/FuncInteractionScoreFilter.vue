@@ -15,7 +15,7 @@
       <p>
         {{ numberOfGenesLabel }}
         <span
-          ><v-btn x-small color="var(--light-color)" @click="downloadFeatures"
+          ><v-btn x-small color="var(--idg-light-blue)" @click="downloadFeatures"
             >Download</v-btn
           ></span
         >
@@ -24,9 +24,8 @@
     </v-col>
     <v-col cols="2" align-self="center" justify="center">
       <v-btn
-        color="var(--secondary-color)"
-        class="ml-2"
-        
+        color="var(--idg-alt-dark-blue)"
+        class="ml-2 white--text"
         @click="updatePRD"
         >UPDATE</v-btn
       >

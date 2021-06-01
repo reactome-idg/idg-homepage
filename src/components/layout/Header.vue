@@ -25,7 +25,7 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color: #fff;
+  background-color:var(--idg-corporate-blue);
   height: 70px;
 }
 .navbar .flex {
@@ -38,7 +38,7 @@ a {
   width: 15em;
 }
 .links {
-  color:#666;
+  color: white;
   font-weight: bolder;
   text-decoration: none;
 }

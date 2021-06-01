@@ -7,7 +7,7 @@
             <a :href="browserLink">
               <v-btn
                 large
-                color="var(--primary-color)"
+                color="var(--idg-corporate-blue)"
                 height="50px"
                 width="100px"
                 class="navigationButton"
@@ -25,7 +25,7 @@
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
           <v-card-title class="justify-center">
             <a v-bind:href="reactomeLink">
-              <v-btn large color="var(--primary-color)" height="50px" width="100px" class="navigationButton">Go!</v-btn>
+              <v-btn large color="var(--idg-corporate-blue)" height="50px" width="100px" class="navigationButton">Go!</v-btn>
             </a>
           </v-card-title>
           <v-card-text>
@@ -40,7 +40,7 @@
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
           <v-card-title class="justify-center">
             <router-link to="/documentation">
-              <v-btn color="var(--primary-color)" height="50px" width="100px" class="navigationButton">View!</v-btn>
+              <v-btn color="var(--idg-corporate-blue)" height="50px" width="100px" class="navigationButton">View!</v-btn>
             </router-link>
           </v-card-title>
           <v-card-text>
