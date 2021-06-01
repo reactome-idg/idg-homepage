@@ -1,7 +1,7 @@
 <template>
   <v-container mb-5>
     <v-container>
-      <p class="display-2">IDG Reactome Dcumentation</p>
+      <p class="display-2">IDG Reactome Documentation</p>
     </v-container>
     <DocumentationLinks />
     <v-main class="text-left">
