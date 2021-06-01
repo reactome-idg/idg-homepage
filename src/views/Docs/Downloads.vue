@@ -26,7 +26,7 @@ export default {
         location: "/file/location",
       },
       {
-        name: "MongoDB Features.csv",
+        name: "Pairwise Features.csv",
         location: "/file/location"
       }
     ],
