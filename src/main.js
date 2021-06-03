@@ -4,9 +4,11 @@ import router from './router'
 import vuetify from './plugins/vuetify';
 import VueGtag from "vue-gtag";
 
+//google analytics setup
 Vue.use(VueGtag, {
   config: { id: "UA-42985898-5" },
-});
+}, router);
+
 Vue.config.productionTip = false
 const app = 
 new Vue({
