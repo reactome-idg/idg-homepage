@@ -1,6 +1,6 @@
 <template>
   <v-app id="app" :class="home && 'home'">
-    <Header />
+    <Header class="raised"/>
     <router-view mb-5 />
     <Footer />
   </v-app>
@@ -38,12 +38,6 @@ export default {
 <style>
 
 :root {
-  --primary-color: #44318d;
-  --secondary-color: #e98074;
-  --dark-color: #2A1B3D;
-  --light-color: #D83F87;
-  --success-color: #5cb85c;
-  --error-color: #d9534f;
   /* idg colors */
   --idg-dark-blue:#183C65;
   --idg-corporate-blue: #0D5184;

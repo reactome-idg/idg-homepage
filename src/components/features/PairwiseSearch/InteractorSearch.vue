@@ -112,7 +112,10 @@
                   hide-details
                 ></v-text-field>
               </td>
-              <td colspan="2"></td>
+              <td colspan="2">
+                <v-btn small color="var(--idg-orange)"
+                @click="downloadTable">Download Pathway List</v-btn>
+              </td>
               <td colspan="1">
                 <v-text-field
                   prefix="FDR ≤"
@@ -284,7 +287,9 @@ export default {
       }
     },
     noSecondaryPathwaysText() {
-      if (this.currentSecondarySearchDescs.length === 0)
+      if (this.currentSecondarySearchDescs.length === 0 && this.currentPRD === 0)
+        return "No enriched pathways available for this term. It is extremely understudied";
+      else if(this.currentSecondarySearchDescs.length === 0)
         return "No pathways available. Try a lower Functional Interaction score.";
       else return "No pathways available. Try a different interactor set.";
     },
@@ -301,9 +306,13 @@ export default {
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
-      while (this.secondaryPathways.length === 0 && this.currentPRD >= 0) {
+      while (this.secondaryPathways.length === 0 && this.currentPRD >= 0.1) {
         this.currentPRD = this.currentPRD - 0.1;
         await this.loadCombinedScores();
+      }
+      if(this.secondaryPathways.length === 0) {
+        this.currentPRD = 0;
+
       }
     },
     async loadPathwaysForGene() {
@@ -404,6 +413,17 @@ export default {
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
     },
+    downloadTable(){
+      let str = "Stable_ID,Pathway_Name,pValue,FDR\n";
+      this.filteredSecondaryPathways.forEach((pathway) => {
+        str += `${pathway.stId},${pathway.name},${pathway.pVal},${pathway.fdr}\n`
+      })
+      const blob = new Blob([str], {type:"blob"});
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `PathwaysFor${this.term}.csv`;
+      link.click();
+    }
   },
 };
 </script>

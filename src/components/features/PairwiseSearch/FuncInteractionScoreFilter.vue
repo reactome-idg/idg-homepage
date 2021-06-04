@@ -15,12 +15,12 @@
       <p>
         {{ numberOfGenesLabel }}
         <span
-          ><v-btn x-small color="var(--idg-light-blue)" @click="downloadFeatures"
-            >Download</v-btn
+          ><v-btn x-small color="var(--idg-orange)" @click="downloadFeatures"
+            >Download Genes</v-btn
           ></span
         >
       </p>
-      <span style="color: red"> {{ errors }} {{ error }}</span>
+      <span style="color: var(--idg-red)"> {{ errors }} {{ error }}</span>
     </v-col>
     <v-col cols="2" align-self="center" justify="center">
       <v-btn

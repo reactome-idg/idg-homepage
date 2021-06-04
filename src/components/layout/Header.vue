@@ -9,9 +9,8 @@
         />
       </router-link>
       <div>
-      <router-link to="/documentation" class="links pr-5">Docs</router-link>
-      <router-link to="/documentation/userguide" class="links pr-5">User Guide</router-link>
-      <!-- <router-link to="/documentation/downloads" class="links">Downloads</router-link> -->
+      <router-link to="/documentation/userguide" class="links mr-3"> <v-icon >mdi-school</v-icon> User Guide</router-link>
+      <router-link to="/documentation/downloads" class="links"><v-icon >mdi-download</v-icon> Downloads</router-link>
       </div>
     </div>
   </div>
@@ -25,8 +24,8 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color:var(--idg-corporate-blue);
-  height: 70px;
+  background-color:white;
+  height: 95px;
 }
 .navbar .flex {
   justify-content:space-between;
@@ -38,11 +37,24 @@ a {
   width: 15em;
 }
 .links {
-  color: white;
+  color: #2c3e50;
   font-weight: bolder;
   text-decoration: none;
+  padding:.25em .5em;
+  transition: .3s;
 }
+.links > i.v-icon.v-icon{
+  color: #2c3e50;
+}
+
 .links:hover{
-  color: #222;
+  color: white;
+  background-color: var(--idg-alt-blue);
+  border-radius:5px;
+  box-shadow: 3px 1px 5px #333
+}
+
+.links:hover > i.v-icon.v-icon{
+  color: white;
 }
 </style>

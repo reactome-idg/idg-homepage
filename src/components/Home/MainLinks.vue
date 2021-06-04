@@ -39,13 +39,13 @@
       <v-col cols="12" md="4">
         <v-card class="mx-auto" light max-width="250px" height="100%" raised>
           <v-card-title class="justify-center">
-            <router-link to="/documentation">
+            <router-link to="/documentation/userguide">
               <v-btn color="var(--idg-corporate-blue)" height="50px" width="100px" class="navigationButton">View!</v-btn>
             </router-link>
           </v-card-title>
           <v-card-text>
             <div>
-              <p class="font-weight-bold">Documentation</p>
+              <p class="font-weight-bold">User Guide</p>
             </div>
           </v-card-text>
         </v-card>

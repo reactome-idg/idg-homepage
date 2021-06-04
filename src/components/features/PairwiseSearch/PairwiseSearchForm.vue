@@ -15,7 +15,7 @@
           :hide-details="error.length > 0 ? false : true"
         ></v-text-field>
       </div>
-      <v-btn color="var(--idg-corporate-blue)" class="searchBtn" @click="searchPairwise">Search</v-btn>
+      <v-btn color="var(--idg-dark-blue)" class="searchBtn" @click="searchPairwise">Search</v-btn>
       <!-- <div class="btn">Search</div> -->
     </div>
   </div>
