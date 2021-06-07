@@ -91,6 +91,9 @@ export default {
   color: white !important;
   font-weight: bold;
 }
+.searchBtn:hover{
+  background-color: var(--idg-corporate-blue) !important;
+}
 .errorText {
   color: red;
   text-align: left;

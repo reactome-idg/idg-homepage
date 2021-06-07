@@ -63,6 +63,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #eee;
   margin: 0;
   padding: 0;
 }
@@ -97,6 +98,13 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.space-between{
+  justify-content: space-between;
+}
+.space-around{
+  justify-content: space-around;
 }
 .grid {
   display: grid;

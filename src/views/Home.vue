@@ -69,7 +69,6 @@ export default {
 }
 section {
   align-items: center;
-  background-color: #eee;
 }
 .searchContainer {
   background: white !important;

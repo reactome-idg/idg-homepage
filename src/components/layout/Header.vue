@@ -25,7 +25,8 @@ export default {
 <style scoped>
 .navbar {
   background-color:white;
-  height: 95px;
+  height: 60px;
+  box-shadow: 0px 5px 10px #888;
 }
 .navbar .flex {
   justify-content:space-between;
@@ -34,7 +35,7 @@ a {
   text-decoration: none;
 }
 .logo {
-  width: 15em;
+  width: 8em;
 }
 .links {
   color: #2c3e50;
@@ -43,15 +44,15 @@ a {
   padding:.25em .5em;
   transition: .3s;
 }
-.links > i.v-icon.v-icon{
-  color: #2c3e50;
-}
-
 .links:hover{
   color: white;
-  background-color: var(--idg-alt-blue);
+  background-color: var(--idg-corporate-blue);
   border-radius:5px;
   box-shadow: 3px 1px 5px #333
+}
+
+.links > i.v-icon.v-icon{
+  color: #2c3e50;
 }
 
 .links:hover > i.v-icon.v-icon{
