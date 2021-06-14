@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters class="">
+  <v-row no-gutters>
     <v-col cols="10">
       <v-text-field
         id="prdInputBox"
@@ -15,16 +15,16 @@
       <p>
         {{ numberOfGenesLabel }}
         <span
-          ><v-btn x-small color="var(--idg-orange)" @click="downloadFeatures"
+          ><v-btn x-small color="var(--idg-orange, #F98419)" @click="downloadFeatures"
             >Download Genes</v-btn
           ></span
         >
       </p>
-      <span style="color: var(--idg-red)"> {{ errors }} {{ error }}</span>
+      <span style="color: var(--idg-red, #EA3B65)"> {{ errors }} {{ error }}</span>
     </v-col>
     <v-col cols="2" align-self="center" justify="center">
       <v-btn
-        color="var(--idg-alt-dark-blue)"
+        color="var(--idg-alt-dark-blue, #477F9C)"
         class="ml-2 white--text"
         @click="updatePRD"
         >UPDATE</v-btn
@@ -113,4 +113,7 @@ export default {
 </script>
 
 <style scoped>
+.max-width{
+  max-width: 200px;
+}
 </style>

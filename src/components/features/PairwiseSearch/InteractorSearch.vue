@@ -1,11 +1,12 @@
 <template :dark="darkmode">
-  <div>
+  <div >
     <div class="text-left">
       <span class="larger">{{ title }}</span>
       <small class="pl-2">{{ subtitle }}</small>
       <small class="pl-2">{{ relationshipTypesString }}</small>
     </div>
     <v-card :dark="darkmode" outlined class="text-left justify-left">
+      <!-- <PathwayGeneSimilarity class="pgs"/> -->
       <div
         v-if="
           currentSecondarySearchDescs.dataDescriptions &&
@@ -17,26 +18,31 @@
         </v-btn>
       </div>
       <div v-else>
-        <div class="flex pa-4">
-          <div>
+        <div class="flex pa-4" style="display: flex; flex-wrap: wrap-reverse;
+                                      justify-content: space-between;
+                                      align-items: center;">
+          <div >
             <FuncInteractionScoreFilter
               :term="term"
               :interactingGenes="interactingGenes"
               :prd="currentPRD"
               @updatePRD="updatePRD"
+              class="max"
             />
           </div>
           <div>
             <v-checkbox
               v-if="this.secondaryPathways.some((pw) => pw.isAnnotated === true)"
               v-model="showAnnotatedPathwaysInput"
+              :off-icon="mdiCheckboxBlankOutline"
+              :on-icon="mdiCheckboxMarkedOutline"
               :label="`Include ${term}'s annotated pathways`"
-              color="var(--idg-alt-blue)"
+              color="var(--idg-alt-blue, #4AABCA)"
             ></v-checkbox>
           </div>
           <div>
             <v-btn
-              color="var(--idg-alt-dark-blue)"
+              color="var(--idg-alt-dark-blue, #477F9C)"
               :dark="darkmode"
               @click="showSecondarySearchForm = true"
               class="btn-primary"
@@ -46,9 +52,10 @@
           <div>
             <a
               v-if="secondaryPathways.length > 0"
-              class="float-left"
               :href="getOverViewLink"
-              ><v-btn color="var(--idg-dark-blue)" class="ma-2 white--text"
+              :target="linkTarget"
+              style="text-decoration: none;"
+              ><v-btn color="var(--idg-dark-blue, #183C65)" class="ma-2 white--text"
                 >Open Pathway Overview</v-btn
               ></a
             >
@@ -113,7 +120,7 @@
                 ></v-text-field>
               </td>
               <td colspan="2">
-                <v-btn small color="var(--idg-orange)"
+                <v-btn small color="var(--idg-orange, #F98419)"
                 @click="downloadTable">Download Pathway List</v-btn>
               </td>
               <td colspan="1">
@@ -162,6 +169,7 @@ import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
+// import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue"
 import {
   VDataTable,
   VCardText,
@@ -176,6 +184,8 @@ import {
   mdiChevronLeft,
   mdiChevronRight,
   mdiChevronDown,
+  mdiCheckboxBlankOutline,
+  mdiCheckboxMarkedOutline,
 } from "@mdi/js";
 
 export default {
@@ -190,6 +200,7 @@ export default {
     VCard,
     VProgressCircular,
     FuncInteractionScoreFilter,
+    // PathwayGeneSimilarity
   },
   vuetify,
   props: {
@@ -215,6 +226,8 @@ export default {
     mdiChevronLeft,
     mdiChevronRight,
     mdiChevronDown,
+    mdiCheckboxBlankOutline,
+    mdiCheckboxMarkedOutline,
     browserLink: process.env.VUE_APP_BROWSER_LINK,
     linkTarget: process.env.VUE_APP_LINK_TARGET,
     secondaryPathways: [],
@@ -430,6 +443,24 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+:root {
+  /* idg colors */
+  --idg-dark-blue:#183C65;
+  --idg-corporate-blue: #0D5184;
+  --idg-medium-blue: #5E8BAD;
+  --idg-light-blue: #AEC5D6;
+  /* idg alt colors */
+  --idg-alt-blue: #4AABCA;
+  --idg-alt-dark-blue: #477F9C;
+  --idg-alt-light-blue: #ABE7F4;
+  /* idg CTA colors */
+  --idg-orange: #F98419;
+  --idg-dark-orange: #A06529;
+  --idg-light-orange: #F2C09E;
+  /* misc. colors */
+  --idg-red: #EA3B65;
+  --idg-hyperlink-color: #509DBE;
+}
 .flex{
   display: flex;
   flex-wrap: wrap-reverse;
@@ -441,10 +472,10 @@ export default {
 }
 a {
   text-decoration: none;
-  color: var(--idg-hyperlink-color) !important;
+  color: var(--idg-hyperlink-color, #509DBE) !important;
 }
 a:hover {
-  color: var(--idg-alt-dark-blue) !important;
+  color: var(--idg-alt-dark-blue, #183C65) !important;
 }
 .interactingPathwaysCard {
   min-height: 300px;
@@ -456,7 +487,16 @@ a:hover {
   display: none !important;
 }
 .errorMessage {
-  color: var(--idg-red);
+  color: var(--idg-red, #EA3B65);
   text-align: center;
+}
+.pgs{
+  height: 100px;
+  width: 80%;
+  border: 1px solid lightgray;
+  margin: 1rem auto;
+}
+.max{
+  width: 25%;
 }
 </style>

@@ -131,7 +131,24 @@ export default {
 
 <style scoped>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
-
+:root {
+  /* idg colors */
+  --idg-dark-blue:#183C65;
+  --idg-corporate-blue: #0D5184;
+  --idg-medium-blue: #5E8BAD;
+  --idg-light-blue: #AEC5D6;
+  /* idg alt colors */
+  --idg-alt-blue: #4AABCA;
+  --idg-alt-dark-blue: #477F9C;
+  --idg-alt-light-blue: #ABE7F4;
+  /* idg CTA colors */
+  --idg-orange: #F98419;
+  --idg-dark-orange: #A06529;
+  --idg-light-orange: #F2C09E;
+  /* misc. colors */
+  --idg-red: #EA3B65;
+  --idg-hyperlink-color: #509DBE;
+}
 .linkDark {
   text-decoration: none;
   color: white !important;
