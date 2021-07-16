@@ -1,12 +1,18 @@
 <template :dark="darkmode">
-  <div >
+  <div>
     <div class="text-left">
       <span class="larger">{{ title }}</span>
       <small class="pl-2">{{ subtitle }}</small>
       <small class="pl-2">{{ relationshipTypesString }}</small>
     </div>
     <v-card :dark="darkmode" outlined class="text-left justify-left">
-      <!-- <PathwayGeneSimilarity class="pgs"/> -->
+      <LoadingCircularProgress v-if="networkLoading" style="width:80%;" :title="'Loading Pathway Overlap Network...'"/>
+      <PathwayGeneSimilarity
+        class="pgs"
+        @selectedPathway="selectPathway"
+        v-if="networkForCytoscape && networkForCytoscape.length > 0"
+        :network="networkForCytoscape"
+      />
       <div
         v-if="
           currentSecondarySearchDescs.dataDescriptions &&
@@ -18,21 +24,28 @@
         </v-btn>
       </div>
       <div v-else>
-        <div class="flex pa-4" style="display: flex; flex-wrap: wrap-reverse;
-                                      justify-content: space-between;
-                                      align-items: center;">
-          <div >
+        <div
+          class="flex pa-4"
+          style="
+            display: flex;
+            flex-wrap: wrap-reverse;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
             <FuncInteractionScoreFilter
               :term="term"
               :interactingGenes="interactingGenes"
               :prd="currentPRD"
               @updatePRD="updatePRD"
-              class="max"
             />
           </div>
           <div>
             <v-checkbox
-              v-if="this.secondaryPathways.some((pw) => pw.isAnnotated === true)"
+              v-if="
+                this.secondaryPathways.some((pw) => pw.isAnnotated === true)
+              "
               v-model="showAnnotatedPathwaysInput"
               :off-icon="mdiCheckboxBlankOutline"
               :on-icon="mdiCheckboxMarkedOutline"
@@ -54,8 +67,10 @@
               v-if="secondaryPathways.length > 0"
               :href="getOverViewLink"
               :target="linkTarget"
-              style="text-decoration: none;"
-              ><v-btn color="var(--idg-dark-blue, #183C65)" class="ma-2 white--text"
+              style="text-decoration: none"
+              ><v-btn
+                color="var(--idg-dark-blue, #183C65)"
+                class="ma-2 white--text"
                 >Open Pathway Overview</v-btn
               ></a
             >
@@ -71,6 +86,7 @@
           item-key="stId"
           show-expand
           :expand-icon="mdiChevronDown"
+          :expanded="expandedPathways"
           :search="secondarySearch"
           :single-expand="true"
           :footer-props="{
@@ -120,8 +136,12 @@
                 ></v-text-field>
               </td>
               <td colspan="2">
-                <v-btn small color="var(--idg-orange, #F98419)"
-                @click="downloadTable">Download Pathway List</v-btn>
+                <v-btn
+                  small
+                  color="var(--idg-orange, #F98419)"
+                  @click="downloadTable"
+                  >Download Pathway List</v-btn
+                >
               </td>
               <td colspan="1">
                 <v-text-field
@@ -169,7 +189,9 @@ import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
-// import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue"
+import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue";
+import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
+
 import {
   VDataTable,
   VCardText,
@@ -200,7 +222,8 @@ export default {
     VCard,
     VProgressCircular,
     FuncInteractionScoreFilter,
-    // PathwayGeneSimilarity
+    PathwayGeneSimilarity,
+    LoadingCircularProgress
   },
   vuetify,
   props: {
@@ -240,6 +263,9 @@ export default {
     showSecondarySearchForm: false,
     showAnnotatedPathwaysInput: true,
     pathwayStIdsForGene: [],
+    expandedPathways: [],
+    networkForCytoscape: [],
+    networkLoading: false
   }),
   watch: {
     term() {
@@ -252,6 +278,7 @@ export default {
       this.showAnnotatedPathwaysInput = true;
       this.pathwayStIdsForGene = [];
       this.getInitialData();
+      this.expandedPathways = [];
     },
   },
   computed: {
@@ -300,9 +327,12 @@ export default {
       }
     },
     noSecondaryPathwaysText() {
-      if (this.currentSecondarySearchDescs.length === 0 && this.currentPRD === 0)
+      if (
+        this.currentSecondarySearchDescs.length === 0 &&
+        this.currentPRD === 0
+      )
         return "No enriched pathways available for this term. It is extremely understudied";
-      else if(this.currentSecondarySearchDescs.length === 0)
+      else if (this.currentSecondarySearchDescs.length === 0)
         return "No pathways available. Try a lower Functional Interaction score.";
       else return "No pathways available. Try a different interactor set.";
     },
@@ -323,16 +353,15 @@ export default {
         this.currentPRD = this.currentPRD - 0.1;
         await this.loadCombinedScores();
       }
-      if(this.secondaryPathways.length === 0) {
+      if (this.secondaryPathways.length === 0) {
         this.currentPRD = 0;
-
       }
+      await this.loadNetwork();
     },
     async loadPathwaysForGene() {
       try {
-        this.pathwayStIdsForGene = await PairwiseService.loadPathwayStIdsForTerm(
-          this.term
-        );
+        this.pathwayStIdsForGene =
+          await PairwiseService.loadPathwayStIdsForTerm(this.term);
       } catch (err) {
         console.log(err);
       }
@@ -343,9 +372,8 @@ export default {
         if (!item.details) {
           const data = await ReactomeService.fetchPathwayDetails(item.stId);
           item.details = data;
-          this.secondaryPathways.filter(
-            (p) => p.stId === item.stId
-          ).details = data;
+          this.secondaryPathways.filter((p) => p.stId === item.stId).details =
+            data;
           this.$forceUpdate();
         }
       } catch (err) {
@@ -358,10 +386,12 @@ export default {
       this.FuncInteractionScoreFilterErrors = "";
 
       try {
-        this.secondaryPathways = await PairwiseService.loadCombinedScores({
-          term: this.term,
-          prd: this.currentPRD,
-        });
+        this.secondaryPathways =
+          await PairwiseService.searchTermSecondaryPathways({
+            term: this.term,
+            prd: this.currentPRD,
+            dataDescKeys: [0], //0 is the dataDescKey for combined score
+          });
         this.addIsAnnotatedToPathways();
         if (this.secondaryPathways.length === 0) this.secondaryPathwaysError();
       } catch (err) {
@@ -370,18 +400,27 @@ export default {
       }
       this.secondaryPathwaysLoading = false;
     },
+    async loadNetwork() {
+      this.networkLoading = true
+      this.networkForCytoscape =
+        await PairwiseService.searchNetworkTermSecondaryPathways({
+          term: this.term,
+          prd: this.currentPRD,
+          dataDescKeys: [0],
+        });
+        this.networkLoading = false
+    },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
       this.showSecondarySearchForm = false;
       this.secondaryPathways = [];
       this.currentSecondarySearchDescs = dataDescriptions;
       try {
-        this.secondaryPathways = await PairwiseService.searchTermSecondaryPathways(
-          {
+        this.secondaryPathways =
+          await PairwiseService.searchTermSecondaryPathways({
             term: this.term,
             dataDescKeys: dataDescriptions.digitalKeys,
-          }
-        );
+          });
         this.addIsAnnotatedToPathways();
         if (this.secondaryPathways.length === 0) {
           this.secondaryPathwaysError();
@@ -400,9 +439,8 @@ export default {
     },
     async loadInteractingGenes() {
       try {
-        this.interactingGenes = await PairwiseService.getInteractorScoresForTerm(
-          this.term
-        );
+        this.interactingGenes =
+          await PairwiseService.getInteractorScoresForTerm(this.term);
       } catch (err) {
         this.interactingGenes = [];
         console.log(err);
@@ -426,17 +464,20 @@ export default {
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
     },
-    downloadTable(){
+    downloadTable() {
       let str = "Stable_ID,Pathway_Name,pValue,FDR\n";
       this.filteredSecondaryPathways.forEach((pathway) => {
-        str += `${pathway.stId},${pathway.name},${pathway.pVal},${pathway.fdr}\n`
-      })
-      const blob = new Blob([str], {type:"blob"});
+        str += `${pathway.stId},${pathway.name},${pathway.pVal},${pathway.fdr}\n`;
+      });
+      const blob = new Blob([str], { type: "blob" });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = `PathwaysFor${this.term}.csv`;
       link.click();
-    }
+    },
+    selectPathway(stId) {
+      this.expandedPathways.push(stId);
+    },
   },
 };
 </script>
@@ -445,37 +486,37 @@ export default {
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
 :root {
   /* idg colors */
-  --idg-dark-blue:#183C65;
-  --idg-corporate-blue: #0D5184;
-  --idg-medium-blue: #5E8BAD;
-  --idg-light-blue: #AEC5D6;
+  --idg-dark-blue: #183c65;
+  --idg-corporate-blue: #0d5184;
+  --idg-medium-blue: #5e8bad;
+  --idg-light-blue: #aec5d6;
   /* idg alt colors */
-  --idg-alt-blue: #4AABCA;
-  --idg-alt-dark-blue: #477F9C;
-  --idg-alt-light-blue: #ABE7F4;
+  --idg-alt-blue: #4aabca;
+  --idg-alt-dark-blue: #477f9c;
+  --idg-alt-light-blue: #abe7f4;
   /* idg CTA colors */
-  --idg-orange: #F98419;
-  --idg-dark-orange: #A06529;
-  --idg-light-orange: #F2C09E;
+  --idg-orange: #f98419;
+  --idg-dark-orange: #a06529;
+  --idg-light-orange: #f2c09e;
   /* misc. colors */
-  --idg-red: #EA3B65;
-  --idg-hyperlink-color: #509DBE;
+  --idg-red: #ea3b65;
+  --idg-hyperlink-color: #509dbe;
 }
-.flex{
+.flex {
   display: flex;
   flex-wrap: wrap-reverse;
   justify-content: space-between;
   align-items: center;
 }
-.btn-primary{
+.btn-primary {
   color: white;
 }
 a {
   text-decoration: none;
-  color: var(--idg-hyperlink-color, #509DBE) !important;
+  color: var(--idg-hyperlink-color, #509dbe) !important;
 }
 a:hover {
-  color: var(--idg-alt-dark-blue, #183C65) !important;
+  color: var(--idg-alt-dark-blue, #183c65) !important;
 }
 .interactingPathwaysCard {
   min-height: 300px;
@@ -487,16 +528,13 @@ a:hover {
   display: none !important;
 }
 .errorMessage {
-  color: var(--idg-red, #EA3B65);
+  color: var(--idg-red, #ea3b65);
   text-align: center;
 }
-.pgs{
-  height: 100px;
+.pgs {
+  height: 200px;
   width: 80%;
   border: 1px solid lightgray;
   margin: 1rem auto;
-}
-.max{
-  width: 25%;
 }
 </style>
