@@ -2,13 +2,20 @@
   <v-container fluid class="pl-0 pr-0">
         <v-card outlined class="pa-5">
           <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          {{title}}
         </v-card>
       </v-container>
 </template>
 
 <script>
 export default {
-    name: "LoadingCircluarProgress"
+    name: "LoadingCircluarProgress",
+    props:{
+      title: {
+        type: String,
+        default: () => ""
+      }
+    }
 }
 </script>
 
