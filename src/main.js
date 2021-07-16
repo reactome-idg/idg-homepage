@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify';
 import VueGtag from "vue-gtag";
+import cytoscape from 'cytoscape'
+import popper from 'cytoscape-popper'
+
+cytoscape.use(popper)
 
 //google analytics setup
 Vue.use(VueGtag, {
