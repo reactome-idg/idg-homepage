@@ -52,6 +52,23 @@ class PairwiseService {
     });
   }
 
+  static searchNetworkTermSecondaryPathways(postData){
+    return new Promise((resolve, reject) => {
+      axios
+        .post(
+          `${url}relationships/network/enrichedSecondaryPathaysForTerm`,
+          postData
+        )
+        .then((res) => {
+          //return only bottom level pathways
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   static loadCombinedScores(postData) {
     return new Promise((resolve, reject) => {
       axios
@@ -96,16 +113,21 @@ class PairwiseService {
     });
   }
 
-  static downloadFeaturesForInteractors(postData){
-      axios.post(`${url}download/FeaturesForTermAndInteractors`,postData, {responseType:'blob'})
-      .then((res)=> {
-        const blob = new Blob([res.data], {type: res.headers['content-type']});
+  static downloadFeaturesForInteractors(postData) {
+    axios
+      .post(`${url}download/FeaturesForTermAndInteractors`, postData, {
+        responseType: "blob",
+      })
+      .then((res) => {
+        const blob = new Blob([res.data], {
+          type: res.headers["content-type"],
+        });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.download = `InteractorFeaturesFor${postData.term}.csv`;
         link.click();
-        
-      }).catch((err)=> console.log(err));
+      })
+      .catch((err) => console.log(err));
   }
 
   /**
