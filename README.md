@@ -28,9 +28,9 @@ npm run serve
 ```
 
 ### Compiles and minifies for production
-builds using .env.production file for public env variables
+builds using .env.production file for public env variables. Deployable files are stired in the dist/ folder. This script also builds the two web components for deployement on other websites. They are generated at dist/wc/
 ```
-npm run build -- --mode production
+npm run build-production
 ```
 
 ### Lints and fixes files
