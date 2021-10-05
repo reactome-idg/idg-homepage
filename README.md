@@ -2,16 +2,18 @@
 
 ## Dev Environment setup
 This dev environment assumes a Mac or Linux dev environment.
-Please install nvm through homebrew on a Mac, (or follow the documentation [here](https://github.com/nvm-sh/nvm#installing-and-updating))
+Please install npm through homebrew on a Mac, (or follow the documentation [here](https://github.com/nvm-sh/nvm#installing-and-updating))
 
 Next, install the latest version of Node:
+
 ```
-nvm install --lts
+npm install --lts
 ```
 
 Finally, install Vue CLI 3
+
 ```
-npm install -g @vue/cli
+npm install @vue/cli (To install for the whole system, use npm install -g @vue/cli with sudo)
 ```
 
 ## Project setup
@@ -23,12 +25,15 @@ npm install
 
 ### Compiles and hot-reloads for development
 loads using .env.development file for public env variables
+
 ```
 npm run serve
 ```
+Note: In case you get any compilation error related to template, try install vue-template: npm install vue-template-compiler
 
 ### Compiles and minifies for production
 builds using .env.production file for public env variables. Deployable files are stired in the dist/ folder. This script also builds the two web components for deployement on other websites. They are generated at dist/wc/
+
 ```
 npm run build-production
 ```
