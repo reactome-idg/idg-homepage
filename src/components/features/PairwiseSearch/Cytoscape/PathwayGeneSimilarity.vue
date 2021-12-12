@@ -25,7 +25,7 @@ export default {
     // Node FDR cutoff to be set by the container
     nodeFDRFilter: {
       type: Number,
-      default: 1.0E-4,
+      default: 0.05,
     }
   },
   // This is a function
@@ -33,12 +33,12 @@ export default {
     cyConfig: {
       style: [
         {
-          selector: "node",
+          selector: "node[fdr_score]", // Use a specified selector to avoid warning
           style: {
             label: "data(id)",
             "background-color": "data(weightedTDLColorHex)",
             "border-width": 5,
-            "border-color": "mapData(fdr, 0, 1, yellow, green)"
+            "border-color": "mapData(fdr_score, 0, 10, yellow, blue)"
           },  
         },
         {
@@ -48,15 +48,15 @@ export default {
           }
         },
         {
-          selector: "edge",
+          selector: "edge[overlap_score]",
           style: {
-            width: "mapData(hypergeometricScore, 0,1, .5,50)"
+            // Need to check the maximum. Use 100 for the time being
+            width: "mapData(overlap_score, 0, 100, 1, 10)"
           }
         }
       ]
     },
-    // Used to filter edges
-    edgeHypergeometricScoreFilter: 1.0E-60,
+    edgeHypergeometricScoreFilter: 0.01,
   }),
 
   watch: {
@@ -83,14 +83,27 @@ export default {
     },
 
     updateNetwork() {
+      if (isNaN(this.nodeFDRFilter)) return
       // Remove all network nodes first
       this.cy.elements().remove()
       this.cy.add(this.network)
       var removed = this.cy.elements('edge[hypergeometricScore >= ' + this.edgeHypergeometricScoreFilter + ']')
       this.cy.remove(removed)
+      // Note: nodeFDRFilter is a string!
       removed = this.cy.elements('node[fdr >= ' + this.nodeFDRFilter + ']')
       this.cy.remove(removed)
-      this.cy.layout({name: 'cose'}).run()
+      // Add a new data
+      const nodes = this.cy.nodes()
+      for (let i = 0; i < nodes.length; i++) {
+        let node = nodes[i]
+        node.data('fdr_score', -Math.log10(node.data('fdr')))
+      }
+      const edges = this.cy.edges()
+      for (let i = 0; i < edges.length; i++) {
+        let edge = edges[i]
+        edge.data('overlap_score', -Math.log10(edge.data('hypergeometricScore')))
+      }
+      this.cy.layout({name: 'circle'}).run()
       this.cy.center()
       this.cy.fit() 
     }

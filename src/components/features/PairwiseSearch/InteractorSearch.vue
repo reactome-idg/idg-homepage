@@ -152,15 +152,13 @@
                   >
                 </td>
                 <td colspan="1">
-                  <v-text-field
-                    prefix="FDR ≤"
+                  <v-combobox
+                    :items="fdr_choices"
+                    :value="fdr"
                     v-model="fdr"
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    hide-details
-                  ></v-text-field>
+                    label="FDR <"
+                    style="width: 100px;"
+                  ></v-combobox>
                 </td>
               </tr>
               <tr></tr>
@@ -264,7 +262,15 @@ export default {
     linkTarget: process.env.VUE_APP_LINK_TARGET,
     secondaryPathways: [],
     interactingGenes: null,
-    fdr: 0.05,
+    fdr: 0.05, // Use String to be consistent with fdr_choices array
+    fdr_choices: [1, 
+                  0.05, 
+                  0.01, 
+                  0.001, 
+                  1.0E-4, 
+                  1.0E-5, 
+                  1.0E-6,
+                  1.0E-7],
     currentPRD: 0.9,
     secondarySearch: "",
     currentSecondarySearchDescs: [],
@@ -548,4 +554,5 @@ a:hover {
   /* border: 1px solid lightgray; */
   margin: 1rem auto;
 }
+
 </style>
