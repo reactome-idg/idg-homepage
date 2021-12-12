@@ -6,13 +6,6 @@
       <small class="pl-2">{{ relationshipTypesString }}</small>
     </div>
     <v-card :dark="darkmode" outlined class="text-left justify-left">
-      <LoadingCircularProgress v-if="networkLoading" style="width:80%;" :title="'Loading Pathway Overlap Network...'"/>
-      <PathwayGeneSimilarity
-        class="pgs"
-        @selectedPathway="selectPathway"
-        v-if="networkForCytoscape && networkForCytoscape.length > 0"
-        :network="networkForCytoscape"
-      />
       <div
         v-if="
           currentSecondarySearchDescs.dataDescriptions &&
@@ -78,92 +71,108 @@
         </div>
       </div>
       <v-card-text class="interactingPathwaysCard">
-        <v-data-table
-          v-if="secondaryPathways.length > 0"
-          dense
-          :headers="secondaryHeaders"
-          :items="filteredSecondaryPathways"
-          item-key="stId"
-          show-expand
-          :expand-icon="mdiChevronDown"
-          :expanded="expandedPathways"
-          :search="secondarySearch"
-          :single-expand="true"
-          :footer-props="{
-            'items-per-page-options': [20, 40, 50, 100, -1],
-            'next-icon': mdiChevronRight,
-            'prev-icon': mdiChevronLeft,
-          }"
-          :hide-default-footer="hideSecondaryPagination"
-          @item-expanded="loadSecondaryDetails"
-          :must-sort="true"
-          :loading="secondaryPathwaysLoading"
-          no-results-text="No pathways. Try a higher FDR"
-        >
-          <template v-slot:item.stId="{ item }">
-            <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
-              item.stId
-            }}</a>
-          </template>
-          <template v-slot:item.fdr="{ item }">{{
-            item.fdr.toExponential(2)
-          }}</template>
-          <template v-slot:item.pVal="{ item }">{{
-            item.pVal.toExponential(2)
-          }}</template>
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-              <TableDetails
-                v-if="item.details"
-                :details="item.details"
-                :urlFlagSuffix="getURLFlagSuffix"
-              />
-              <v-progress-circular
-                v-else
-                indeterminate
-                color="primary"
-              ></v-progress-circular>
-            </td>
-          </template>
-          <template v-slot:body.append>
-            <tr>
-              <td colspan="2">
-                <v-text-field
-                  v-if="!hideSecondaryPagination"
-                  v-model="secondarySearch"
-                  label="Search"
-                  hide-details
-                ></v-text-field>
-              </td>
-              <td colspan="2">
-                <v-btn
-                  small
-                  color="var(--idg-orange, #F98419)"
-                  @click="downloadTable"
-                  >Download Pathway List</v-btn
-                >
-              </td>
-              <td colspan="1">
-                <v-text-field
-                  prefix="FDR ≤"
-                  v-model="fdr"
-                  type="number"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  hide-details
-                ></v-text-field>
-              </td>
-            </tr>
-            <tr></tr>
-          </template>
-          <v-data-footer
-            :next-icon="mdiChevronRight"
-            :prev-icon="mdiChevronLeft"
+        <v-card outlined>
+          <LoadingCircularProgress
+            v-if="networkLoading"
+            style="width: 80%"
+            :title="'Loading Pathway Overlap Network...'"
+          />
+          <PathwayGeneSimilarity
+            class="pgs"
+            @selectedPathway="selectPathway"
+            v-if="networkForCytoscape && networkForCytoscape.length > 0"
+            :network="networkForCytoscape"
+            :nodeFDRFilter="fdr"
+          />
+        </v-card>
+        <v-card outlined>
+          <v-data-table
+            v-if="secondaryPathways.length > 0"
+            dense
+            :headers="secondaryHeaders"
+            :items="filteredSecondaryPathways"
+            item-key="stId"
+            show-expand
+            :expand-icon="mdiChevronDown"
+            :expanded="expandedPathways"
+            :search="secondarySearch"
+            :single-expand="true"
+            :footer-props="{
+              'items-per-page-options': [10, 20, 50, 100, -1],
+              'next-icon': mdiChevronRight,
+              'prev-icon': mdiChevronLeft,
+            }"
+            :hide-default-footer="hideSecondaryPagination"
+            @item-expanded="loadSecondaryDetails"
+            :must-sort="true"
+            :loading="secondaryPathwaysLoading"
+            no-results-text="No pathways. Try a higher FDR"
           >
-          </v-data-footer>
-        </v-data-table>
-        <p v-else class="errorMessage">{{ noSecondaryPathwaysText }}</p>
+            <template v-slot:item.stId="{ item }">
+              <a :href="getSecondaryLink(item.stId)" :target="linkTarget">{{
+                item.stId
+              }}</a>
+            </template>
+            <template v-slot:item.fdr="{ item }">{{
+              item.fdr.toExponential(2)
+            }}</template>
+            <template v-slot:item.pVal="{ item }">{{
+              item.pVal.toExponential(2)
+            }}</template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                <TableDetails
+                  v-if="item.details"
+                  :details="item.details"
+                  :urlFlagSuffix="getURLFlagSuffix"
+                />
+                <v-progress-circular
+                  v-else
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              </td>
+            </template>
+            <template v-slot:body.append>
+              <tr>
+                <td colspan="2">
+                  <v-text-field
+                    v-if="!hideSecondaryPagination"
+                    v-model="secondarySearch"
+                    label="Search"
+                    hide-details
+                  ></v-text-field>
+                </td>
+                <td colspan="2">
+                  <v-btn
+                    small
+                    color="var(--idg-orange, #F98419)"
+                    @click="downloadTable"
+                    >Download Pathway List</v-btn
+                  >
+                </td>
+                <td colspan="1">
+                  <v-text-field
+                    prefix="FDR ≤"
+                    v-model="fdr"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    hide-details
+                  ></v-text-field>
+                </td>
+              </tr>
+              <tr></tr>
+            </template>
+            <v-data-footer
+              :next-icon="mdiChevronRight"
+              :prev-icon="mdiChevronLeft"
+            >
+            </v-data-footer>
+          </v-data-table>
+          <p v-else class="errorMessage">{{ noSecondaryPathwaysText }}</p>
+        </v-card>
       </v-card-text>
       <v-overlay
         absolute
@@ -223,7 +232,7 @@ export default {
     VProgressCircular,
     FuncInteractionScoreFilter,
     PathwayGeneSimilarity,
-    LoadingCircularProgress
+    LoadingCircularProgress,
   },
   vuetify,
   props: {
@@ -265,7 +274,7 @@ export default {
     pathwayStIdsForGene: [],
     expandedPathways: [],
     networkForCytoscape: [],
-    networkLoading: false
+    networkLoading: false,
   }),
   watch: {
     term() {
@@ -401,14 +410,14 @@ export default {
       this.secondaryPathwaysLoading = false;
     },
     async loadNetwork() {
-      this.networkLoading = true
+      this.networkLoading = true;
       this.networkForCytoscape =
         await PairwiseService.searchNetworkTermSecondaryPathways({
           term: this.term,
           prd: this.currentPRD,
           dataDescKeys: [0],
         });
-        this.networkLoading = false
+      this.networkLoading = false;
     },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
@@ -453,6 +462,7 @@ export default {
       if (prd === this.currentPRD) return;
       this.currentPRD = prd;
       this.loadCombinedScores();
+      this.loadNetwork()
     },
     getSecondaryLink(stId) {
       return `${this.browserLink}${stId}&${this.getURLFlagSuffix}`;
@@ -463,6 +473,7 @@ export default {
     closeIndividualSources() {
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
+      this.loadNetwork()
     },
     downloadTable() {
       let str = "Stable_ID,Pathway_Name,pValue,FDR\n";
@@ -532,9 +543,9 @@ a:hover {
   text-align: center;
 }
 .pgs {
-  height: 200px;
-  width: 80%;
-  border: 1px solid lightgray;
+  height: 300px;
+  width: 100%;
+  /* border: 1px solid lightgray; */
   margin: 1rem auto;
 }
 </style>

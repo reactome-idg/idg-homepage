@@ -1,27 +1,43 @@
+<!-- Most of the code here is copied from CyInstance.vue in the reactome-immport-ws project:
+     https://github.com/VIOLINet/reactome-immport-web/blob/master/src/components/ImmportResults/Cytoscape/CyInstance.vue -->
 <template>
-  <div id="cy"></div>
+  <!-- Ref: https://rcarcasses.github.io/vue-cytoscape/installation.html#usage. Apparently the original code doesn't work
+  as described here. Therefore, Tim has customized the behavior using methods in this component. --> 
+  <cytoscape ref="cy" :config="cyConfig" 
+            :preConfig="preConfig" 
+            :afterCreated="afterCreated" 
+            style="min-height: 300px;">
+  </cytoscape>
 </template>
 
 <script>
-import cytoscape from "cytoscape";
-// import popper from "cytoscape-popper";
-// import tippy from 'cytoscape-popper';
+
 export default {
   name: "PathwayGeneSimilarity",
+  // Probably there is a bug in vue-cytoscape: component cannot be defined here
+  // It should be defined at main.js. Otherwise, an error shows template or render function
+  // is not defined.
   props: {
     network:{
       type: Array,
       default: () => []
+    },
+    // Node FDR cutoff to be set by the container
+    nodeFDRFilter: {
+      type: Number,
+      default: 1.0E-4,
     }
   },
-  data: () => ({ 
-    cyStyles: [
+  // This is a function
+  data: () => ({
+    cyConfig: {
+      style: [
         {
           selector: "node",
           style: {
             label: "data(id)",
             "background-color": "data(weightedTDLColorHex)",
-            "border-width": 3,
+            "border-width": 5,
             "border-color": "mapData(fdr, 0, 1, yellow, green)"
           },  
         },
@@ -34,65 +50,58 @@ export default {
         {
           selector: "edge",
           style: {
-            width: "mapData(numSharedGenes, 0,1000, .5,50)"
+            width: "mapData(hypergeometricScore, 0,1, .5,50)"
           }
         }
-    ],
+      ]
+    },
+    // Used to filter edges
+    edgeHypergeometricScoreFilter: 1.0E-60,
   }),
-  mounted() {
-    // cytoscape.use(popper)
-    let cy = cytoscape({
-      container: document.getElementById("cy"),
-      elements: this.network,
-      style: this.cyStyles,
-      layout: {name: 'random'}
-    });
 
-    this.cy = cy;
-
-    this.cy.on('select', 'node', (e) => {
-      console.log(`${e.target.id()} was selected`)
-      this.$emit('selectedPathway', e.target.id())
-    });
-
-    // this.cy.ready(() => {
-    //   this.cy.elements().forEach((el) => {
-    //     this.makePopper(el);
-    //   })
-    // })
-
-    // this.cy.elements().unbind('mouseover');
-    // this.cy.elements().bind('mouseover', (event) => event.target.tippy.show());
-
-    // this.cy.elements().unbind('mouseout');
-    // this.cy.elements().bind('mouseout', (event) => event.target.tippy.hide());
-
-    // this.cy.elements().unbind('drag');
-    // this.cy.elements().bind('drag', (event) => event.target.tippy.popperInstance.update());
-    
+  watch: {
+    nodeFDRFilter() {
+      this.updateNetwork()
+    },
+    network() {
+      this.updateNetwork()
+    }
   },
-  // methods: {
-  //   makePopper(element){
-  //     let ref = element.popperRef()
-  //     element.tippy = tippy(document.createElement('div'), {
-  //     // popperInstance will be available onCreate
-  //     lazy: false,
-  //     followCursor: 'true',
-  //     hideOnClick: false,
-  //     flipOnUpdate: true,
-  //     onShow(instance) {
-  //       instance.popperInstance.reference = ref
-  //     },
-  //   });
-  //     element.tippy.setContent('Node ' + element.id());
-  //   }
-  // }
 
+  methods: {
+    // 600px is hard-coded in VueCytoscape. Modify it here. This is not good!
+    // See: https://github.com/rcarcasses/vue-cytoscape/issues/47
+    preConfig() {
+      var el = document.getElementById('cytoscape-div');
+      el.style.minHeight = "300px"
+      el.style.height = "300px"
+    },
+
+    afterCreated(cy) {
+      this.cy = cy
+      this.updateNetwork()
+    },
+
+    updateNetwork() {
+      // Remove all network nodes first
+      this.cy.elements().remove()
+      this.cy.add(this.network)
+      var removed = this.cy.elements('edge[hypergeometricScore >= ' + this.edgeHypergeometricScoreFilter + ']')
+      this.cy.remove(removed)
+      removed = this.cy.elements('node[fdr >= ' + this.nodeFDRFilter + ']')
+      this.cy.remove(removed)
+      this.cy.layout({name: 'cose'}).run()
+      this.cy.center()
+      this.cy.fit() 
+    }
+  },
 };
 </script>
 
 <style style>
 #cy {
-  min-height: 600px;
+  min-height: 300px;
+  /* Make sure this is the same as specified at its container */
+  height: 300px;
 }
 </style>
