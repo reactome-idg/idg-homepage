@@ -79,7 +79,7 @@
           />
           <PathwayGeneSimilarity
             class="pgs"
-            @selectedPathway="selectPathway"
+            @selectionChanged="networkSelectionUpdated($event)"
             v-if="networkForCytoscape && networkForCytoscape.length > 0"
             :network="networkForCytoscape"
             :nodeFDRFilter="fdr"
@@ -96,6 +96,7 @@
             :expand-icon="mdiChevronDown"
             :expanded="expandedPathways"
             :search="secondarySearch"
+            :custom-filter="filterOnSecondarySearch"
             :single-expand="true"
             :footer-props="{
               'items-per-page-options': [10, 20, 50, 100, -1],
@@ -469,6 +470,7 @@ export default {
       this.currentPRD = prd;
       this.loadCombinedScores();
       this.loadNetwork()
+      this.secondarySearch = ""
     },
     getSecondaryLink(stId) {
       return `${this.browserLink}${stId}&${this.getURLFlagSuffix}`;
@@ -492,9 +494,23 @@ export default {
       link.download = `PathwaysFor${this.term}.csv`;
       link.click();
     },
-    selectPathway(stId) {
-      this.expandedPathways.push(stId);
+    networkSelectionUpdated(selection) {
+      if (selection.size === 0)
+        this.secondarySearch = ""
+      else
+        this.secondarySearch = "" + [...selection]
+      // this.expandedPathways.push(stId);
     },
+    filterOnSecondarySearch(value, search) {
+      if (search === null || search.trim().length === 0) return true
+      let terms = search.split(',')
+      for (let i = 0; i < terms.length; i++) {
+        let term = terms[i].toLowerCase()
+        if (typeof value == 'string' && value.toString().toLowerCase().indexOf(term) > -1)
+          return true
+      }
+      return false
+    }
   },
 };
 </script>

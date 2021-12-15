@@ -8,9 +8,12 @@
               :preConfig="preConfig" 
               :afterCreated="afterCreated" 
               style="min-height: 300px;"
-              class="pa-0">
+              class="pa-0"
+              v-on:select="select"
+              v-on:unselect="unselect"
+              @mousedown="settingPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
-    <v-btn icon class="settingBtn mx-1 pa-0" @click="show = !show">
+    <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow">
         <v-icon>{{ mdiCogOutline }}</v-icon>
     </v-btn>
     <!-- TODO: GUI controls for the network view. The card cuts some space out from the cytoscape view. Probably 
@@ -18,8 +21,9 @@
     hide itself when the mouse is out -->
     <!-- Try to refer to some code here for hoveable controls: https://www.codeply.com/p/QyIDFyjH4Q --> 
     <!-- Probably need to change to other layout,e.g., v-layout -->
+    <!-- May consider wrap the following into a v-dialog -->
     <v-expand-transition>
-    <v-card outlined class="controlCard pa-2" v-show="show">
+    <v-card outlined class="controlCard pa-2" v-show="settingPaneShow">
       <v-btn @click="reset" depressed x-small>reset network</v-btn>
       <v-card-text dense style="font-size: 100%" class="pa-2">Choose Layout</v-card-text>
       <v-select v-model="layout" :items="layoutChoices" dense style="font-size: 100%"></v-select>
@@ -32,8 +36,12 @@
         hide-details
         dense>
       </v-text-field>
-      <v-btn @click="show = false" depressed x-small class="closeBtn">Close</v-btn>
+      <v-btn @click="settingPaneShow = false" depressed x-small class="closeBtn">Close</v-btn>
     </v-card>
+    </v-expand-transition>
+    <!-- Provide some information about the selected edges -->
+    <v-expand-transition>
+      <EdgeTable :selectedEdges="selectedEdges"></EdgeTable>
     </v-expand-transition>
   </v-container>
 </template>
@@ -41,9 +49,15 @@
 <script>
 
 import { mdiCogOutline } from '@mdi/js';
+import EdgeTable from './EdgeTable';
 
 export default {
   name: "PathwayGeneSimilarity",
+  
+  components: {
+    EdgeTable
+  },
+
   // Probably there is a bug in vue-cytoscape: component cannot be defined here
   // It should be defined at main.js. Otherwise, an error shows template or render function
   // is not defined.
@@ -61,22 +75,28 @@ export default {
   // This is a function
   data: () => ({
     mdiCogOutline,
-    show: false,
+    settingPaneShow: false,
     cyConfig: {
       style: [
         {
           selector: "node[fdr_score]", // Use a specified selector to avoid warning
           style: {
             label: "data(id)",
+            "font-size": "9",
+            // It is understood that the maximum number of genes may be greater
+            // that 200.
+            width: "mapData(geneNumber, 0, 200, 10, 50)",
+            height: "mapData(geneNumber, 0, 200, 10, 50)",
             "background-color": "data(weightedTDLColorHex)",
-            "border-width": 5,
+            "border-width": 3,
             "border-color": "mapData(fdr_score, 0, 10, yellow, blue)"
           },  
         },
         {
           selector:"node:selected",
           style: {
-            "border-width": 7
+            "border-width": 5,
+            "background-color": "green"
           }
         },
         {
@@ -89,9 +109,34 @@ export default {
       ]
     },
     edgeHypergeometricScoreFilter: 0.01,
-    layout: "random",
-    layoutChoices: ["cose", "random", "circle", "concentric", "grid"]
+    layout: "cose", // Default. This may not good for a big network.
+    layoutChoices: ["cose", "random", "circle", "concentric", "grid"],
+    // To manage the selected nodes for filtering
+    selected: new Set(),
+    // To manage the selected edges.
+    // Array is needed for table
+    selectedEdges: [],
   }),
+
+  computed: {
+    edgeTableHeaders() {
+      return [
+        {
+          text: '',
+          value: 'id',
+          align: 'start'
+        },
+        {
+          text: 'Shared Genes',
+          value: 'numSharedGenes'
+        },
+        {
+          text: 'Overlap pvalue',
+          value: 'hypergeometricScore'
+        }
+      ]
+    },
+  },
 
   watch: {
     nodeFDRFilter() {
@@ -106,6 +151,44 @@ export default {
   },
 
   methods: {
+    select(evt) {
+      if (evt.target.isNode()) {
+        this.selected.add(evt.target.data('id'))
+        this.$emit("selectionChanged", this.selected)
+      }
+      else if (evt.target.isEdge()) {
+        // Cannot push the target into selectedEdges. A very expensive step!!!
+        this.selectedEdges.push(this.createEdgeRow(evt.target)) // The target object is kept
+      }
+    },
+
+    unselect(evt) {
+      if (evt.target.isNode()) {
+        this.selected.delete(evt.target.data('id'))
+        this.$emit("selectionChanged", this.selected)
+      }
+      else if (evt.target.isEdge()) {
+        let index = -1
+        for (let i = 0; i < this.selectedEdges.length; i++) {
+          let edge = this.selectedEdges[i]
+          if (edge.id === evt.target.data('id')) {
+            index = i
+            break;
+          }
+        }
+        if (index > -1)
+          this.selectedEdges.splice(index, 1)
+      }
+    },
+
+    createEdgeRow(e) {
+      return {
+          "id": e.data('id'),
+          "numSharedGenes": e.data('numSharedGenes'),
+          'hypergeometricScore': e.data('hypergeometricScore'),
+        }
+    },
+
     doLayout() {
       if (!this.cy) return
       this.cy.layout({name: this.layout}).run()
@@ -148,6 +231,8 @@ export default {
         edge.data('overlap_score', -Math.log10(edge.data('hypergeometricScore')))
       }
       this.doLayout()
+      this.selected.clear() // reset selected
+      this.selectedEdges.length = 0
     },
 
     reset() {
@@ -159,7 +244,7 @@ export default {
 };
 </script>
 
-<style style>
+<style style scope>
 #cy {
   min-height: 300px;
   /* Make sure this is the same as specified at its container */
@@ -178,13 +263,19 @@ export default {
   margin-top: 8px;
   margin-left: 24px;
 }
-
 .controlCard {
   position: absolute;
   align-items: center;
   top: 4px;
   left: 4px;
   width: 150px;
+  font-size: 80%;
+}
+.edgeInfoCard {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 300px;
   font-size: 80%;
 }
 </style>
