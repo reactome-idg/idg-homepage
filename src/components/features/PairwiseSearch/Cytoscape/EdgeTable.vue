@@ -7,7 +7,7 @@
               <tr>
                 <th class="text-left"></th>
                 <th class="text-left" :style="fontSize">Shared Genes</th>
-                <th class="text-left" :style="fontSize">Overlap pvalue</th>
+                <th class="text-left" :style="fontSize">Overlap pValue</th>
               </tr>
             </thead>
             <tbody>

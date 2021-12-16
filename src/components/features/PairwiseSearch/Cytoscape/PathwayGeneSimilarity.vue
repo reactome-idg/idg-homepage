@@ -28,7 +28,7 @@
       <v-card-text dense style="font-size: 100%" class="pa-2">Choose Layout</v-card-text>
       <v-select v-model="layout" :items="layoutChoices" dense style="font-size: 100%"></v-select>
       <v-card-text title="Choose a threshold for pathway overlay pvalue according to hypergeometic test"
-       style="font-size: 100%" dense class="pa-2">Overlay pvalue &#60;</v-card-text>
+       style="font-size: 100%" dense class="pa-2">Overlap pValue &#60;</v-card-text>
       <v-text-field type="Text" class="mr-3" style="font-size: 100%"
         v-model="edgeHypergeometricScoreFilter"
         :rules="[v => !isNaN(v) && v <= 1]" 

@@ -300,8 +300,9 @@ export default {
   computed: {
     secondaryHeaders() {
       return [
-        { text: "Pathway Stable id", value: "stId" },
-        { text: "Pathway Name", value: "name" },
+        { text: "Pathway Id", value: "stId" },
+        { text: "Pathway", value: "name" },
+        { text: "Gene Number", value: "numGenes"},
         { text: "pValue", value: "pVal" },
         {
           text: "FDR",
@@ -484,9 +485,9 @@ export default {
       this.loadNetwork()
     },
     downloadTable() {
-      let str = "Stable_ID,Pathway_Name,pValue,FDR\n";
+      let str = "Pathway Id,Pathway,Gene Number,pValue,FDR\n";
       this.filteredSecondaryPathways.forEach((pathway) => {
-        str += `${pathway.stId},${pathway.name},${pathway.pVal},${pathway.fdr}\n`;
+        str += `${pathway.stId},${pathway.name},${pathway.numGenes},${pathway.pVal},${pathway.fdr}\n`;
       });
       const blob = new Blob([str], { type: "blob" });
       const link = document.createElement("a");
