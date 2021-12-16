@@ -144,7 +144,7 @@
                     hide-details
                   ></v-text-field>
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                   <v-btn
                     small
                     color="var(--idg-orange, #F98419)"
