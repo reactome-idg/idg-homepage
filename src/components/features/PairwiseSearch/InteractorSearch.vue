@@ -83,6 +83,7 @@
             v-if="networkForCytoscape && networkForCytoscape.length > 0"
             :network="networkForCytoscape"
             :nodeFDRFilter="fdr"
+            :tabledPathways="filteredSecondaryPathways"
           />
         </v-card>
         <v-card outlined>

@@ -70,6 +70,11 @@ export default {
     nodeFDRFilter: {
       type: Number,
       default: 0.05,
+    },
+    // Some pathways may be filtered out via checking whether they are annotated or not
+    tabledPathways: {
+      type: Array,
+      default: () => []
     }
   },
   // This is a function
@@ -116,6 +121,7 @@ export default {
     // To manage the selected edges.
     // Array is needed for table
     selectedEdges: [],
+
   }),
 
   computed: {
@@ -147,6 +153,9 @@ export default {
     },
     layout() {
       this.doLayout()
+    },
+    tabledPathways() {
+      this.updateNetwork()
     }
   },
 
@@ -219,8 +228,29 @@ export default {
       // Note: nodeFDRFilter is a string!
       removed = this.cy.elements('node[fdr >= ' + this.nodeFDRFilter + ']')
       this.cy.remove(removed)
+      // check pathway nodes based on annotation
+      let nodes = this.cy.nodes()
+      removed = this.cy.collection();
+      if (nodes != null) {
+        for (let i = 0; i < nodes.length; i++) {
+          // Check if this pathway is included
+          let stId = nodes[i].data('id')
+          let isFound = false
+          for (let j = 0; j < this.tabledPathways.length; j++) {
+            if (stId === this.tabledPathways[j].stId) {
+              isFound = true
+              break
+            }
+          }
+          if (!isFound) {
+            removed = removed.union(nodes[i])
+          }
+        }
+      }
+      if (removed.length > 0)
+        this.cy.remove(removed)
       // Add a new data
-      const nodes = this.cy.nodes()
+      nodes = this.cy.nodes()
       for (let i = 0; i < nodes.length; i++) {
         let node = nodes[i]
         node.data('fdr_score', -Math.log10(node.data('fdr')))
