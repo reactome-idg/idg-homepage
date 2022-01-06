@@ -11,10 +11,13 @@
               class="pa-0"
               v-on:select="select"
               v-on:unselect="unselect"
-              @mousedown="settingPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
+              @mousedown="settingPaneShow = false; legendPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
     <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow">
         <v-icon>{{ mdiCogOutline }}</v-icon>
+    </v-btn>
+    <v-btn icon class="legendBtn mx-1 pa-0" @click="legendPaneShow = !legendPaneShow">
+      <v-icon>{{ mdiMapLegend }}</v-icon>
     </v-btn>
     <!-- TODO: GUI controls for the network view. The card cuts some space out from the cytoscape view. Probably 
     we need to think how to make it show on the fly. Probably use v-overlay with a setting icon, which can
@@ -36,26 +39,31 @@
         hide-details
         dense>
       </v-text-field>
-      <v-btn @click="settingPaneShow = false" depressed x-small class="closeBtn">Close</v-btn>
     </v-card>
     </v-expand-transition>
     <!-- Provide some information about the selected edges -->
     <v-expand-transition>
       <EdgeTable :selectedEdges="selectedEdges"></EdgeTable>
     </v-expand-transition>
+    <!-- Show legend -->
+    <v-expand-transition>
+      <LegendTable class="legendTable" v-show="legendPaneShow"></LegendTable>
+    </v-expand-transition>
   </v-container>
 </template>
 
 <script>
 
-import { mdiCogOutline } from '@mdi/js';
+import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
 import EdgeTable from './EdgeTable';
+import LegendTable from './LegendTable.vue';
 
 export default {
   name: "PathwayGeneSimilarity",
   
   components: {
-    EdgeTable
+    EdgeTable,
+    LegendTable
   },
 
   // Probably there is a bug in vue-cytoscape: component cannot be defined here
@@ -80,7 +88,9 @@ export default {
   // This is a function
   data: () => ({
     mdiCogOutline,
+    mdiMapLegend,
     settingPaneShow: false,
+    legendPaneShow: false,
     cyConfig: {
       style: [
         {
@@ -286,6 +296,11 @@ export default {
   position: absolute;
   top: 4px;
   left: 4px;
+}
+.legendBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
 }
 .closeBtn {
   position: relative;
