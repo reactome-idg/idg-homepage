@@ -1,66 +1,78 @@
 <!-- Most of the code here is copied from CyInstance.vue in the reactome-immport-ws project:
      https://github.com/VIOLINet/reactome-immport-web/blob/master/src/components/ImmportResults/Cytoscape/CyInstance.vue -->
 <template>
-  <v-container class="pa-0"> 
+  <v-container class="pa-0" style="min-height: 300px; margin: 0px 0px 0px 0px;">
     <!-- Ref: https://rcarcasses.github.io/vue-cytoscape/installation.html#usage. Apparently the original code doesn't work
-    as described here. Therefore, Tim has customized the behavior using methods in this component. --> 
-    <cytoscape ref="cy" :config="cyConfig" 
-              :preConfig="preConfig" 
-              :afterCreated="afterCreated" 
-              style="min-height: 300px;"
-              class="pa-0"
-              v-on:select="select"
-              v-on:unselect="unselect"
-              @mousedown="settingPaneShow = false; legendPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
+    as described here. Therefore, Tim has customized the behavior using methods in this component. -->
+    <cytoscape ref="cy" :config="cyConfig" :preConfig="preConfig" :afterCreated="afterCreated" class="pa-0"
+      v-on:select="select" v-on:unselect="unselect" style="max-height: 300px; min-height: 300px; height: 300px;"
+      @mousedown="settingPaneShow = false; legendPaneShow = false">
+      <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
-    <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow">
-        <v-icon>{{ mdiCogOutline }}</v-icon>
+    <v-btn icon style="position: absolute; top: 4px; left: 4px;" class="mx-1 pa-0 .d-flex"
+      @click="settingPaneShow = !settingPaneShow">
+      <v-icon>{{ mdiCogOutline }}</v-icon>
     </v-btn>
-    <v-btn icon class="legendBtn mx-1 pa-0" @click="legendPaneShow = !legendPaneShow">
+    <v-btn icon style="position: absolute; top: 4px; right: 4px;" class="mx-1 pa-0"
+      @click="legendPaneShow = !legendPaneShow">
       <v-icon>{{ mdiMapLegend }}</v-icon>
     </v-btn>
     <!-- TODO: GUI controls for the network view. The card cuts some space out from the cytoscape view. Probably 
     we need to think how to make it show on the fly. Probably use v-overlay with a setting icon, which can
     hide itself when the mouse is out -->
-    <!-- Try to refer to some code here for hoveable controls: https://www.codeply.com/p/QyIDFyjH4Q --> 
+    <!-- Try to refer to some code here for hoveable controls: https://www.codeply.com/p/QyIDFyjH4Q -->
     <!-- Probably need to change to other layout,e.g., v-layout -->
     <!-- May consider wrap the following into a v-dialog -->
     <v-expand-transition>
-    <v-card outlined class="controlCard pa-2" v-show="settingPaneShow">
-      <v-btn @click="reset" depressed x-small>reset network</v-btn>
-      <v-card-text dense style="font-size: 100%" class="pa-2">Choose Layout</v-card-text>
-      <v-select v-model="layout" :items="layoutChoices" dense style="font-size: 100%"></v-select>
-      <v-card-text title="Choose a threshold for pathway overlay pvalue according to hypergeometic test"
-       style="font-size: 100%" dense class="pa-2">Overlap pValue &#60;</v-card-text>
-      <v-text-field type="Text" class="mr-3" style="font-size: 100%"
-        v-model="edgeHypergeometricScoreFilter"
-        :rules="[v => !isNaN(v) && v <= 1]" 
-        @keyup.enter="updateNetwork"
-        hide-details
-        dense>
-      </v-text-field>
-    </v-card>
+      <v-card outlined
+        style="position: absolute; align-items: center; top: 4px; left: 4px; width: 200px; font-size: 80%;" class="pa-2"
+        v-show="settingPaneShow">
+        <v-btn @click="reset" depressed x-small>reset network</v-btn>
+        <v-card-text dense style="font-size: 100% position: relative width: 175px" class="pa-2">Choose Layout
+        </v-card-text>
+
+        <div v-if="isWebComponent">
+          <select style="width: 150px; position: relative; font-size: 100%" name="layouts" dense class="pa-2"
+            classid="layouts" v-model="layout">
+            <option v-for="layout in layoutChoices" :key="layout" :value="layout">{{ layout }}</option>
+          </select>
+        </div>
+        <v-select v-else v-model="layout" :items="layoutChoices" dense style="font-size: 100%">{{ layout }}</v-select>
+        <v-card-text title="Choose a threshold for pathway overlay pvalue according to hypergeometic test"
+          style="font-size: 100% position: relative width: 175px" dense class="pa-2">Overlap pValue &#60;</v-card-text>
+        <v-text-field type="Text" class="mr-3" style="font-size: 100%" v-model="edgeHypergeometricScoreFilter"
+          :rules="[v => !isNaN(v) && v <= 1]" @keyup.enter="updateNetwork" hide-details dense>
+        </v-text-field>
+      </v-card>
     </v-expand-transition>
     <!-- Provide some information about the selected edges -->
     <v-expand-transition>
-      <EdgeTable :selectedEdges="selectedEdges"></EdgeTable>
+      <EdgeTable :selectedEdges="selectedEdges"
+        style="position: absolute; bottom: 4px; right: 4px; width: 300px; font-size: 80%;"></EdgeTable>
     </v-expand-transition>
     <!-- Show legend -->
     <v-expand-transition>
-      <LegendTable class="legendTable" v-show="legendPaneShow"></LegendTable>
+      <LegendTable class="legendTable" v-show="legendPaneShow"
+        style="top: 4px; right: 4px; position: absolute; align-items: center;">
+      </LegendTable>
     </v-expand-transition>
   </v-container>
 </template>
 
 <script>
 
-import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
+import { mdiCogOutline, mdiMapLegend, mdiMenuDown } from '@mdi/js';
 import EdgeTable from './EdgeTable';
 import LegendTable from './LegendTable.vue';
+import VueCytoscape from 'vue-cytoscape';
+import Vue from 'vue';
+
+Vue.use(VueCytoscape);
+
 
 export default {
   name: "PathwayGeneSimilarity",
-  
+
   components: {
     EdgeTable,
     LegendTable
@@ -70,7 +82,7 @@ export default {
   // It should be defined at main.js. Otherwise, an error shows template or render function
   // is not defined.
   props: {
-    network:{
+    network: {
       type: Array,
       default: () => []
     },
@@ -83,12 +95,18 @@ export default {
     tabledPathways: {
       type: Array,
       default: () => []
+    },
+
+    isWebComponent:{
+      type: Boolean,
+      default: false,
     }
   },
   // This is a function
   data: () => ({
     mdiCogOutline,
     mdiMapLegend,
+    mdiMenuDown,
     settingPaneShow: false,
     legendPaneShow: false,
     cyConfig: {
@@ -105,10 +123,10 @@ export default {
             "background-color": "data(weightedTDLColorHex)",
             "border-width": 3,
             "border-color": "mapData(fdr_score, 0, 10, yellow, blue)"
-          },  
+          },
         },
         {
-          selector:"node:selected",
+          selector: "node:selected",
           style: {
             "border-width": 5,
             "background-color": "green"
@@ -202,25 +220,27 @@ export default {
 
     createEdgeRow(e) {
       return {
-          "id": e.data('id'),
-          "numSharedGenes": e.data('numSharedGenes'),
-          'hypergeometricScore': e.data('hypergeometricScore'),
-        }
+        "id": e.data('id'),
+        "numSharedGenes": e.data('numSharedGenes'),
+        'hypergeometricScore': e.data('hypergeometricScore'),
+      }
     },
 
     doLayout() {
       if (!this.cy) return
-      this.cy.layout({name: this.layout}).run()
+      this.cy.layout({ name: this.layout }).run()
       this.cy.center()
-      this.cy.fit() 
+      this.cy.fit()
     },
 
     // 600px is hard-coded in VueCytoscape. Modify it here. This is not good!
     // See: https://github.com/rcarcasses/vue-cytoscape/issues/47
     preConfig() {
       var el = document.getElementById('cytoscape-div');
-      el.style.minHeight = "300px"
-      el.style.height = "300px"
+      if (el && el.style) {
+        el.style.minHeight = "300px"
+        el.style.height = "300px"
+      }
     },
 
     afterCreated(cy) {
@@ -284,7 +304,7 @@ export default {
 };
 </script>
 
-<style style scope>
+<!-- <style style scope>
 #cy {
   min-height: 300px;
   /* Make sure this is the same as specified at its container */
@@ -292,22 +312,26 @@ export default {
   /** Don't give any margin to cytoscape. Let the container handle it. */
   margin: 0px 0px 0px 0px;
 }
+
 .settingBtn {
   position: absolute;
   top: 4px;
   left: 4px;
 }
+
 .legendBtn {
   position: absolute;
   top: 4px;
   right: 4px;
 }
+
 .closeBtn {
   position: relative;
   /** Hard-coded position. Should be updated. */
   margin-top: 8px;
   margin-left: 24px;
 }
+
 .controlCard {
   position: absolute;
   align-items: center;
@@ -316,6 +340,7 @@ export default {
   width: 150px;
   font-size: 80%;
 }
+
 .edgeInfoCard {
   position: absolute;
   bottom: 4px;
@@ -323,4 +348,4 @@ export default {
   width: 300px;
   font-size: 80%;
 }
-</style>
+</style> -->
