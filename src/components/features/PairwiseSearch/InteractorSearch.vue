@@ -84,6 +84,7 @@
             :network="networkForCytoscape"
             :nodeFDRFilter="fdr"
             :tabledPathways="filteredSecondaryPathways"
+            :isWebComponent="isWebComponent"
           />
         </v-card>
         <v-card>
@@ -259,6 +260,10 @@ export default {
       type: String,
       default: () => "Reachable through interactions",
     },
+    isWebComponent: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     mdiClose,
