@@ -13,6 +13,7 @@
               v-on:unselect="unselect"
               @mousedown="settingPaneShow = false; legendPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
+    <PathwayEnrichmentResults></PathwayEnrichmentResults>
     <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow">
         <v-icon>{{ mdiCogOutline }}</v-icon>
     </v-btn>
@@ -57,13 +58,15 @@
 import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
 import EdgeTable from './EdgeTable';
 import LegendTable from './LegendTable.vue';
+import PathwayEnrichmentResults from './PathwayEnrichmentResults.vue';
 
 export default {
   name: "PathwayGeneSimilarity",
   
   components: {
     EdgeTable,
-    LegendTable
+    LegendTable,
+    PathwayEnrichmentResults
   },
 
   // Probably there is a bug in vue-cytoscape: component cannot be defined here
