@@ -99,7 +99,7 @@
             :expanded="expandedPathways"
             :search="secondarySearch"
             :custom-filter="filterOnSecondarySearch"
-            :single-expand="true"
+            :single-expand="false"
             :footer-props="{
               'items-per-page-options': [10, 20, 50, 100, -1],
               'next-icon': mdiChevronRight,
