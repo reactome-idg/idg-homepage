@@ -61,7 +61,7 @@
 
 <script>
 
-import { mdiCogOutline, mdiMapLegend, mdiMenuDown } from '@mdi/js';
+import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
 import EdgeTable from './EdgeTable';
 import LegendTable from './LegendTable.vue';
 import VueCytoscape from 'vue-cytoscape';
@@ -107,7 +107,6 @@ export default {
   data: () => ({
     mdiCogOutline,
     mdiMapLegend,
-    mdiMenuDown,
     settingPaneShow: false,
     legendPaneShow: false,
     cyConfig: {
@@ -304,49 +303,3 @@ export default {
   },
 };
 </script>
-
-<!-- <style style scope>
-#cy {
-  min-height: 300px;
-  /* Make sure this is the same as specified at its container */
-  height: 300px;
-  /** Don't give any margin to cytoscape. Let the container handle it. */
-  margin: 0px 0px 0px 0px;
-}
-
-.settingBtn {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-}
-
-.legendBtn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-}
-
-.closeBtn {
-  position: relative;
-  /** Hard-coded position. Should be updated. */
-  margin-top: 8px;
-  margin-left: 24px;
-}
-
-.controlCard {
-  position: absolute;
-  align-items: center;
-  top: 4px;
-  left: 4px;
-  width: 150px;
-  font-size: 80%;
-}
-
-.edgeInfoCard {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 300px;
-  font-size: 80%;
-}
-</style> -->
