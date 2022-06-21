@@ -13,7 +13,12 @@
               v-on:unselect="unselect"
               @mousedown="settingPaneShow = false; legendPaneShow = false"> <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
-    <PathwayEnrichmentResults></PathwayEnrichmentResults>
+    <PathwayEnrichmentResults
+      class="mt-5"
+      :id="resultSet.id + 'pathwayEnrichment'"
+      v-if="resultSet.enrichmentResults.pathways"
+      :pathwayEnrichmentResults="resultSet.enrichmentResults"
+    />
     <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow">
         <v-icon>{{ mdiCogOutline }}</v-icon>
     </v-btn>
@@ -59,6 +64,7 @@ import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
 import EdgeTable from './EdgeTable';
 import LegendTable from './LegendTable.vue';
 import PathwayEnrichmentResults from './PathwayEnrichmentResults.vue';
+import _isEqual from "lodash/isEqual";
 
 export default {
   name: "PathwayGeneSimilarity",
@@ -155,6 +161,10 @@ export default {
         }
       ]
     },
+    showEnrichmentResults() {
+      const obj = this.resultSet.enrichmentResults;
+      return obj && obj.pathways ? true : false;
+    },
   },
 
   watch: {
@@ -169,7 +179,19 @@ export default {
     },
     tabledPathways() {
       this.updateNetwork()
-    }
+    },
+      "resultSet.enrichmentResults": {
+      handler(newVal, oldVal) {
+        newVal.pathways &&
+          (!oldVal || !_isEqual(newVal, oldVal)) &&
+          setTimeout(() => {
+            document
+              .getElementById(this.resultSet.id + "pathwayEnrichment")
+              .scrollIntoView();
+          }, 250);
+      },
+      deep: true,
+    },
   },
 
   methods: {
@@ -282,6 +304,12 @@ export default {
       if (!this.cy) return
       this.cy.center()
       this.cy.fit()
+    },
+    pathwayEnrichmentButtonClicked() {
+    if(_isEqual(this.filteredPathwayGenes, this.filteredGenes)) return;
+    this.filteredPathwayGenes = this.filteredGenes;
+    this.$emit("doPathwayEnrichmentAnalysis", this.filteredPathwayGenes);
+    this.show = false;
     }
   },
 };
