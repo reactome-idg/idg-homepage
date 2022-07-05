@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <InteractorSearch :term="term" :darkmode="darkmode" :title="title" :subtitle="subtitle" />
+    <InteractorSearch :term="term" :darkmode="darkmode" :title="title" :subtitle="subtitle" :isWebComponent="isWebComponent"/>
   </v-app>
 </template>
 
@@ -31,6 +31,10 @@ export default {
     subtitle: {
       type: String,
       default: () => "Reachable Through Interactors"
+    },
+    isWebComponent: {
+      type: Boolean,
+      default: true 
     }
   },
 };

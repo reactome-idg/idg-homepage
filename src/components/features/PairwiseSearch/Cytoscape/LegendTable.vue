@@ -9,28 +9,28 @@
                 <td class="text-left" :style="fontSize">Node size</td>
                 <td class="text-left" :style="fontSize">Pathway size</td>
                 <td class="text-left" :style="fontSize">0</td>
-                <td class="text-left" :style="fontSize"><canvas ref='nodeSizeCanvas' class="canvas_cell"></canvas></td>
+                <td class="text-left" :style="fontSize"><canvas ref='nodeSizeCanvas' class="canvas_cell" style="width: 100px; height: 40px;"></canvas></td>
                 <td class="text-left" :style="fontSize">200</td>
               </tr>
               <tr> <!-- Specifify border color -->
                 <td class="text-left" :style="fontSize">border color</td>
                 <td class="text-left" :style="fontSize">-Log10(FDR)</td>
                 <td class="text-left" :style="fontSize">0</td>
-                <td class="text-left" :style="fontSize"><canvas ref='bcCanvas' class="canvas_cell"></canvas></td>
+                <td class="text-left" :style="fontSize"><canvas ref='bcCanvas' class="canvas_cell" style="width: 100px; height: 40px;"></canvas></td>
                 <td class="text-left" :style="fontSize">10</td>
               </tr>
               <tr> <!-- Specifify background color -->
                 <td class="text-left" :style="fontSize">background</td>
                 <td class="text-left" :style="fontSize">Average dev level</td>
                 <td class="text-left" :style="fontSize">tDark</td>
-                <td class="text-left" :style="fontSize"><canvas ref='bgCanvas' class="canvas_cell"></canvas></td>
+                <td class="text-left" :style="fontSize"><canvas ref='bgCanvas' class="canvas_cell" style="width: 100px; height: 40px;"></canvas></td>
                 <td class="text-left" :style="fontSize">tClin</td>
               </tr>
               <tr> <!-- Specifify edge width -->
                 <td class="text-left" :style="fontSize">Edge width</td>
                 <td class="text-left" :style="fontSize">-Log10(Overlap pValue)</td>
                 <td class="text-left" :style="fontSize">1</td>
-                <td class="text-left" :style="fontSize"><canvas ref='edgeWidthCanvas' class="canvas_cell"></canvas></td>
+                <td class="text-left" :style="fontSize"><canvas ref='edgeWidthCanvas' class="canvas_cell" style="width: 100px; height: 40px;"></canvas></td>
                 <td class="text-left" :style="fontSize">10</td>
               </tr>
             </tbody>
