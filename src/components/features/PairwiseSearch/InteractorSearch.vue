@@ -86,6 +86,11 @@
             :tabledPathways="filteredSecondaryPathways"
           />
         </v-card>
+        <v-card>
+          <PathwayResultsPlot 
+            :pathwayEnrichmentResults="this.secondaryPathways"            
+          />
+        </v-card>
         <v-card outlined>
           <v-data-table
             v-if="secondaryPathways.length > 0"
@@ -200,6 +205,7 @@ import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
 import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
+import PathwayResultsPlot from "./Cytoscape/PathwayResultsPlot.vue";
 
 import {
   VDataTable,
@@ -233,6 +239,7 @@ export default {
     FuncInteractionScoreFilter,
     PathwayGeneSimilarity,
     LoadingCircularProgress,
+    PathwayResultsPlot
   },
   vuetify,
   props: {
@@ -296,7 +303,9 @@ export default {
       this.pathwayStIdsForGene = [];
       this.getInitialData();
       this.expandedPathways = [];
+      this.hierarchialOrderedPathway = [];
     },
+
   },
   computed: {
     secondaryHeaders() {
@@ -417,6 +426,17 @@ export default {
         this.secondaryPathwaysError();
       }
       this.secondaryPathwaysLoading = false;
+
+      try {
+        // Handle pathway list that is used as the base for plot
+        if (!sessionStorage.getItem('reactome_pathway_list')) {
+          let pathwayList = await PairwiseService.getHierarchialOrderedPathways();
+          sessionStorage.setItem('reactome_pathway_list', JSON.stringify(pathwayList));
+        }
+        this.$forceUpdate();
+      } catch (err) {
+        console.log(err);
+      }
     },
     async loadNetwork() {
       this.networkLoading = true;
@@ -512,7 +532,8 @@ export default {
           return true
       }
       return false
-    }
+    },
+
   },
 };
 </script>
