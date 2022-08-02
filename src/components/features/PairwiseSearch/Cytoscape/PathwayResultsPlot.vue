@@ -1,6 +1,7 @@
 <template>
-  <v-card outlined
-  @dblclick = "unselect">   
+  <v-card 
+    outlined 
+    @dblclick="unselect">
     <plotly 
       ref="chart" 
       :data="results" 
@@ -8,18 +9,12 @@
       :display-mode-bar="true" 
       style="height: 300px;" 
       class="pa-0"
-      @click="select"
-      @dblclick="unselect">
-    </plotly> 
+      @click="select">
+    </plotly>
     <v-tooltip right>
-      <template v-slot:activator="{on, attrs}">
-        <v-btn 
-          v-bind="attrs" 
-          v-on="on" 
-          icon 
-          v-on:click="switchPathwayView" 
-          style="position: absolute; bottom: 4px; left: 4px;"
-          class="mx-1 pa-0">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" icon v-on:click="switchPathwayView"
+          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0">
           <v-icon>{{ mdiChartTimelineVariant }}</v-icon>
         </v-btn>
       </template>
@@ -82,6 +77,11 @@ export default {
         yaxis: {
           title: "-Log10(pValue)",
         },
+        hoverlabel: {
+          font: {
+            size: 10
+          }
+        }
       };
     },
   },
@@ -115,7 +115,7 @@ export default {
         if (top === undefined) top = "unknown";
         let data = top2data.get(top);
         if (data === undefined) {
-          data = { pathways: [], scores: [], text: [], size: [] };
+          data = { pathways: [], scores: [], text: [] };
           top2data.set(top, data);
         }
         data.pathways.push(result.name);
@@ -129,7 +129,7 @@ export default {
             title
           )
         );
-      } 
+      }
       let plotData = [];
       // Need to sort top pathways first to get the same color and legends
       let tops = [...top2data.keys()].sort();
@@ -137,8 +137,8 @@ export default {
         let data = top2data.get(top);
         let name = top;
         let pathwaySize = [];
-        for(let i=0; i < data.pathways.length; i++){
-          pathwaySize.push(this.defaultPointSize); 
+        for (let i = 0; i < data.pathways.length; i++) {
+          pathwaySize.push(this.defaultPointSize);
         }
         if (title)
           name += (" (" + title + ")");
@@ -155,10 +155,9 @@ export default {
             // get a consistent color scheme.
             // color: "#0000FF",
           },
-        };
+        }
         plotData.push(topData);
       }
-
       return plotData;
     },
 
@@ -194,7 +193,7 @@ export default {
 
     generateText(name, stId, pVal, topPathway, label) {
       let text = "<b>Pathway: " + name + "</b><br>" + "Stable id: " + stId;
-      if (topPathway) text += "<br>Top pathway: " + topPathway;
+      if (topPathway) text += "<br>" + "Top pathway: " + topPathway;
       text = text + "<br>" + "pValue: " + pVal.toExponential(2);
       if (label) text += '<br>Analysis: ' + label;
       text += "<br>" + "Click data point to select." + "<br>" + "Double click outisde the plot to reset."
@@ -208,14 +207,12 @@ export default {
     select(clickData) {
       if (clickData.points.length === 1) {
         // reset previous selection
-              let textSize = {'text':{size: 20}};
-      this.$refs.chart.restyle(textSize);
-        if(this.pointNumber != undefined && this.curveNumber != undefined){
+        if (this.pointNumber != undefined && this.curveNumber != undefined) {
           this.changePointSize(this.defaultPointSize);
         }
 
         // logic follows https://plotly.com/javascript/plotlyjs-events/   
-        for(var i=0; i < clickData.points.length; i++){
+        for (var i = 0; i < clickData.points.length; i++) {
           // using global variable to track the point changed to reset later
           this.pointNumber = clickData.points[i].pointNumber;
           this.curveNumber = clickData.points[i].curveNumber;
@@ -223,7 +220,7 @@ export default {
         }
 
         this.changePointSize(this.sizes[this.pointNumber] * 2);
-             
+
         this.selected.clear();
         let text = clickData.points[0].text;
         let pattern = "Stable id: ";
@@ -235,15 +232,13 @@ export default {
 
     unselect() {
       this.changePointSize(this.defaultPointSize);
-      this.pointSize = [];
-      this.generateResults();
       this.selected.clear();
       this.$emit("selectionChanged", this.selected)
     },
 
-    changePointSize(pointSize){
+    changePointSize(pointSize) {
       this.sizes[this.pointNumber] = pointSize;
-      let update = {'marker':{size: this.sizes}};
+      let update = { 'marker': { size: this.sizes } };
       this.$refs.chart.restyle(update, [this.curveNumber]);
     }
   },
