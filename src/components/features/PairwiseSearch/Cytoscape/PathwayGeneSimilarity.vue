@@ -19,6 +19,19 @@
       @click="legendPaneShow = !legendPaneShow">
       <v-icon>{{ mdiMapLegend }}</v-icon>
     </v-btn>
+    <v-tooltip right>
+      <template v-slot:activator="{on, attrs}">
+        <v-btn
+          v-bind="attrs" 
+          v-on="on"
+          icon
+          v-on:click = "switchPathwayView"
+          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0">
+          <v-icon>{{ mdiChartScatterPlot }}</v-icon>
+        </v-btn>
+      </template>
+      <span>Plot View</span>
+    </v-tooltip>
     <!-- TODO: GUI controls for the network view. The card cuts some space out from the cytoscape view. Probably 
     we need to think how to make it show on the fly. Probably use v-overlay with a setting icon, which can
     hide itself when the mouse is out -->
@@ -63,7 +76,7 @@
 
 <script>
 
-import { mdiCogOutline, mdiMapLegend } from '@mdi/js';
+import { mdiCogOutline, mdiMapLegend, mdiChartScatterPlot } from '@mdi/js';
 import EdgeTable from './EdgeTable';
 import LegendTable from './LegendTable.vue';
 import VueCytoscape from 'vue-cytoscape';
@@ -102,12 +115,18 @@ export default {
     isWebComponent:{
       type: Boolean,
       default: false,
+    },
+
+    isCytoscapeView: {
+      type: Boolean,
+      default: true,
     }
   },
   // This is a function
   data: () => ({
     mdiCogOutline,
     mdiMapLegend,
+    mdiChartScatterPlot,
     settingPaneShow: false,
     legendPaneShow: false,
     cyConfig: {
@@ -301,6 +320,10 @@ export default {
       this.cy.center()
       this.cy.fit()
     },
+
+    switchPathwayView(){
+      this.$emit('switchPathwayView')
+    }
   },
 };
 </script>
