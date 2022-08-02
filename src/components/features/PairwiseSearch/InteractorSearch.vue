@@ -71,7 +71,7 @@
         </div>
       </div>
       <v-card-text class="interactingPathwaysCard">
-        <v-card outlined>
+        <v-card v-if="isCytoscapeView" outlined>
           <LoadingCircularProgress
             v-if="networkLoading"
             style="width: 80%"
@@ -85,13 +85,18 @@
             :nodeFDRFilter="fdr"
             :tabledPathways="filteredSecondaryPathways"
             :isWebComponent="isWebComponent"
+            :isCytoscapeView="isCytoscapeView"
+            @switchPathwayView = "switchPathwayView"
           />
         </v-card>
-        <v-card>
+        <v-container v-else class="pa-0 ma-0 fluid">
           <PathwayResultsPlot 
-            :pathwayEnrichmentResults="this.secondaryPathways"            
+            :pathwayEnrichmentResults="this.filteredSecondaryPathways"
+            :isCytoscapeView="isCytoscapeView"
+            @switchPathwayView = "switchPathwayView"     
+            @selectionChanged = "networkSelectionUpdated($event)"      
           />
-        </v-card>
+        </v-container>
         <v-card outlined>
           <v-data-table
             v-if="secondaryPathways.length > 0"
@@ -295,6 +300,7 @@ export default {
     expandedPathways: [],
     networkForCytoscape: [],
     networkLoading: false,
+    isCytoscapeView: true,
   }),
   watch: {
     term() {
@@ -438,7 +444,6 @@ export default {
           let pathwayList = await PairwiseService.getHierarchialOrderedPathways();
           sessionStorage.setItem('reactome_pathway_list', JSON.stringify(pathwayList));
         }
-        this.$forceUpdate();
       } catch (err) {
         console.log(err);
       }
@@ -538,7 +543,9 @@ export default {
       }
       return false
     },
-
+    switchPathwayView(){
+      this.isCytoscapeView = !this.isCytoscapeView;
+    }
   },
 };
 </script>

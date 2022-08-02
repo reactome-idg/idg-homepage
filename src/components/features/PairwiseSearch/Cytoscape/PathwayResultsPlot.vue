@@ -1,20 +1,36 @@
 <template>
-  <v-card outlined>
-    <v-card-text>
-      <plotly
-        ref="chart"
-        :data="results"
-        :layout="layout"
-        :display-mode-bar="true"
-      >
-      </plotly>
-    </v-card-text>
+  <v-card outlined
+  @dblclick = "unselect">   
+    <plotly 
+      ref="chart" 
+      :data="results" 
+      :layout="layout" 
+      :display-mode-bar="true" 
+      style="height: 300px;" 
+      class="pa-0"
+      @click="select"
+      @dblclick="unselect">
+    </plotly> 
+    <v-tooltip right>
+      <template v-slot:activator="{on, attrs}">
+        <v-btn 
+          v-bind="attrs" 
+          v-on="on" 
+          icon 
+          v-on:click="switchPathwayView" 
+          style="position: absolute; bottom: 4px; left: 4px;"
+          class="mx-1 pa-0">
+          <v-icon>{{ mdiChartTimelineVariant }}</v-icon>
+        </v-btn>
+      </template>
+      <span>Network View</span>
+    </v-tooltip>
   </v-card>
 </template>
 
 <script>
 import { Plotly } from "vue-plotly";
-import PairwiseService from "../../../../service/PairwiseService";
+import { mdiChartTimelineVariant } from '@mdi/js';
 
 export default {
   name: "PathwayResultsPlot",
@@ -31,11 +47,21 @@ export default {
       type: Number,
       default: 0.05,
     },
+    isCytoscapeView: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   data() {
     return {
       pathwayList: undefined,
+      mdiChartTimelineVariant,
+      selected: new Set(),
+      pointNumber: undefined,
+      curveNumber: undefined,
+      sizes: [],
+      defaultPointSize: 5
     };
   },
 
@@ -60,21 +86,10 @@ export default {
     },
   },
   methods: {
-    async loadHierarchialOrderedPathways() {
-      try {
-        let hierarchialOrderedPathway =
-          await PairwiseService.getHierarchialOrderedPathways();
-          return JSON.stringify(hierarchialOrderedPathway);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-     generateXAxisLabels() {
+    generateXAxisLabels() {
       let pathwayList = this.getPathwayList();
       let labels = [];
       for (let pathway of pathwayList) labels.push(pathway.name);
-      console.log(labels);
       return labels;
     },
 
@@ -94,12 +109,13 @@ export default {
         }
       }
       let top2data = new Map();
+
       for (let result of pathwayEnrichmentResults) {
         let top = stId2top.get(result.stId);
         if (top === undefined) top = "unknown";
         let data = top2data.get(top);
         if (data === undefined) {
-          data = { pathways: [], scores: [], text: [] };
+          data = { pathways: [], scores: [], text: [], size: [] };
           top2data.set(top, data);
         }
         data.pathways.push(result.name);
@@ -113,14 +129,18 @@ export default {
             title
           )
         );
-      }
+      } 
       let plotData = [];
       // Need to sort top pathways first to get the same color and legends
       let tops = [...top2data.keys()].sort();
       for (let top of tops) {
         let data = top2data.get(top);
         let name = top;
-        if (title) 
+        let pathwaySize = [];
+        for(let i=0; i < data.pathways.length; i++){
+          pathwaySize.push(this.defaultPointSize); 
+        }
+        if (title)
           name += (" (" + title + ")");
         let topData = {
           name: name,
@@ -130,7 +150,7 @@ export default {
           type: "scattergl",
           mode: "markers",
           marker: {
-            size: 5,
+            size: pathwaySize,
             // Let plotly decides the color. But we may need to decide colors to
             // get a consistent color scheme.
             // color: "#0000FF",
@@ -138,11 +158,12 @@ export default {
         };
         plotData.push(topData);
       }
+
       return plotData;
     },
 
     getPathwayList() {
-      if (this.pathwayList) 
+      if (this.pathwayList)
         return this.pathwayList;
       let pathway_list_text = sessionStorage.getItem("reactome_pathway_list");
       let tmpPathwayList = undefined;
@@ -164,7 +185,7 @@ export default {
       // Get the pathway list from the results
       let tmpPathwayList = [];
       for (let result of pathwayEnrichmentResults) {
-        let tmpPathway = { name: result.name, topPathway: "unknown"};
+        let tmpPathway = { name: result.name, topPathway: "unknown" };
         tmpPathwayList.push(tmpPathway);
       }
       tmpPathwayList.sort((p1, p2) => p1.name.localeCompare(p2.name));
@@ -176,27 +197,55 @@ export default {
       if (topPathway) text += "<br>Top pathway: " + topPathway;
       text = text + "<br>" + "pValue: " + pVal.toExponential(2);
       if (label) text += '<br>Analysis: ' + label;
+      text += "<br>" + "Click data point to select." + "<br>" + "Double click outisde the plot to reset."
       return text;
     },
 
-    //   async loadHierarchialOrderedPathways() {
-    //   try {
-    //     // Handle pathway list that is used as the base for plot
-    //     if (!sessionStorage.getItem('reactome_pathway_list')) {
-    //       let pathwayList = await PairwiseService.getHierarchialOrderedPathways();
-    //       sessionStorage.setItem('reactome_pathway_list', JSON.stringify(pathwayList));
-    //     }
-    //     // this.resultSets.find(
-    //     //   (rs) => rs.id === id
-    //     // ).enrichmentResults = await ImmportService.fetchPathwayEnrichmentAnalysis(
-    //     //   genes.map((gene) => gene.gene_name)
-    //     // );
-      
-    //     this.$forceUpdate();
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
+    switchPathwayView() {
+      this.$emit('switchPathwayView')
+    },
+
+    select(clickData) {
+      if (clickData.points.length === 1) {
+        // reset previous selection
+              let textSize = {'text':{size: 20}};
+      this.$refs.chart.restyle(textSize);
+        if(this.pointNumber != undefined && this.curveNumber != undefined){
+          this.changePointSize(this.defaultPointSize);
+        }
+
+        // logic follows https://plotly.com/javascript/plotlyjs-events/   
+        for(var i=0; i < clickData.points.length; i++){
+          // using global variable to track the point changed to reset later
+          this.pointNumber = clickData.points[i].pointNumber;
+          this.curveNumber = clickData.points[i].curveNumber;
+          this.sizes = clickData.points[i].data.marker.size;
+        }
+
+        this.changePointSize(this.sizes[this.pointNumber] * 2);
+             
+        this.selected.clear();
+        let text = clickData.points[0].text;
+        let pattern = "Stable id: ";
+        let textArray = text.substr(text.indexOf(pattern) + pattern.length, text.length);
+        this.selected.add(textArray.split("<br>")[0])
+        this.$emit("selectionChanged", this.selected);
+      }
+    },
+
+    unselect() {
+      this.changePointSize(this.defaultPointSize);
+      this.pointSize = [];
+      this.generateResults();
+      this.selected.clear();
+      this.$emit("selectionChanged", this.selected)
+    },
+
+    changePointSize(pointSize){
+      this.sizes[this.pointNumber] = pointSize;
+      let update = {'marker':{size: this.sizes}};
+      this.$refs.chart.restyle(update, [this.curveNumber]);
+    }
   },
 };
 </script>
