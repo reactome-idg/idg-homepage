@@ -91,10 +91,11 @@
         </v-card>
         <v-container v-else class="pa-0 ma-0 fluid">
           <PathwayResultsPlot 
-            :pathwayEnrichmentResults="this.filteredSecondaryPathways"
+            :pathwayEnrichmentResults="filteredSecondaryPathways"
             :isCytoscapeView="isCytoscapeView"
+            :nodeFDRFilter="fdr"
             @switchPathwayView = "switchPathwayView"     
-            @selectionChanged = "networkSelectionUpdated($event)"      
+            @selectionChanged = "networkSelectionUpdated($event)"
           />
         </v-container>
         <v-card outlined>
@@ -314,7 +315,6 @@ export default {
       this.pathwayStIdsForGene = [];
       this.getInitialData();
       this.expandedPathways = [];
-      this.hierarchialOrderedPathway = [];
     },
 
   },
