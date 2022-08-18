@@ -18,7 +18,7 @@
           <v-icon>{{ mdiChartTimelineVariant }}</v-icon>
         </v-btn>
       </template>
-      <span>Network View</span>
+      <span>Switch to network view</span>
     </v-tooltip>
   </v-card>
 </template>
@@ -38,14 +38,10 @@ export default {
       type: Array,
       default: () => [],
     },
-    pvalueCutoff: {
+    nodeFDRFilter: {
       type: Number,
       default: 0.05,
     },
-    isCytoscapeView: {
-      type: Boolean,
-      default: false,
-    }
   },
 
   data() {
@@ -85,6 +81,13 @@ export default {
       };
     },
   },
+
+  watch: {
+    nodeFDRFilter() {
+      this.updatePlot(); 
+    },
+  },
+
   methods: {
     generateXAxisLabels() {
       let pathwayList = this.getPathwayList();
@@ -94,11 +97,20 @@ export default {
     },
 
     generateResults() {
-      return this.generateTypedResults(this.pathwayEnrichmentResults);
+      // remove items from array based on fdr 
+      let filteredPathwayEnrichmentResults = [];
+      for( let i=0; i < this.pathwayEnrichmentResults.length; i++)
+      {
+        let fdrScore = this.pathwayEnrichmentResults[i].fdr;
+        if(fdrScore < this.nodeFDRFilter){
+          filteredPathwayEnrichmentResults.push(this.pathwayEnrichmentResults[i]);
+        }
+      }
+      return this.generateTypedResults(filteredPathwayEnrichmentResults);
     },
 
     // Generate the plot data based on top-level pathways
-    generateTypedResults(pathwayEnrichmentResults, title) {
+    generateTypedResults(pathwayEnrichmentResults) {
       let stId2top = new Map();
       let pathwayList = this.getPathwayList();
       if (pathwayList) {
@@ -126,7 +138,6 @@ export default {
             result.stId,
             result.pVal,
             top,
-            title
           )
         );
       }
@@ -140,8 +151,6 @@ export default {
         for (let i = 0; i < data.pathways.length; i++) {
           pathwaySize.push(this.defaultPointSize);
         }
-        if (title)
-          name += (" (" + title + ")");
         let topData = {
           name: name,
           x: data.pathways,
@@ -233,13 +242,22 @@ export default {
     unselect() {
       this.changePointSize(this.defaultPointSize);
       this.selected.clear();
-      this.$emit("selectionChanged", this.selected)
+      this.$emit("selectionChanged", this.selected);
+      this.pointNumber = undefined;
+      this.curveNumber = undefined;
+      this.sizes = [];
     },
 
     changePointSize(pointSize) {
       this.sizes[this.pointNumber] = pointSize;
       let update = { 'marker': { size: this.sizes } };
       this.$refs.chart.restyle(update, [this.curveNumber]);
+    },
+
+    updatePlot(){
+      //this.pathwayEnrichmentResults = this.$emit("updatePlot");
+      let newPlotResults = this.$emit("updatePlot");
+      console.log(newPlotResults);
     }
   },
 };

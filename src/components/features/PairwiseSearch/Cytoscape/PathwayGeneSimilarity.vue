@@ -28,7 +28,7 @@
           <v-icon>{{ mdiChartScatterPlot }}</v-icon>
         </v-btn>
       </template>
-      <span>Plot View</span>
+      <span>Switch to plot view</span>
     </v-tooltip>
     <!-- TODO: GUI controls for the network view. The card cuts some space out from the cytoscape view. Probably 
     we need to think how to make it show on the fly. Probably use v-overlay with a setting icon, which can
