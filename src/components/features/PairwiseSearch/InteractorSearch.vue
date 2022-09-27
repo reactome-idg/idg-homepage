@@ -71,7 +71,7 @@
         </div>
       </div>
       <v-card-text class="interactingPathwaysCard">
-        <v-card outlined>
+        <v-card v-if="isCytoscapeView" outlined>
           <LoadingCircularProgress
             v-if="networkLoading"
             style="width: 80%"
@@ -85,8 +85,19 @@
             :nodeFDRFilter="fdr"
             :tabledPathways="filteredSecondaryPathways"
             :isWebComponent="isWebComponent"
+            :isCytoscapeView="isCytoscapeView"
+            @switchPathwayView = "switchPathwayView"
           />
         </v-card>
+        <v-container v-else class="pa-0 ma-0 fluid">
+          <PathwayResultsPlot 
+            :pathwayEnrichmentResults="filteredSecondaryPathways"
+            :isCytoscapeView="isCytoscapeView"
+            :nodeFDRFilter="fdr"
+            @switchPathwayView = "switchPathwayView"     
+            @selectionChanged = "networkSelectionUpdated($event)"
+          />
+        </v-container>
         <v-card outlined>
           <v-data-table
             v-if="secondaryPathways.length > 0"
@@ -201,6 +212,7 @@ import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
 import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
+import PathwayResultsPlot from "./Cytoscape/PathwayResultsPlot.vue";
 
 import {
   VDataTable,
@@ -234,6 +246,7 @@ export default {
     FuncInteractionScoreFilter,
     PathwayGeneSimilarity,
     LoadingCircularProgress,
+    PathwayResultsPlot
   },
   vuetify,
   props: {
@@ -288,6 +301,7 @@ export default {
     expandedPathways: [],
     networkForCytoscape: [],
     networkLoading: false,
+    isCytoscapeView: true,
   }),
   watch: {
     term() {
@@ -302,6 +316,7 @@ export default {
       this.getInitialData();
       this.expandedPathways = [];
     },
+
   },
   computed: {
     secondaryHeaders() {
@@ -422,6 +437,16 @@ export default {
         this.secondaryPathwaysError();
       }
       this.secondaryPathwaysLoading = false;
+
+      try {
+        // Handle pathway list that is used as the base for plot
+        if (!sessionStorage.getItem('reactome_pathway_list')) {
+          let pathwayList = await PairwiseService.getHierarchialOrderedPathways();
+          sessionStorage.setItem('reactome_pathway_list', JSON.stringify(pathwayList));
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
     async loadNetwork() {
       this.networkLoading = true;
@@ -517,6 +542,9 @@ export default {
           return true
       }
       return false
+    },
+    switchPathwayView(){
+      this.isCytoscapeView = !this.isCytoscapeView;
     }
   },
 };
