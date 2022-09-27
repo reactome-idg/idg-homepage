@@ -89,8 +89,9 @@
             @switchPathwayView = "switchPathwayView"
           />
         </v-card>
-        <v-container v-else class="pa-0 ma-0 fluid">
+        <v-container v-else class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid>
           <PathwayResultsPlot 
+            class="pgs"
             :pathwayEnrichmentResults="filteredSecondaryPathways"
             :isCytoscapeView="isCytoscapeView"
             :nodeFDRFilter="fdr"
@@ -192,7 +193,7 @@
         :dark="darkmode"
         class="overlay-form"
       >
-        <SecondaryPathwaysForm
+        <SecondaryPathwaysForm 
           :initialDescs="currentSecondarySearchDescs.dataDescriptions"
           :darkmode="darkmode"
           :term="term"
@@ -246,8 +247,8 @@ export default {
     FuncInteractionScoreFilter,
     PathwayGeneSimilarity,
     LoadingCircularProgress,
-    PathwayResultsPlot
-  },
+    PathwayResultsPlot,
+},
   vuetify,
   props: {
     term: {

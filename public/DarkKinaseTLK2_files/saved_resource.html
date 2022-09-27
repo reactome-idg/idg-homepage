@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://expression.darkkinome.org/?input_kinase=TLK2&embed=1 -->
+<html class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <script type="text/javascript" async="" src="./analytics.js"></script><script type="application/shiny-singletons">add739c82ab207ed2c80be4b7e4b181525eb7a75,a137290f391e651f20dc8eb62787dda8399ddfee</script>
+  <script type="application/html-dependencies">jquery[3.6.0];shiny-css[1.7.1];shiny-javascript[1.7.1];selectize[0.12.4];ionrangeslider-javascript[2.3.1];strftime[0.9.2];ionrangeslider-css[2.3.1];core-js[2.5.3];react[17.0.0];reactwidget[1.0.0];htmlwidgets[1.5.4];reactable-binding[0.2.3];font-awesome[5.15.3];bootstrap[3.4.1]</script>
+<script src="./jquery.min.js"></script>
+<link href="./shiny.min.css" rel="stylesheet">
+<script src="./shiny.min.js"></script>
+<link href="./selectize.bootstrap3.css" rel="stylesheet">
+<script src="./selectize.min.js"></script>
+<script src="./selectize-plugin-a11y.min.js"></script>
+<script src="./ion.rangeSlider.min.js"></script>
+<script src="./strftime-min.js"></script>
+<link href="./ion.rangeSlider.css" rel="stylesheet">
+<script src="./shim.min.js"></script>
+<script src="./react.min.js"></script>
+<script src="./react-dom.min.js"></script>
+<script src="./react-tools.js"></script>
+<script src="./htmlwidgets.js"></script>
+<script src="./reactable.js"></script><style type="text/css">.ReactTable{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.ReactTable *{-webkit-box-sizing:border-box;box-sizing:border-box}.ReactTable .rt-table{-webkit-box-flex:1;-ms-flex:auto 1;flex:auto 1;flex-direction:column;-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;width:100%;border-collapse:collapse;overflow:auto}.ReactTable .rt-table,.ReactTable .rt-thead{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column}.ReactTable .rt-thead{flex-direction:column}.ReactTable .rt-thead .rt-tr{text-align:center}.ReactTable .rt-thead .rt-td,.ReactTable .rt-thead .rt-th{line-height:normal;position:relative}.ReactTable .rt-thead .rt-td.-cursor-pointer,.ReactTable .rt-thead .rt-th.-cursor-pointer{cursor:pointer}.ReactTable .rt-thead .rt-resizable-header{overflow:visible}.ReactTable .rt-thead .rt-resizable-header:last-child{overflow:hidden}.ReactTable .rt-thead .rt-resizable-header-content{overflow:hidden;text-overflow:ellipsis}.ReactTable .rt-tbody{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;overflow:auto}.ReactTable .rt-tbody .rt-expandable{cursor:pointer}.ReactTable .rt-tr-group{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch}.ReactTable .rt-tr{-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex}.ReactTable .rt-td,.ReactTable .rt-th{-webkit-box-flex:1;-ms-flex:1 0 0px;flex:1 0 0;overflow:hidden}.ReactTable .rt-td.-hidden,.ReactTable .rt-th.-hidden{width:0!important;min-width:0!important;padding:0!important;border:0!important;opacity:0!important}.ReactTable .rt-resizer{display:inline-block;position:absolute;width:36px;top:0;bottom:0;right:-18px;cursor:col-resize;z-index:10}.ReactTable .rt-tfoot{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.ReactTable .-loading{display:block;position:absolute;left:0;right:0;top:0;bottom:0;background:hsla(0,0%,100%,.8);-webkit-transition:all .3s ease;transition:all .3s ease;z-index:-1;opacity:0;pointer-events:none}.ReactTable .-loading>div{position:absolute;display:block;text-align:center;width:100%;top:50%;left:0;font-size:15px;color:rgba(0,0,0,.6);-webkit-transform:translateY(-52%);transform:translateY(-52%);-webkit-transition:all .3s cubic-bezier(.25,.46,.45,.94);transition:all .3s cubic-bezier(.25,.46,.45,.94)}.ReactTable .-loading.-active{opacity:1;z-index:2;pointer-events:all}.ReactTable .-loading.-active>div{-webkit-transform:translateY(50%);transform:translateY(50%)}.ReactTable .rt-resizing .rt-td,.ReactTable .rt-resizing .rt-th{-webkit-transition:none!important;transition:none!important;cursor:col-resize;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}</style><style type="text/css">.ReactTable{height:100%;background-color:#fff}.rt-inline{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex}.rt-th{font-weight:600}.rt-td,.rt-th{padding:7px 8px;overflow-wrap:break-word;max-width:100%;word-wrap:break-word}.rt-compact .rt-td,.rt-compact .rt-th{padding:4px 6px}.rt-nowrap .rt-td,.rt-nowrap .rt-th{white-space:nowrap;text-overflow:ellipsis}.rt-th-content{overflow:hidden;text-overflow:ellipsis}.rt-td-select{-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.rt-select,.rt-td-select{display:-webkit-box;display:-ms-flexbox;display:flex}.rt-select{-webkit-box-align:center;-ms-flex-align:center;align-items:center}input[type=checkbox].rt-select-input,input[type=radio].rt-select-input{display:block;margin:0}.rt-align-left{text-align:left}.rt-align-right{text-align:right}.rt-align-center{text-align:center}.rt-table{border-width:1px;border-color:#e6e6e6}.rt-bordered .rt-table,.rt-outlined .rt-table{border-style:solid}.rt-th{border-bottom:2px solid #e6e6e6;border-left-width:1px;border-left-color:rgba(0,0,0,.05)}.rt-bordered .rt-th,.rt-outlined .rt-th{border-bottom-width:1px}.rt-td{border-top:1px solid #f2f2f2;border-left-width:1px;border-left-color:rgba(0,0,0,.05)}.rt-borderless .rt-td,.rt-tr-group:first-child>.rt-tr:first-child .rt-td{border-top:none}.rt-bordered .rt-td,.rt-bordered .rt-th{border-left-style:solid}.rt-bordered .rt-td:first-child,.rt-bordered .rt-th:first-child{border-left:none}.rt-th-group,.rt-th-group-none{border-bottom-style:none}.rt-th-group:after{content:"";position:absolute;margin:auto;left:8px;right:8px;bottom:0;width:100%;height:1px;background-color:#e6e6e6}.rt-bordered .rt-th-group:after,.rt-outlined .rt-th-group:after{left:0;right:0}.rt-bordered .rt-th-group-none{border-bottom-style:solid}.rt-tr-striped{background-color:rgba(0,0,0,.03)}.rt-tr-highlight:hover,.rt-tr-striped.rt-tr-highlight:hover{background-color:rgba(0,0,0,.05)}.rt-tr.-padRow{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.ReactTable .rt-tbody,.ReactTable .rt-tfoot,.ReactTable .rt-thead.-header{-ms-flex-negative:0;flex-shrink:0}@supports ((position:-webkit-sticky) or (position:sticky)){.ReactTable .rt-table{background:inherit}.ReactTable .rt-tbody{overflow:visible}.ReactTable .rt-thead.-header{top:0}.ReactTable .rt-tfoot,.ReactTable .rt-thead.-header{position:-webkit-sticky;position:sticky;background:inherit;z-index:2}.ReactTable .rt-tfoot{bottom:0}}@media screen and (-ms-high-contrast:active),screen and (-ms-high-contrast:none){.ReactTable .rt-tbody{overflow:auto;-ms-overflow-style:-ms-autohiding-scrollbar}}.rt-td-filter{border-top:0;border-bottom:1px solid #f2f2f2}.rt-borderless .rt-td-filter{border-bottom:0}.rt-filter{padding:5px 7px;color:inherit;background-color:#fff;border:1px solid rgba(0,0,0,.1);border-radius:3px;font-family:inherit;font-size:inherit;font-weight:400;outline-width:0;outline-style:solid}.rt-filter:focus{border:1px solid rgba(0,0,0,.25)}.rt-sort-header{display:-webkit-box;display:-ms-flexbox;display:flex}.rt-align-center .rt-sort-header{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.rt-align-right .rt-sort-header{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.rt-th{outline-width:0;outline-style:solid}.rt-th[aria-sort] .rt-sort-left:after{padding-right:5px;line-height:0}.rt-th[aria-sort] .rt-sort-right:after{padding-left:5px;line-height:0}.rt-th[aria-sort=ascending] .rt-sort-left:after,.rt-th[aria-sort=ascending] .rt-sort-right:after{content:"\2191"}.rt-th[aria-sort=descending] .rt-sort-left:after,.rt-th[aria-sort=descending] .rt-sort-right:after{content:"\2193"}.rt-th[aria-sort=none] .rt-sort:after{content:"\2195";opacity:.4}.rt-th[data-sort-hint=ascending] .rt-sort-left:after,.rt-th[data-sort-hint=ascending] .rt-sort-right:after{content:"\2191";opacity:.4}.rt-th[data-sort-hint=descending] .rt-sort-left:after,.rt-th[data-sort-hint=descending] .rt-sort-right:after{content:"\2193";opacity:.4}.rt-expander-button{margin:0 2px;padding:0;background:none;border:none;cursor:pointer}.rt-expander{display:inline-block;position:relative;padding:0 8px;color:transparent;outline-width:0;outline-style:solid}.rt-expander:after{content:"";position:absolute;width:0;height:0;top:50%;left:50%;-webkit-transform:translate(-50%,-50%) rotate(-90deg);transform:translate(-50%,-50%) rotate(-90deg);border-left:5.04px solid transparent;border-right:5.04px solid transparent;border-top:7px solid rgba(0,0,0,.8);-webkit-transition:all .3s cubic-bezier(.175,.885,.32,1.275);transition:all .3s cubic-bezier(.175,.885,.32,1.275);cursor:pointer}.rt-expander.-open:after{-webkit-transform:translate(-50%,-50%) rotate(0);transform:translate(-50%,-50%) rotate(0)}.rt-pagination{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-ms-flex-wrap:wrap;flex-wrap:wrap;padding:6px 4px;border-top:1px solid #f2f2f2}.rt-bordered .rt-pagination,.rt-outlined .rt-pagination{border-top:none}.rt-pagination-info :not(:last-child){margin-right:16px}.rt-page-info{display:inline-block;margin:6px 8px;opacity:.9}.rt-page-size{display:inline-block;margin:0 8px}.rt-page-size-select{margin:0 2px}.rt-page-button,.rt-page-jump,.rt-page-size-select{font-family:inherit;font-size:inherit;color:inherit;line-height:inherit}.rt-page-jump,.rt-page-size-select{background-color:#fff;padding:3px;border-radius:3px;border:1px solid rgba(0,0,0,.05)}@supports (-moz-appearance:none){.rt-page-size-select{-moz-appearance:none;padding-right:12px;background-image:url('data:image/svg+xml;charset=US-ASCII,<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path fill="%23333" d="M24 1.5l-12 21-12-21h24z"/></svg>');background-repeat:no-repeat;background-position:right 6px center;background-size:6px}}.rt-page-button{padding:6px 12px;background-color:transparent;border:none;border-radius:3px;outline-width:0;outline-style:solid;cursor:pointer}.rt-page-button::-moz-focus-inner{padding:0;border-style:none}.rt-page-button:disabled{opacity:.6;cursor:default}.rt-page-button:hover{background-color:rgba(0,0,0,.04)}.rt-page-button:active{background-color:rgba(0,0,0,.08)}.rt-keyboard-active .rt-page-button:focus{background-color:rgba(0,0,0,.04)}.rt-page-button:disabled:focus,.rt-page-button:disabled:hover{background-color:transparent}.rt-page-button-current{font-weight:700}.rt-page-ellipsis{margin:0 4px;pointer-events:none}.rt-page-numbers{display:inline-block;margin:0 8px;white-space:nowrap}.rt-page-jump{width:70px;text-align:center}.rt-tbody-noData{position:relative}.rt-tbody-noData .rt-td{border-color:transparent}.rt-noData{display:block;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);line-height:0;z-index:1}.rt-search{display:block;-ms-flex-item-align:end;align-self:flex-end;margin-bottom:8px;padding:5px 7px;color:inherit;background-color:#fff;border:1px solid rgba(0,0,0,.1);border-radius:3px;outline-width:0;outline-style:solid;font-family:inherit;font-size:inherit}.rt-search:active,.rt-search:focus{border:1px solid rgba(0,0,0,.25)}</style>
+<link href="./all.min.css" rel="stylesheet">
+<link href="./v4-shims.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="./bootstrap.min(1).css" rel="stylesheet">
+<link href="./bootstrap-accessibility.min.css" rel="stylesheet">
+<script src="./bootstrap.min(2).js"></script>
+<script src="./bootstrap-accessibility.min.js"></script>  <style>.shinyjs-hide { display: none !important; }</style>
+  <script>Shiny.addCustomMessageHandler('shinyjs-show', function(params) { shinyjs.debugMessage('shinyjs: calling function "show" with parameters:'); shinyjs.debugMessage(params); shinyjs.show(params);});
+Shiny.addCustomMessageHandler('shinyjs-hide', function(params) { shinyjs.debugMessage('shinyjs: calling function "hide" with parameters:'); shinyjs.debugMessage(params); shinyjs.hide(params);});
+Shiny.addCustomMessageHandler('shinyjs-toggle', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggle" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggle(params);});
+Shiny.addCustomMessageHandler('shinyjs-enable', function(params) { shinyjs.debugMessage('shinyjs: calling function "enable" with parameters:'); shinyjs.debugMessage(params); shinyjs.enable(params);});
+Shiny.addCustomMessageHandler('shinyjs-disable', function(params) { shinyjs.debugMessage('shinyjs: calling function "disable" with parameters:'); shinyjs.debugMessage(params); shinyjs.disable(params);});
+Shiny.addCustomMessageHandler('shinyjs-toggleState', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggleState" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleState(params);});
+Shiny.addCustomMessageHandler('shinyjs-addClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "addClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.addClass(params);});
+Shiny.addCustomMessageHandler('shinyjs-removeClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "removeClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeClass(params);});
+Shiny.addCustomMessageHandler('shinyjs-toggleClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggleClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleClass(params);});
+Shiny.addCustomMessageHandler('shinyjs-html', function(params) { shinyjs.debugMessage('shinyjs: calling function "html" with parameters:'); shinyjs.debugMessage(params); shinyjs.html(params);});
+Shiny.addCustomMessageHandler('shinyjs-onevent', function(params) { shinyjs.debugMessage('shinyjs: calling function "onevent" with parameters:'); shinyjs.debugMessage(params); shinyjs.onevent(params);});
+Shiny.addCustomMessageHandler('shinyjs-removeEvent', function(params) { shinyjs.debugMessage('shinyjs: calling function "removeEvent" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeEvent(params);});
+Shiny.addCustomMessageHandler('shinyjs-alert', function(params) { shinyjs.debugMessage('shinyjs: calling function "alert" with parameters:'); shinyjs.debugMessage(params); shinyjs.alert(params);});
+Shiny.addCustomMessageHandler('shinyjs-logjs', function(params) { shinyjs.debugMessage('shinyjs: calling function "logjs" with parameters:'); shinyjs.debugMessage(params); shinyjs.logjs(params);});
+Shiny.addCustomMessageHandler('shinyjs-runjs', function(params) { shinyjs.debugMessage('shinyjs: calling function "runjs" with parameters:'); shinyjs.debugMessage(params); shinyjs.runjs(params);});
+Shiny.addCustomMessageHandler('shinyjs-reset', function(params) { shinyjs.debugMessage('shinyjs: calling function "reset" with parameters:'); shinyjs.debugMessage(params); shinyjs.reset(params);});
+Shiny.addCustomMessageHandler('shinyjs-delay', function(params) { shinyjs.debugMessage('shinyjs: calling function "delay" with parameters:'); shinyjs.debugMessage(params); shinyjs.delay(params);});
+Shiny.addCustomMessageHandler('shinyjs-click', function(params) { shinyjs.debugMessage('shinyjs: calling function "click" with parameters:'); shinyjs.debugMessage(params); shinyjs.click(params);});
+Shiny.addCustomMessageHandler('shinyjs-refresh', function(params) { shinyjs.debugMessage('shinyjs: calling function "refresh" with parameters:'); shinyjs.debugMessage(params); shinyjs.refresh(params);});</script>
+  <script src="./shinyjs-default-funcs.js"></script>
+  <script>shinyjs.debug = false;</script>
+  <title>Dark Kinase Expression Browser</title>
+  <link rel="stylesheet" type="text/css" href="./style(1).css">
+<script src="./sockjs-0.3.4.min.js"></script>
+<script src="./shiny-server-client.min.js"></script>
+<script>preShinyInit({reconnect:true,disableProtocols:[]});</script>
+<link rel="stylesheet" type="text/css" href="./shiny-server.css">
+
+</head>
+<body class="">
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <span class="navbar-brand">
+          <div id="header-titles" style="display: none;">
+            <div id="return-DKK">
+              <a href="https://darkkinome.org/" target="_blank">Dark Kinome Knowledgebase</a>
+            </div>
+            Dark Kinase Expression
+          </div>
+        </span>
+      </div>
+      <ul class="nav navbar-nav" data-tabsetid="1257">
+        <li class="active">
+          <a href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1#tab-1257-1" data-toggle="tab" data-bs-toggle="tab" data-value="By Kinase - RNAseq">By Kinase - RNAseq</a>
+        </li>
+        <li>
+          <a href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1#tab-1257-2" data-toggle="tab" data-bs-toggle="tab" data-value="By Organ System - RNAseq">By Organ System - RNAseq</a>
+        </li>
+        <li>
+          <a href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1#tab-1257-3" data-toggle="tab" data-bs-toggle="tab" data-value="By Kinase - Mass Spec">By Kinase - Mass Spec</a>
+        </li>
+        <li>
+          <a href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1#tab-1257-4" data-toggle="tab" data-bs-toggle="tab" data-value="By Organ System - Mass Spec">By Organ System - Mass Spec</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="./js(1)"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-38268502-4');
+</script>
+</div>
+    <div class="tab-content" data-tabsetid="1257">
+      <div class="tab-pane active" data-value="By Kinase - RNAseq" id="tab-1257-1">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="well">
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="kinase-label" for="kinase-selectized">Choose a dark kinase:</label>
+                <div>
+                  <select id="kinase" data-shinyjs-resettable-id="kinase" data-shinyjs-resettable-type="Select" data-shinyjs-resettable-value="&quot;MKNK2&quot;" class="shinyjs-resettable selectized shiny-bound-input" tabindex="-1" aria-live="polite" style="display: none;"><option value="TLK2" selected="selected">TLK2</option></select><div class="selectize-control shinyjs-resettable single plugin-selectize-plugin-a11y"><div class="selectize-input items has-options full has-items"><div class="item" data-value="TLK2">TLK2</div><input type="text" autocomplete="off" tabindex="" id="kinase-selectized" role="combobox" aria-expanded="false" haspopup="listbox" aria-owns="dsbkaef6j8" style="width: 4px; opacity: 0; position: absolute; left: -10000px;"></div><div class="selectize-dropdown single shinyjs-resettable plugin-selectize-plugin-a11y" style="display: none;"><div class="selectize-dropdown-content" role="listbox" id="dsbkaef6j8"><div class="option" data-selectable="" data-value="MKNK2">MKNK2</div><div class="option" data-selectable="" data-value="SCYL1">SCYL1</div><div class="option" data-selectable="" data-value="NRBP2">NRBP2</div><div class="option" data-selectable="" data-value="CDC42BPB">CDC42BPB</div><div class="option" data-selectable="" data-value="CSNK1G2">CSNK1G2</div><div class="option" data-selectable="" data-value="CDK16">CDK16</div><div class="option" data-selectable="" data-value="NEK9">NEK9</div><div class="option" data-selectable="" data-value="MARK3">MARK3</div><div class="option" data-selectable="" data-value="TESK1">TESK1</div><div class="option" data-selectable="" data-value="PI4KA">PI4KA</div><div class="option" data-selectable="" data-value="BCKDK">BCKDK</div><div class="option" data-selectable="" data-value="PIP5K1C">PIP5K1C</div><div class="option" data-selectable="" data-value="RIOK3">RIOK3</div><div class="option" data-selectable="" data-value="CDK10">CDK10</div><div class="option" data-selectable="" data-value="PIP4K2C">PIP4K2C</div><div class="option" data-selectable="" data-value="HIPK3">HIPK3</div><div class="option" data-selectable="" data-value="STK40">STK40</div><div class="option" data-selectable="" data-value="TAOK2">TAOK2</div><div class="option" data-selectable="" data-value="PRPF4B">PRPF4B</div><div class="option" data-selectable="" data-value="MAST2">MAST2</div><div class="option" data-selectable="" data-value="NEK7">NEK7</div><div class="option" data-selectable="" data-value="PIP5K1A">PIP5K1A</div><div class="option" data-selectable="" data-value="CAMKK2">CAMKK2</div><div class="option" data-selectable="" data-value="MKNK1">MKNK1</div><div class="option" data-selectable="" data-value="COQ8B">COQ8B</div><div class="option" data-selectable="" data-value="CDK11A">CDK11A</div><div class="option" data-selectable="" data-value="CDK11B">CDK11B</div><div class="option" data-selectable="" data-value="HIPK1">HIPK1</div><div class="option" data-selectable="" data-value="CSNK2A2">CSNK2A2</div><div class="option" data-selectable="" data-value="PSKH1">PSKH1</div><div class="option" data-selectable="" data-value="COQ8A">COQ8A</div><div class="option" data-selectable="" data-value="CLK4">CLK4</div><div class="option" data-selectable="" data-value="ADCK2">ADCK2</div><div class="option" data-selectable="" data-value="MARK4">MARK4</div><div class="option" data-selectable="" data-value="MAP3K10">MAP3K10</div><div class="option" data-selectable="" data-value="CLK3">CLK3</div><div class="option" data-selectable="" data-value="STK19">STK19</div><div class="option" data-selectable="" data-value="PAN3">PAN3</div><div class="option" data-selectable="" data-value="STK36">STK36</div><div class="option" data-selectable="" data-value="DYRK1B">DYRK1B</div><div class="option" data-selectable="" data-value="CDK17">CDK17</div><div class="option" data-selectable="" data-value="PRKACB">PRKACB</div><div class="option" data-selectable="" data-value="PXK">PXK</div><div class="option" data-selectable="" data-value="CDK13">CDK13</div><div class="option" data-selectable="" data-value="EEF2K">EEF2K</div><div class="option" data-selectable="" data-value="STK38L">STK38L</div><div class="option" data-selectable="" data-value="TAOK1">TAOK1</div><div class="option" data-selectable="" data-value="SCYL2">SCYL2</div><div class="option" data-selectable="" data-value="RIOK1">RIOK1</div><div class="option" data-selectable="" data-value="TLK1">TLK1</div><div class="option" data-selectable="" data-value="CDC42BPA">CDC42BPA</div><div class="option" data-selectable="" data-value="VRK3">VRK3</div><div class="option" data-selectable="" data-value="CDK18">CDK18</div><div class="option" data-selectable="" data-value="PHKG2">PHKG2</div><div class="option" data-selectable="" data-value="MAST3">MAST3</div><div class="option" data-selectable="" data-value="CAMKK1">CAMKK1</div><div class="option" data-selectable="" data-value="MAP3K14">MAP3K14</div><div class="option" data-selectable="" data-value="NEK6">NEK6</div><div class="option selected" data-selectable="" data-value="TLK2">TLK2</div><div class="option" data-selectable="" data-value="STK17A">STK17A</div><div class="option" data-selectable="" data-value="CDK20">CDK20</div><div class="option" data-selectable="" data-value="ADCK5">ADCK5</div><div class="option" data-selectable="" data-value="BRSK1">BRSK1</div><div class="option" data-selectable="" data-value="CSNK1G3">CSNK1G3</div><div class="option" data-selectable="" data-value="DSTYK">DSTYK</div><div class="option" data-selectable="" data-value="NEK4">NEK4</div><div class="option" data-selectable="" data-value="CAMK1D">CAMK1D</div><div class="option" data-selectable="" data-value="LMTK2">LMTK2</div><div class="option" data-selectable="" data-value="CDK14">CDK14</div><div class="option" data-selectable="" data-value="WNK2">WNK2</div><div class="option" data-selectable="" data-value="RPS6KC1">RPS6KC1</div><div class="option" data-selectable="" data-value="CDK19">CDK19</div><div class="option" data-selectable="" data-value="NEK3">NEK3</div><div class="option" data-selectable="" data-value="PIK3C2B">PIK3C2B</div><div class="option" data-selectable="" data-value="CDK12">CDK12</div><div class="option" data-selectable="" data-value="ICK">ICK</div><div class="option" data-selectable="" data-value="TP53RK">TP53RK</div><div class="option" data-selectable="" data-value="PKN3">PKN3</div><div class="option" data-selectable="" data-value="ADCK1">ADCK1</div><div class="option" data-selectable="" data-value="STK32C">STK32C</div><div class="option" data-selectable="" data-value="DYRK4">DYRK4</div><div class="option" data-selectable="" data-value="RPS6KL1">RPS6KL1</div><div class="option" data-selectable="" data-value="MAST4">MAST4</div><div class="option" data-selectable="" data-value="NEK1">NEK1</div><div class="option" data-selectable="" data-value="TESK2">TESK2</div><div class="option" data-selectable="" data-value="TSSK3">TSSK3</div><div class="option" data-selectable="" data-value="TTBK2">TTBK2</div><div class="option" data-selectable="" data-value="RIOK2">RIOK2</div><div class="option" data-selectable="" data-value="BRSK2">BRSK2</div><div class="option" data-selectable="" data-value="MARK1">MARK1</div><div class="option" data-selectable="" data-value="MAPK4">MAPK4</div><div class="option" data-selectable="" data-value="STK17B">STK17B</div><div class="option" data-selectable="" data-value="STK3">STK3</div><div class="option" data-selectable="" data-value="DYRK2">DYRK2</div><div class="option" data-selectable="" data-value="PNCK">PNCK</div><div class="option" data-selectable="" data-value="LMTK3">LMTK3</div><div class="option" data-selectable="" data-value="PIP5K1B">PIP5K1B</div><div class="option" data-selectable="" data-value="ALPK3">ALPK3</div><div class="option" data-selectable="" data-value="TBCK">TBCK</div><div class="option" data-selectable="" data-value="PAK6">PAK6</div><div class="option" data-selectable="" data-value="CDC42BPG">CDC42BPG</div><div class="option" data-selectable="" data-value="NUAK2">NUAK2</div><div class="option" data-selectable="" data-value="OBSCN">OBSCN</div><div class="option" data-selectable="" data-value="SCYL3">SCYL3</div><div class="option" data-selectable="" data-value="VRK2">VRK2</div><div class="option" data-selectable="" data-value="PHKG1">PHKG1</div><div class="option" data-selectable="" data-value="LRRK1">LRRK1</div><div class="option" data-selectable="" data-value="RNASEL">RNASEL</div><div class="option" data-selectable="" data-value="CSNK1G1">CSNK1G1</div><div class="option" data-selectable="" data-value="PDIK1L">PDIK1L</div><div class="option" data-selectable="" data-value="SBK1">SBK1</div><div class="option" data-selectable="" data-value="SRPK3">SRPK3</div><div class="option" data-selectable="" data-value="NEK11">NEK11</div><div class="option" data-selectable="" data-value="STK33">STK33</div><div class="option" data-selectable="" data-value="PAK3">PAK3</div><div class="option" data-selectable="" data-value="NEK8">NEK8</div><div class="option" data-selectable="" data-value="STK32A">STK32A</div><div class="option" data-selectable="" data-value="MAPK15">MAPK15</div><div class="option" data-selectable="" data-value="CAMK1G">CAMK1G</div><div class="option" data-selectable="" data-value="PRKCQ">PRKCQ</div><div class="option" data-selectable="" data-value="DYRK3">DYRK3</div><div class="option" data-selectable="" data-value="CAMKV">CAMKV</div><div class="option" data-selectable="" data-value="TSSK4">TSSK4</div><div class="option" data-selectable="" data-value="NIM1K">NIM1K</div><div class="option" data-selectable="" data-value="CDKL1">CDKL1</div><div class="option" data-selectable="" data-value="CDKL3">CDKL3</div><div class="option" data-selectable="" data-value="TTBK1">TTBK1</div><div class="option" data-selectable="" data-value="ULK4">ULK4</div><div class="option" data-selectable="" data-value="STK32B">STK32B</div><div class="option" data-selectable="" data-value="TSSK6">TSSK6</div><div class="option" data-selectable="" data-value="LTK">LTK</div><div class="option" data-selectable="" data-value="MAP3K21">MAP3K21</div><div class="option" data-selectable="" data-value="RSKR">RSKR</div><div class="option" data-selectable="" data-value="HIPK4">HIPK4</div><div class="option" data-selectable="" data-value="PKMYT1">PKMYT1</div><div class="option" data-selectable="" data-value="CDKL2">CDKL2</div><div class="option" data-selectable="" data-value="CDKL5">CDKL5</div><div class="option" data-selectable="" data-value="WNK3">WNK3</div><div class="option" data-selectable="" data-value="POMK">POMK</div><div class="option" data-selectable="" data-value="STKLD1">STKLD1</div><div class="option" data-selectable="" data-value="PAK5">PAK5</div><div class="option" data-selectable="" data-value="NRK">NRK</div><div class="option" data-selectable="" data-value="NEK10">NEK10</div><div class="option" data-selectable="" data-value="ALPK2">ALPK2</div><div class="option" data-selectable="" data-value="STK31">STK31</div><div class="option" data-selectable="" data-value="DCLK3">DCLK3</div><div class="option" data-selectable="" data-value="ERN2">ERN2</div><div class="option" data-selectable="" data-value="CDK15">CDK15</div><div class="option" data-selectable="" data-value="NEK5">NEK5</div><div class="option" data-selectable="" data-value="PIK3C2G">PIK3C2G</div><div class="option" data-selectable="" data-value="SBK3">SBK3</div><div class="option" data-selectable="" data-value="CSNK2A3">CSNK2A3</div><div class="option" data-selectable="" data-value="MAP3K15">MAP3K15</div><div class="option" data-selectable="" data-value="CDKL4">CDKL4</div><div class="option" data-selectable="" data-value="WEE2">WEE2</div><div class="option" data-selectable="" data-value="SBK2">SBK2</div><div class="option" data-selectable="" data-value="CSNK1A1L">CSNK1A1L</div><div class="option" data-selectable="" data-value="PRKACG">PRKACG</div><div class="option" data-selectable="" data-value="TSSK1B">TSSK1B</div><div class="option" data-selectable="" data-value="PSKH2">PSKH2</div></div></div></div>
+                  <script type="application/json" data-for="kinase" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                </div>
+              </div>
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="min_percentile-label" for="min_percentile">Minimum Kinase Expression Percentile:</label>
+                <span class="irs irs--shiny js-irs-0 irs-with-grid"><span class="irs"><span class="irs-line" tabindex="0"></span><span class="irs-min">0</span><span class="irs-max">100</span><span class="irs-from" style="visibility: hidden;">0</span><span class="irs-to" style="visibility: hidden;">0</span><span class="irs-single">0</span></span><span class="irs-grid"><span class="irs-grid-pol" style="left: 0%"></span><span class="irs-grid-text js-grid-text-0" style="left: 0%">0</span><span class="irs-grid-pol small" style="left: 6.666666666666666%"></span><span class="irs-grid-pol small" style="left: 3.333333333333333%"></span><span class="irs-grid-pol" style="left: 10%"></span><span class="irs-grid-text js-grid-text-1" style="left: 10%; visibility: hidden;">10</span><span class="irs-grid-pol small" style="left: 16.666666666666668%"></span><span class="irs-grid-pol small" style="left: 13.333333333333332%"></span><span class="irs-grid-pol" style="left: 20%"></span><span class="irs-grid-text js-grid-text-2" style="left: 20%; visibility: hidden;">20</span><span class="irs-grid-pol small" style="left: 26.666666666666668%"></span><span class="irs-grid-pol small" style="left: 23.333333333333332%"></span><span class="irs-grid-pol" style="left: 30%"></span><span class="irs-grid-text js-grid-text-3" style="left: 30%; visibility: hidden;">30</span><span class="irs-grid-pol small" style="left: 36.666666666666664%"></span><span class="irs-grid-pol small" style="left: 33.333333333333336%"></span><span class="irs-grid-pol" style="left: 40%"></span><span class="irs-grid-text js-grid-text-4" style="left: 40%">40</span><span class="irs-grid-pol small" style="left: 46.666666666666664%"></span><span class="irs-grid-pol small" style="left: 43.333333333333336%"></span><span class="irs-grid-pol" style="left: 50%"></span><span class="irs-grid-text js-grid-text-5" style="left: 50%; visibility: hidden;">50</span><span class="irs-grid-pol small" style="left: 56.666666666666664%"></span><span class="irs-grid-pol small" style="left: 53.333333333333336%"></span><span class="irs-grid-pol" style="left: 60%"></span><span class="irs-grid-text js-grid-text-6" style="left: 60%; visibility: hidden;">60</span><span class="irs-grid-pol small" style="left: 66.66666666666667%"></span><span class="irs-grid-pol small" style="left: 63.333333333333336%"></span><span class="irs-grid-pol" style="left: 70%"></span><span class="irs-grid-text js-grid-text-7" style="left: 70%; visibility: hidden;">70</span><span class="irs-grid-pol small" style="left: 76.66666666666667%"></span><span class="irs-grid-pol small" style="left: 73.33333333333333%"></span><span class="irs-grid-pol" style="left: 80%"></span><span class="irs-grid-text js-grid-text-8" style="left: 80%">80</span><span class="irs-grid-pol small" style="left: 86.66666666666667%"></span><span class="irs-grid-pol small" style="left: 83.33333333333333%"></span><span class="irs-grid-pol" style="left: 90%"></span><span class="irs-grid-text js-grid-text-9" style="left: 90%; visibility: hidden;">90</span><span class="irs-grid-pol small" style="left: 96.66666666666667%"></span><span class="irs-grid-pol small" style="left: 93.33333333333333%"></span><span class="irs-grid-pol" style="left: 100%"></span><span class="irs-grid-text js-grid-text-10" style="left: 100%; visibility: hidden;">100</span></span><span class="irs-bar irs-bar--single"></span><span class="irs-shadow shadow-single"></span><span class="irs-handle single"><i></i><i></i><i></i></span></span><input class="js-range-slider shinyjs-resettable irs-hidden-input shiny-bound-input" id="min_percentile" data-skin="shiny" data-min="0" data-max="100" data-from="90" data-step="1" data-grid="true" data-grid-num="10" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number" data-shinyjs-resettable-id="min_percentile" data-shinyjs-resettable-type="Slider" data-shinyjs-resettable-value="90" tabindex="-1" readonly="">
+              </div>
+            </div>
+            <h3>Kinase Expression Percentile</h3>
+            <p>The kinase expression percentile is calculated by extracting 
+                                     all the kinase expression values from the GTEx Project and 
+                                     then determining where each kinase ranks within each organ 
+                                     system. Thus, a kinase with a kinase percentile of 90 has 
+                                     an expression level in the highest 10 percent of kinases in 
+                                     that organ system.</p>
+          </div>
+          <div class="col-sm-2">
+            <div id="anato_male_by_kinase" class="shiny-plot-output shiny-bound-output shiny-output-error" style="width:6cm;height:10cm;" aria-live="polite">An error has occurred. Check your logs or contact the app author for clarification.</div>
+          </div>
+          <div class="col-sm-2">
+            <div id="anato_female_by_kinase" class="shiny-plot-output shiny-bound-output shiny-output-error" style="width:6cm;height:10cm;" aria-live="polite">An error has occurred. Check your logs or contact the app author for clarification.</div>
+          </div>
+          <div class="col-sm-3">
+            <div id="kinase_percentile_dist" class="shiny-plot-output shiny-bound-output shiny-output-error" style="width:100%;height:400px;" aria-live="polite">An error has occurred. Check your logs or contact the app author for clarification.</div>
+          </div>
+          <div class="col-sm-2">
+            <h3>Most Similar Kinases</h3>
+            <p>Kinases whose expression profiles are most similar and associated correlation values:</p>
+            <h4>Light Kinases</h4>
+            <div id="matchedLightKinases" class="shiny-html-output shiny-bound-output" aria-live="polite"><ul>
+  <li>
+    AURKC
+    -
+    0.71
+  </li>
+  <li>
+    AURKA
+    -
+    0.65
+  </li>
+  <li>
+    TEX14
+    -
+    0.64
+  </li>
+  <li>
+    BRDT
+    -
+    0.59
+  </li>
+  <li>
+    BUB1
+    -
+    0.59
+  </li>
+</ul></div>
+            <h4>Dark Kinases</h4>
+            <div id="matchedDarkKinases" class="shiny-html-output shiny-bound-output" aria-live="polite"><ul>
+  <li>
+    DYRK4
+    -
+    0.68
+  </li>
+  <li>
+    CDKL3
+    -
+    0.65
+  </li>
+  <li>
+    TSSK4
+    -
+    0.65
+  </li>
+  <li>
+    TSSK6
+    -
+    0.63
+  </li>
+  <li>
+    CDK11B
+    -
+    0.62
+  </li>
+</ul></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="kinase_data_summary" class="reactable html-widget html-widget-output shiny-bound-output" style="width: auto; height: auto; visibility: inherit;" data-reactable-output="kinase_data_summary" aria-live="polite"><div class="ReactTable"><div class="rt-table" role="table"><div class="rt-thead -header" role="rowgroup" style="min-width: 600px;"><div class="rt-tr" role="row"><div class="rt-align-left -cursor-pointer rt-th" role="columnheader" aria-label="Sort class" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-th-content">class</span><span class="rt-sort-right" aria-hidden="true"></span></div></div><div class="rt-align-left -cursor-pointer rt-th" role="columnheader" aria-label="Sort symbol" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-th-content">symbol</span><span class="rt-sort-right" aria-hidden="true"></span></div></div><div class="rt-align-left -cursor-pointer rt-th" role="columnheader" aria-label="Sort tissue_type" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-th-content">tissue_type</span><span class="rt-sort-right" aria-hidden="true"></span></div></div><div class="rt-align-right -cursor-pointer rt-th" role="columnheader" aria-label="Sort TPM" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-sort-left" aria-hidden="true"></span><span class="rt-th-content">TPM</span></div></div><div class="rt-align-left -cursor-pointer rt-th" role="columnheader" aria-label="Sort organ" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-th-content">organ</span><span class="rt-sort-right" aria-hidden="true"></span></div></div><div class="rt-align-right -cursor-pointer rt-th" role="columnheader" aria-label="Sort kinase_percentile" aria-sort="none" tabindex="0" style="flex: 100 0 auto; width: 100px;"><div class="rt-sort-header"><span class="rt-sort-left" aria-hidden="true"></span><span class="rt-th-content">kinase_percentile</span></div></div></div></div><div class="rt-thead -filters" role="rowgroup" style="min-width: 600px;"><div class="rt-tr" role="row"><div class="rt-td rt-align-left rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter class" value="" style="width: 100%;"></div><div class="rt-td rt-align-left rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter symbol" value="" style="width: 100%;"></div><div class="rt-td rt-align-left rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter tissue_type" value="" style="width: 100%;"></div><div class="rt-td rt-align-right rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter TPM" value="" style="width: 100%;"></div><div class="rt-td rt-align-left rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter organ" value="" style="width: 100%;"></div><div class="rt-td rt-align-right rt-td-filter" role="cell" style="flex: 100 0 auto; width: 100px;"><input type="text" class="rt-filter" aria-label="Filter kinase_percentile" value="" style="width: 100%;"></div></div></div><div class="rt-tbody rt-tbody-noData" role="rowgroup" style="min-width: 600px;"><div class="rt-tr-group" aria-hidden="true"><div class="rt-tr -padRow"><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div><div class="rt-td" style="flex: 100 0 auto; width: 100px;"><span>&nbsp;</span></div></div></div><div class="rt-noData">No rows found</div></div></div><div class="pagination-bottom"></div></div></div>
+          </div>
+        </div>
+        <div class="row" id="download-button" style="display: none;">
+          <div class="col-sm-12">
+            <a id="download_kinase_data_summary" class="btn btn-default shiny-download-link shiny-bound-output" href="https://expression.darkkinome.org/session/c7aeecda21a2124651ebd46db288246a/download/download_kinase_data_summary?w=" target="_blank" download="" aria-live="polite">
+              <i class="fa fa-download" role="presentation" aria-label="download icon"></i>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" data-value="By Organ System - RNAseq" id="tab-1257-2">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="well">
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="tissue_type-label" for="tissue_type-selectized">Choose an Organ System:</label>
+                <div>
+                  <select id="tissue_type" data-shinyjs-resettable-id="tissue_type" data-shinyjs-resettable-type="Select" data-shinyjs-resettable-value="&quot;Testis&quot;" class="shinyjs-resettable selectized shiny-bound-input" tabindex="-1" style="display: none;"><option value="Testis" selected="selected">Testis</option></select><div class="selectize-control shinyjs-resettable single plugin-selectize-plugin-a11y"><div class="selectize-input items full has-options has-items"><div class="item" data-value="Testis">Testis</div><input type="text" autocomplete="off" tabindex="" id="tissue_type-selectized" role="combobox" aria-expanded="false" haspopup="listbox" aria-owns="cz600fsll0" style="width: 4px;"></div><div class="selectize-dropdown single shinyjs-resettable plugin-selectize-plugin-a11y" style="display: none;"><div class="selectize-dropdown-content" role="listbox" id="cz600fsll0"></div></div></div>
+                  <script type="application/json" data-for="tissue_type" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                </div>
+              </div>
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="min_percentile_organ-label" for="min_percentile_organ">Minimum Kinase Expression Percentile:</label>
+                <span class="irs irs--shiny js-irs-1 irs-with-grid"><span class="irs"><span class="irs-line" tabindex="0"></span><span class="irs-min">0</span><span class="irs-max">100</span><span class="irs-from" style="visibility: hidden;">0</span><span class="irs-to" style="visibility: hidden;">0</span><span class="irs-single">0</span></span><span class="irs-grid"><span class="irs-grid-pol" style="left: 0%"></span><span class="irs-grid-text js-grid-text-0" style="left: 0%">0</span><span class="irs-grid-pol small" style="left: 6.666666666666666%"></span><span class="irs-grid-pol small" style="left: 3.333333333333333%"></span><span class="irs-grid-pol" style="left: 10%"></span><span class="irs-grid-text js-grid-text-1" style="left: 10%; visibility: hidden;">10</span><span class="irs-grid-pol small" style="left: 16.666666666666668%"></span><span class="irs-grid-pol small" style="left: 13.333333333333332%"></span><span class="irs-grid-pol" style="left: 20%"></span><span class="irs-grid-text js-grid-text-2" style="left: 20%; visibility: hidden;">20</span><span class="irs-grid-pol small" style="left: 26.666666666666668%"></span><span class="irs-grid-pol small" style="left: 23.333333333333332%"></span><span class="irs-grid-pol" style="left: 30%"></span><span class="irs-grid-text js-grid-text-3" style="left: 30%; visibility: hidden;">30</span><span class="irs-grid-pol small" style="left: 36.666666666666664%"></span><span class="irs-grid-pol small" style="left: 33.333333333333336%"></span><span class="irs-grid-pol" style="left: 40%"></span><span class="irs-grid-text js-grid-text-4" style="left: 40%">40</span><span class="irs-grid-pol small" style="left: 46.666666666666664%"></span><span class="irs-grid-pol small" style="left: 43.333333333333336%"></span><span class="irs-grid-pol" style="left: 50%"></span><span class="irs-grid-text js-grid-text-5" style="left: 50%; visibility: hidden;">50</span><span class="irs-grid-pol small" style="left: 56.666666666666664%"></span><span class="irs-grid-pol small" style="left: 53.333333333333336%"></span><span class="irs-grid-pol" style="left: 60%"></span><span class="irs-grid-text js-grid-text-6" style="left: 60%; visibility: hidden;">60</span><span class="irs-grid-pol small" style="left: 66.66666666666667%"></span><span class="irs-grid-pol small" style="left: 63.333333333333336%"></span><span class="irs-grid-pol" style="left: 70%"></span><span class="irs-grid-text js-grid-text-7" style="left: 70%; visibility: hidden;">70</span><span class="irs-grid-pol small" style="left: 76.66666666666667%"></span><span class="irs-grid-pol small" style="left: 73.33333333333333%"></span><span class="irs-grid-pol" style="left: 80%"></span><span class="irs-grid-text js-grid-text-8" style="left: 80%">80</span><span class="irs-grid-pol small" style="left: 86.66666666666667%"></span><span class="irs-grid-pol small" style="left: 83.33333333333333%"></span><span class="irs-grid-pol" style="left: 90%"></span><span class="irs-grid-text js-grid-text-9" style="left: 90%; visibility: hidden;">90</span><span class="irs-grid-pol small" style="left: 96.66666666666667%"></span><span class="irs-grid-pol small" style="left: 93.33333333333333%"></span><span class="irs-grid-pol" style="left: 100%"></span><span class="irs-grid-text js-grid-text-10" style="left: 100%; visibility: hidden;">100</span></span><span class="irs-bar irs-bar--single"></span><span class="irs-shadow shadow-single"></span><span class="irs-handle single"><i></i><i></i><i></i></span></span><input class="js-range-slider shinyjs-resettable irs-hidden-input shiny-bound-input" id="min_percentile_organ" data-skin="shiny" data-min="0" data-max="100" data-from="90" data-step="1" data-grid="true" data-grid-num="10" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number" data-shinyjs-resettable-id="min_percentile_organ" data-shinyjs-resettable-type="Slider" data-shinyjs-resettable-value="90" tabindex="-1" readonly="">
+              </div>
+            </div>
+            <h3>Kinase Expression Percentile</h3>
+            <p>The kinase expression percentile is calculated by extracting 
+                                     all the kinase expression values from the GTEx Project and 
+                                     then determining where each kinase ranks within each organ 
+                                     system. Thus, a kinase with a kinase percentile of 90 has 
+                                     an expression level in the highest 10 percent of kinases in 
+                                     that organ system.</p>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2">
+            <div id="anato_male_by_organ" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-2">
+            <div id="anato_female_by_organ" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-4">
+            <div id="organ_percentile_dist" class="shiny-plot-output shiny-bound-output" style="width:100%;height:400px;" aria-live="polite"></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="kinase_organ_summary" class="reactable html-widget html-widget-output shiny-bound-output" style="width:auto; height:auto; " data-reactable-output="kinase_organ_summary" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <a id="download_kinase_organ_summary" class="btn btn-default shiny-download-link shiny-bound-output" href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1" target="_blank" download="" aria-live="polite">
+              <i class="fa fa-download" role="presentation" aria-label="download icon"></i>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" data-value="By Kinase - Mass Spec" id="tab-1257-3">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="well">
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="HPM_kinase-label" for="HPM_kinase-selectized">Choose a dark kinase:</label>
+                <div>
+                  <select id="HPM_kinase" data-shinyjs-resettable-id="HPM_kinase" data-shinyjs-resettable-type="Select" data-shinyjs-resettable-value="&quot;PRKACB&quot;" class="shinyjs-resettable selectized shiny-bound-input" tabindex="-1" style="display: none;"><option value="PRKACB" selected="selected">PRKACB</option></select><div class="selectize-control shinyjs-resettable single plugin-selectize-plugin-a11y"><div class="selectize-input items full has-options has-items"><div class="item" data-value="PRKACB">PRKACB</div><input type="text" autocomplete="off" tabindex="" id="HPM_kinase-selectized" role="combobox" aria-expanded="false" haspopup="listbox" aria-owns="2htifef6fs" style="width: 4px;"></div><div class="selectize-dropdown single shinyjs-resettable plugin-selectize-plugin-a11y" style="display: none;"><div class="selectize-dropdown-content" role="listbox" id="2htifef6fs"></div></div></div>
+                  <script type="application/json" data-for="HPM_kinase" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                </div>
+              </div>
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="HPM_min_percentile_kinase-label" for="HPM_min_percentile_kinase">Minimum Kinase Expression Percentile:</label>
+                <span class="irs irs--shiny js-irs-2 irs-with-grid"><span class="irs"><span class="irs-line" tabindex="0"></span><span class="irs-min">0</span><span class="irs-max">100</span><span class="irs-from" style="visibility: hidden;">0</span><span class="irs-to" style="visibility: hidden;">0</span><span class="irs-single">0</span></span><span class="irs-grid"><span class="irs-grid-pol" style="left: 0%"></span><span class="irs-grid-text js-grid-text-0" style="left: 0%">0</span><span class="irs-grid-pol small" style="left: 6.666666666666666%"></span><span class="irs-grid-pol small" style="left: 3.333333333333333%"></span><span class="irs-grid-pol" style="left: 10%"></span><span class="irs-grid-text js-grid-text-1" style="left: 10%; visibility: hidden;">10</span><span class="irs-grid-pol small" style="left: 16.666666666666668%"></span><span class="irs-grid-pol small" style="left: 13.333333333333332%"></span><span class="irs-grid-pol" style="left: 20%"></span><span class="irs-grid-text js-grid-text-2" style="left: 20%; visibility: hidden;">20</span><span class="irs-grid-pol small" style="left: 26.666666666666668%"></span><span class="irs-grid-pol small" style="left: 23.333333333333332%"></span><span class="irs-grid-pol" style="left: 30%"></span><span class="irs-grid-text js-grid-text-3" style="left: 30%; visibility: hidden;">30</span><span class="irs-grid-pol small" style="left: 36.666666666666664%"></span><span class="irs-grid-pol small" style="left: 33.333333333333336%"></span><span class="irs-grid-pol" style="left: 40%"></span><span class="irs-grid-text js-grid-text-4" style="left: 40%">40</span><span class="irs-grid-pol small" style="left: 46.666666666666664%"></span><span class="irs-grid-pol small" style="left: 43.333333333333336%"></span><span class="irs-grid-pol" style="left: 50%"></span><span class="irs-grid-text js-grid-text-5" style="left: 50%; visibility: hidden;">50</span><span class="irs-grid-pol small" style="left: 56.666666666666664%"></span><span class="irs-grid-pol small" style="left: 53.333333333333336%"></span><span class="irs-grid-pol" style="left: 60%"></span><span class="irs-grid-text js-grid-text-6" style="left: 60%; visibility: hidden;">60</span><span class="irs-grid-pol small" style="left: 66.66666666666667%"></span><span class="irs-grid-pol small" style="left: 63.333333333333336%"></span><span class="irs-grid-pol" style="left: 70%"></span><span class="irs-grid-text js-grid-text-7" style="left: 70%; visibility: hidden;">70</span><span class="irs-grid-pol small" style="left: 76.66666666666667%"></span><span class="irs-grid-pol small" style="left: 73.33333333333333%"></span><span class="irs-grid-pol" style="left: 80%"></span><span class="irs-grid-text js-grid-text-8" style="left: 80%">80</span><span class="irs-grid-pol small" style="left: 86.66666666666667%"></span><span class="irs-grid-pol small" style="left: 83.33333333333333%"></span><span class="irs-grid-pol" style="left: 90%"></span><span class="irs-grid-text js-grid-text-9" style="left: 90%; visibility: hidden;">90</span><span class="irs-grid-pol small" style="left: 96.66666666666667%"></span><span class="irs-grid-pol small" style="left: 93.33333333333333%"></span><span class="irs-grid-pol" style="left: 100%"></span><span class="irs-grid-text js-grid-text-10" style="left: 100%; visibility: hidden;">100</span></span><span class="irs-bar irs-bar--single"></span><span class="irs-shadow shadow-single"></span><span class="irs-handle single"><i></i><i></i><i></i></span></span><input class="js-range-slider shinyjs-resettable irs-hidden-input shiny-bound-input" id="HPM_min_percentile_kinase" data-skin="shiny" data-min="0" data-max="100" data-from="90" data-step="1" data-grid="true" data-grid-num="10" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number" data-shinyjs-resettable-id="HPM_min_percentile_kinase" data-shinyjs-resettable-type="Slider" data-shinyjs-resettable-value="90" tabindex="-1" readonly="">
+              </div>
+            </div>
+            <h3>Kinase Mass Spec Level Percentile</h3>
+            <p>The kinase expression percentile is calculated by from all the kinase measurements in the <a href="http://humanproteomemap.org/index.php">Human Proteome Map</a>. Each kinase is then ranked within each organ system to derive kinase percentile ranking.</p>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2">
+            <div id="HPM_anato_male_by_kinase" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-2">
+            <div id="HPM_anato_female_by_kinase" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-4">
+            <div id="HPM_kinase_percentile_dist" class="shiny-plot-output shiny-bound-output" style="width:100%;height:400px;" aria-live="polite"></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="HPM_kinase_data_summary" class="reactable html-widget html-widget-output shiny-bound-output" style="width:auto; height:auto; " data-reactable-output="HPM_kinase_data_summary" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <a id="download_HPM_kinase_data_summary" class="btn btn-default shiny-download-link shiny-bound-output" href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1" target="_blank" download="" aria-live="polite">
+              <i class="fa fa-download" role="presentation" aria-label="download icon"></i>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" data-value="By Organ System - Mass Spec" id="tab-1257-4">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="well">
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="HPM_tissue_type-label" for="HPM_tissue_type-selectized">Choose an Organ System:</label>
+                <div>
+                  <select id="HPM_tissue_type" data-shinyjs-resettable-id="HPM_tissue_type" data-shinyjs-resettable-type="Select" data-shinyjs-resettable-value="&quot;adult_testis&quot;" class="shinyjs-resettable selectized shiny-bound-input" tabindex="-1" style="display: none;"><option value="adult_testis" selected="selected">adult_testis</option></select><div class="selectize-control shinyjs-resettable single plugin-selectize-plugin-a11y"><div class="selectize-input items full has-options has-items"><div class="item" data-value="adult_testis">adult_testis</div><input type="text" autocomplete="off" tabindex="" id="HPM_tissue_type-selectized" role="combobox" aria-expanded="false" haspopup="listbox" aria-owns="eyo9yc1h3c" style="width: 4px;"></div><div class="selectize-dropdown single shinyjs-resettable plugin-selectize-plugin-a11y" style="display: none;"><div class="selectize-dropdown-content" role="listbox" id="eyo9yc1h3c"></div></div></div>
+                  <script type="application/json" data-for="HPM_tissue_type" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                </div>
+              </div>
+              <div class="form-group shiny-input-container">
+                <label class="control-label" id="HPM_min_percentile_organ-label" for="HPM_min_percentile_organ">Minimum Kinase Expression Percentile:</label>
+                <span class="irs irs--shiny js-irs-3 irs-with-grid"><span class="irs"><span class="irs-line" tabindex="0"></span><span class="irs-min">0</span><span class="irs-max">100</span><span class="irs-from" style="visibility: hidden;">0</span><span class="irs-to" style="visibility: hidden;">0</span><span class="irs-single">0</span></span><span class="irs-grid"><span class="irs-grid-pol" style="left: 0%"></span><span class="irs-grid-text js-grid-text-0" style="left: 0%">0</span><span class="irs-grid-pol small" style="left: 6.666666666666666%"></span><span class="irs-grid-pol small" style="left: 3.333333333333333%"></span><span class="irs-grid-pol" style="left: 10%"></span><span class="irs-grid-text js-grid-text-1" style="left: 10%; visibility: hidden;">10</span><span class="irs-grid-pol small" style="left: 16.666666666666668%"></span><span class="irs-grid-pol small" style="left: 13.333333333333332%"></span><span class="irs-grid-pol" style="left: 20%"></span><span class="irs-grid-text js-grid-text-2" style="left: 20%; visibility: hidden;">20</span><span class="irs-grid-pol small" style="left: 26.666666666666668%"></span><span class="irs-grid-pol small" style="left: 23.333333333333332%"></span><span class="irs-grid-pol" style="left: 30%"></span><span class="irs-grid-text js-grid-text-3" style="left: 30%; visibility: hidden;">30</span><span class="irs-grid-pol small" style="left: 36.666666666666664%"></span><span class="irs-grid-pol small" style="left: 33.333333333333336%"></span><span class="irs-grid-pol" style="left: 40%"></span><span class="irs-grid-text js-grid-text-4" style="left: 40%">40</span><span class="irs-grid-pol small" style="left: 46.666666666666664%"></span><span class="irs-grid-pol small" style="left: 43.333333333333336%"></span><span class="irs-grid-pol" style="left: 50%"></span><span class="irs-grid-text js-grid-text-5" style="left: 50%; visibility: hidden;">50</span><span class="irs-grid-pol small" style="left: 56.666666666666664%"></span><span class="irs-grid-pol small" style="left: 53.333333333333336%"></span><span class="irs-grid-pol" style="left: 60%"></span><span class="irs-grid-text js-grid-text-6" style="left: 60%; visibility: hidden;">60</span><span class="irs-grid-pol small" style="left: 66.66666666666667%"></span><span class="irs-grid-pol small" style="left: 63.333333333333336%"></span><span class="irs-grid-pol" style="left: 70%"></span><span class="irs-grid-text js-grid-text-7" style="left: 70%; visibility: hidden;">70</span><span class="irs-grid-pol small" style="left: 76.66666666666667%"></span><span class="irs-grid-pol small" style="left: 73.33333333333333%"></span><span class="irs-grid-pol" style="left: 80%"></span><span class="irs-grid-text js-grid-text-8" style="left: 80%">80</span><span class="irs-grid-pol small" style="left: 86.66666666666667%"></span><span class="irs-grid-pol small" style="left: 83.33333333333333%"></span><span class="irs-grid-pol" style="left: 90%"></span><span class="irs-grid-text js-grid-text-9" style="left: 90%; visibility: hidden;">90</span><span class="irs-grid-pol small" style="left: 96.66666666666667%"></span><span class="irs-grid-pol small" style="left: 93.33333333333333%"></span><span class="irs-grid-pol" style="left: 100%"></span><span class="irs-grid-text js-grid-text-10" style="left: 100%; visibility: hidden;">100</span></span><span class="irs-bar irs-bar--single"></span><span class="irs-shadow shadow-single"></span><span class="irs-handle single"><i></i><i></i><i></i></span></span><input class="js-range-slider shinyjs-resettable irs-hidden-input shiny-bound-input" id="HPM_min_percentile_organ" data-skin="shiny" data-min="0" data-max="100" data-from="90" data-step="1" data-grid="true" data-grid-num="10" data-grid-snap="false" data-prettify-separator="," data-prettify-enabled="true" data-keyboard="true" data-data-type="number" data-shinyjs-resettable-id="HPM_min_percentile_organ" data-shinyjs-resettable-type="Slider" data-shinyjs-resettable-value="90" tabindex="-1" readonly="">
+              </div>
+            </div>
+            <h3>Kinase Mass Spec Level Percentile</h3>
+            <p>The kinase expression percentile is calculated by from all the kinase measurements in the <a href="http://humanproteomemap.org/index.php">Human Proteome Map</a>. Each kinase is then ranked within each organ system to derive kinase percentile ranking.</p>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2">
+            <div id="HPM_anato_male_by_organ" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-2">
+            <div id="HPM_anato_female_by_organ" class="shiny-plot-output shiny-bound-output" style="width:6cm;height:10cm;" aria-live="polite"></div>
+          </div>
+          <div class="col-sm-4">
+            <div id="HPM_organ_percentile_dist" class="shiny-plot-output shiny-bound-output" style="width:100%;height:400px;" aria-live="polite"></div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="HPM_kinase_organ_summary" class="reactable html-widget html-widget-output shiny-bound-output" style="width:auto; height:auto; " data-reactable-output="HPM_kinase_organ_summary" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <a id="download_HPM_kinase_organ_summary" class="btn btn-default shiny-download-link shiny-bound-output" href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1" target="_blank" download="" aria-live="polite">
+              <i class="fa fa-download" role="presentation" aria-label="download icon"></i>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div id="ss-connect-dialog" style=""><label>Disconnected from the server.</label> <a id="ss-reload-link" href="https://expression.darkkinome.org/?input_kinase=TLK2&amp;embed=1#" class="ss-dialog-link">Reload</a></div><div id="ss-overlay" class="ss-gray-out" style=""></div><div aria-live="assertive" role="log" aria-relevant="additions" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; margin-top: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div><div aria-live="assertive" role="log" aria-relevant="additions" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; margin-top: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div><div aria-live="assertive" role="log" aria-relevant="additions" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; margin-top: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div><div aria-live="assertive" role="log" aria-relevant="additions" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; margin-top: -1px; clip: rect(1px, 1px, 1px, 1px); overflow: hidden;"></div><div id="shiny-disconnected-overlay"></div></body></html>

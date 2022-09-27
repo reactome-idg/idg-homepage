@@ -1,5 +1,5 @@
 <template>
-  <v-card 
+  <v-card class="pa-0" style="min-height: 300px; margin: 0px 0px 0px 0px;"
     outlined 
     @dblclick="unselect">
     <plotly 
@@ -9,7 +9,7 @@
       :display-mode-bar="true" 
       style="height: 300px;" 
       class="pa-0"
-      @click="select">
+      >
     </plotly>
     <v-tooltip right>
       <template v-slot:activator="{ on, attrs }">
@@ -75,9 +75,19 @@ export default {
         },
         hoverlabel: {
           font: {
-            size: 10
+            size: 10,
           }
+        },
+        modebar: {
+          displayModeBar: true,
+          left: 0.1,
         }
+      };
+    },
+    displayModeBar: function () {
+      return {
+        'displayModeBar': true, 
+        left: 0.1,
       };
     },
   },
@@ -86,6 +96,12 @@ export default {
     nodeFDRFilter() {
       this.updatePlot(); 
     },
+  }, 
+
+  mounted() {
+    console.log(this.$refs.chart.$el);
+    this.$refs.chart.$el.addEventListener('click', data => this.select(data));
+    //this.$refs.chart.$el.on('plotly_click', data => this.select(data));
   },
 
   methods: {
@@ -167,6 +183,7 @@ export default {
         }
         plotData.push(topData);
       }
+
       return plotData;
     },
 
@@ -214,18 +231,26 @@ export default {
     },
 
     select(clickData) {
-      if (clickData.points.length === 1) {
+
+      console.log(clickData.currentTarget._ev._events);
+      //clickData.currentTarget._fullData.length === 1
+      if (clickData.currentTarget._fullData.length > 1) {
         // reset previous selection
         if (this.pointNumber != undefined && this.curveNumber != undefined) {
           this.changePointSize(this.defaultPointSize);
         }
 
         // logic follows https://plotly.com/javascript/plotlyjs-events/   
-        for (var i = 0; i < clickData.points.length; i++) {
+        // TEST: clickData.points.length
+        for (var i = 0; i < clickData.currentTarget._fullData.length; i++) {
           // using global variable to track the point changed to reset later
-          this.pointNumber = clickData.points[i].pointNumber;
-          this.curveNumber = clickData.points[i].curveNumber;
-          this.sizes = clickData.points[i].data.marker.size;
+          //this.pointNumber = clickData.points[i].pointNumber;
+          this.pointNumber = clickData.currentTarget._hoverdata[0].pointNumber;
+          //this.curveNumber = clickData.points[i].curveNumber;
+          this.curveNumber = clickData.currentTarget._hoverdata[0].curveNumber;
+          //this.sizes = clickData.points[i].data.marker.size;
+          this.sizes = clickData.currentTarget._hoverdata[0].data.marker.size;
+
         }
 
         this.changePointSize(this.sizes[this.pointNumber] * 2);
