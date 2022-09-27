@@ -257,7 +257,7 @@ export default {
     updatePlot(){
       //this.pathwayEnrichmentResults = this.$emit("updatePlot");
       let newPlotResults = this.$emit("updatePlot");
-      console.log(newPlotResults);
+      // console.log(newPlotResults);
     }
   },
 };
