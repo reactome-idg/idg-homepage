@@ -101,7 +101,7 @@ export default {
   mounted() {
     console.log(this.$refs.chart.$el);
     this.$refs.chart.$el.addEventListener('click', data => this.select(data));
-    //this.$refs.chart.$el.on('plotly_click', data => this.select(data));
+    //this.$refs.chart.$el._ev._events.on('plotly_click', data => this.select(data));
   },
 
   methods: {
@@ -232,24 +232,24 @@ export default {
 
     select(clickData) {
 
-      console.log(clickData.currentTarget._ev._events);
+      //console.log(clickData.currentTarget._ev._events);
       //clickData.currentTarget._fullData.length === 1
-      if (clickData.currentTarget._fullData.length > 1) {
+      if (clickData.points.length > 1) {
         // reset previous selection
         if (this.pointNumber != undefined && this.curveNumber != undefined) {
           this.changePointSize(this.defaultPointSize);
         }
 
         // logic follows https://plotly.com/javascript/plotlyjs-events/   
-        // TEST: clickData.points.length
-        for (var i = 0; i < clickData.currentTarget._fullData.length; i++) {
+        // TEST: clickData.currentTarget._fullData.length
+        for (var i = 0; i < clickData.points.length; i++) {
           // using global variable to track the point changed to reset later
-          //this.pointNumber = clickData.points[i].pointNumber;
-          this.pointNumber = clickData.currentTarget._hoverdata[0].pointNumber;
-          //this.curveNumber = clickData.points[i].curveNumber;
-          this.curveNumber = clickData.currentTarget._hoverdata[0].curveNumber;
-          //this.sizes = clickData.points[i].data.marker.size;
-          this.sizes = clickData.currentTarget._hoverdata[0].data.marker.size;
+          this.pointNumber = clickData.points[i].pointNumber;
+          //this.pointNumber = clickData.currentTarget._hoverdata[0].pointNumber;
+          this.curveNumber = clickData.points[i].curveNumber;
+          //this.curveNumber = clickData.currentTarget._hoverdata[0].curveNumber;
+          this.sizes = clickData.points[i].data.marker.size;
+          //this.sizes = clickData.currentTarget._hoverdata[0].data.marker.size;
 
         }
 
