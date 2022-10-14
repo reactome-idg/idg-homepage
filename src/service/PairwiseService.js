@@ -41,7 +41,7 @@ class PairwiseService {
   static getHierarchialOrderedPathways() {
     return new Promise((resolve, reject) => {
       axios
-        .get(`${url}realtionships/getHierarchicalOrderedGraphPathways`)
+        .get(`${url}realtionships/getHierarchicalOrderedPathways`)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err));
     });

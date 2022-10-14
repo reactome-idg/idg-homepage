@@ -213,7 +213,7 @@ import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
 import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
-import PathwayResultsPlot from "./Cytoscape/PathwayResultsPlot.vue";
+import PathwayResultsPlot from "./PathwayResultsPlot.vue";
 
 import {
   VDataTable,
