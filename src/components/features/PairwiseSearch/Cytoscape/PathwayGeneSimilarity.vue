@@ -26,7 +26,8 @@
           v-on="on"
           icon
           v-on:click = "switchPathwayView"
-          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0">
+          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0"
+          title="Switch to plot view">
           <v-icon>{{ mdiChartScatterPlot }}</v-icon>
         </v-btn>
       </template>
