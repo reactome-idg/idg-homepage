@@ -42,9 +42,8 @@ export default {
 
 <style>
 @import "../../../node_modules/vuetify/dist/vuetify.min.css";
-/* @import "/Users/deidrebeavers/idg-homepage/src/components/WebComponents/css/style.scss";
-@import "https://raw.githubusercontent.com/plotly/plotly.js/master/src/css/style.scss"; */
-@import "../../style.css";
+@import "../../plotlyLegendStyle.css";
+/* @import "../../PlotlyClick/click.js"; */
 
 .v-application--wrap {
   min-height: 1vh !important;
