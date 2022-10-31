@@ -293,13 +293,9 @@ var buildURL = __webpack_require__("30b5");
 var InterceptorManager = __webpack_require__("f6b4");
 var dispatchRequest = __webpack_require__("5270");
 var mergeConfig = __webpack_require__("4a7b");
-<<<<<<< HEAD
-
-=======
 var validator = __webpack_require__("848b");
 
 var validators = validator.validators;
->>>>>>> 0eee9a0 (Working on selection issue.)
 /**
  * Create a new instance of Axios
  *
@@ -339,22 +335,6 @@ Axios.prototype.request = function request(config) {
     config.method = 'get';
   }
 
-<<<<<<< HEAD
-  // Hook up interceptors middleware
-  var chain = [dispatchRequest, undefined];
-  var promise = Promise.resolve(config);
-
-  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-    chain.unshift(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-    chain.push(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  while (chain.length) {
-    promise = promise.then(chain.shift(), chain.shift());
-=======
   var transitional = config.transitional;
 
   if (transitional !== undefined) {
@@ -420,7 +400,6 @@ Axios.prototype.request = function request(config) {
 
   while (responseInterceptorChain.length) {
     promise = promise.then(responseInterceptorChain.shift(), responseInterceptorChain.shift());
->>>>>>> 0eee9a0 (Working on selection issue.)
   }
 
   return promise;
@@ -821,8 +800,6 @@ $({ target: 'Object', stat: true }, {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "13d5":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -850,7 +827,6 @@ $({ target: 'Array', proto: true, forced: !STRICT_METHOD || CHROME_BUG }, {
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "14c3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1242,8 +1218,6 @@ module.exports = function (options, source) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "23eb":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1256,7 +1230,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "241c":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1283,10 +1256,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 var utils = __webpack_require__("c532");
 var normalizeHeaderName = __webpack_require__("c8af");
-<<<<<<< HEAD
-=======
 var enhanceError = __webpack_require__("387f");
->>>>>>> 0eee9a0 (Working on selection issue.)
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -1310,9 +1280,6 @@ function getDefaultAdapter() {
   return adapter;
 }
 
-<<<<<<< HEAD
-var defaults = {
-=======
 function stringifySafely(rawValue, parser, encoder) {
   if (utils.isString(rawValue)) {
     try {
@@ -1336,16 +1303,11 @@ var defaults = {
     clarifyTimeoutError: false
   },
 
->>>>>>> 0eee9a0 (Working on selection issue.)
   adapter: getDefaultAdapter(),
 
   transformRequest: [function transformRequest(data, headers) {
     normalizeHeaderName(headers, 'Accept');
     normalizeHeaderName(headers, 'Content-Type');
-<<<<<<< HEAD
-=======
-
->>>>>>> 0eee9a0 (Working on selection issue.)
     if (utils.isFormData(data) ||
       utils.isArrayBuffer(data) ||
       utils.isBuffer(data) ||
@@ -1362,28 +1324,14 @@ var defaults = {
       setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
       return data.toString();
     }
-<<<<<<< HEAD
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-=======
     if (utils.isObject(data) || (headers && headers['Content-Type'] === 'application/json')) {
       setContentTypeIfUnset(headers, 'application/json');
       return stringifySafely(data);
->>>>>>> 0eee9a0 (Working on selection issue.)
     }
     return data;
   }],
 
   transformResponse: [function transformResponse(data) {
-<<<<<<< HEAD
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-=======
     var transitional = this.transitional;
     var silentJSONParsing = transitional && transitional.silentJSONParsing;
     var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
@@ -1402,7 +1350,6 @@ var defaults = {
       }
     }
 
->>>>>>> 0eee9a0 (Working on selection issue.)
     return data;
   }],
 
@@ -2872,8 +2819,6 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "33aa":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2890,7 +2835,6 @@ module.exports = exports;
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "3410":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3625,8 +3569,6 @@ $({ target: 'String', proto: true, forced: forcedStringTrimMethod('trim') }, {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "4a0c":
 /***/ (function(module) {
 
@@ -3634,7 +3576,6 @@ module.exports = JSON.parse("{\"name\":\"axios\",\"version\":\"0.21.4\",\"descri
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "4a7b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4149,12 +4090,8 @@ module.exports = function dispatchRequest(config) {
   config.headers = config.headers || {};
 
   // Transform request data
-<<<<<<< HEAD
-  config.data = transformData(
-=======
   config.data = transformData.call(
     config,
->>>>>>> 0eee9a0 (Working on selection issue.)
     config.data,
     config.headers,
     config.transformRequest
@@ -4180,12 +4117,8 @@ module.exports = function dispatchRequest(config) {
     throwIfCancellationRequested(config);
 
     // Transform response data
-<<<<<<< HEAD
-    response.data = transformData(
-=======
     response.data = transformData.call(
       config,
->>>>>>> 0eee9a0 (Working on selection issue.)
       response.data,
       response.headers,
       config.transformResponse
@@ -4198,12 +4131,8 @@ module.exports = function dispatchRequest(config) {
 
       // Transform response data
       if (reason && reason.response) {
-<<<<<<< HEAD
-        reason.response.data = transformData(
-=======
         reason.response.data = transformData.call(
           config,
->>>>>>> 0eee9a0 (Working on selection issue.)
           reason.response.data,
           reason.response.headers,
           config.transformResponse
@@ -4324,27 +4253,6 @@ fixRegExpWellKnownSymbolLogic('replace', 2, function (REPLACE, nativeReplace, ma
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "5586":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("cddf");
-if(content.__esModule) content = content.default;
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add CSS to Shadow Root
-var add = __webpack_require__("35d6").default
-module.exports.__inject__ = function (shadowRoot) {
-  add("1a606ec6", content, shadowRoot)
-};
-
-/***/ }),
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "5692":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4467,11 +4375,7 @@ __webpack_require__.d(easing_patterns_namespaceObject, "easeInOutQuint", functio
 // This file is imported into lib/wc client bundles.
 
 if (typeof window !== 'undefined') {
-<<<<<<< HEAD
-  if (Object({"NODE_ENV":"production","VUE_APP_IDG_PAIRWISE_SERVICE":"https://idg.reactome.org/idgpairwise/","VUE_APP_CONTENT_SERVICE":"https://idg.reactome.org/ContentService/","VUE_APP_BROWSER_LINK":"https://idg.reactome.org/PathwayBrowser/#/","VUE_APP_LINK_TARGET":"_blank","BASE_URL":"/"}).NEED_CURRENTSCRIPT_POLYFILL) {
-=======
   if (Object({"NODE_ENV":"production","VUE_APP_IDG_PAIRWISE_SERVICE":"http://localhost:8043/idgpairwise/","VUE_APP_CONTENT_SERVICE":"https://idg.reactome.org/ContentService/","VUE_APP_BROWSER_LINK":"https://idg.reactome.org/PathwayBrowser/#/","VUE_APP_LINK_TARGET":"_blank","BASE_URL":"/"}).NEED_CURRENTSCRIPT_POLYFILL) {
->>>>>>> 0eee9a0 (Working on selection issue.)
     __webpack_require__("f6fd")
   }
 
@@ -4770,33 +4674,19 @@ var addStylesShadow = __webpack_require__("35d6");
 // This module is a runtime utility for cleaner component module output and will
 // be included in the final webpack user bundle.
 
-<<<<<<< HEAD
-function normalizeComponent (
-=======
 function normalizeComponent(
->>>>>>> 0eee9a0 (Working on selection issue.)
   scriptExports,
   render,
   staticRenderFns,
   functionalTemplate,
   injectStyles,
   scopeId,
-<<<<<<< HEAD
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-=======
   moduleIdentifier /* server only */,
   shadowMode /* vue-cli only */
 ) {
   // Vue.extend constructor export interop
   var options =
     typeof scriptExports === 'function' ? scriptExports.options : scriptExports
->>>>>>> 0eee9a0 (Working on selection issue.)
 
   // render functions
   if (render) {
@@ -4816,12 +4706,8 @@ function normalizeComponent(
   }
 
   var hook
-<<<<<<< HEAD
-  if (moduleIdentifier) { // server build
-=======
   if (moduleIdentifier) {
     // server build
->>>>>>> 0eee9a0 (Working on selection issue.)
     hook = function (context) {
       // 2.3 injection
       context =
@@ -4847,19 +4733,11 @@ function normalizeComponent(
   } else if (injectStyles) {
     hook = shadowMode
       ? function () {
-<<<<<<< HEAD
-        injectStyles.call(
-          this,
-          (options.functional ? this.parent : this).$root.$options.shadowRoot
-        )
-      }
-=======
           injectStyles.call(
             this,
             (options.functional ? this.parent : this).$root.$options.shadowRoot
           )
         }
->>>>>>> 0eee9a0 (Working on selection issue.)
       : injectStyles
   }
 
@@ -4870,24 +4748,14 @@ function normalizeComponent(
       options._injectStyles = hook
       // register for functional component in vue file
       var originalRender = options.render
-<<<<<<< HEAD
-      options.render = function renderWithStyleInjection (h, context) {
-=======
       options.render = function renderWithStyleInjection(h, context) {
->>>>>>> 0eee9a0 (Working on selection issue.)
         hook.call(context)
         return originalRender(h, context)
       }
     } else {
       // inject component registration as beforeCreate hook
       var existing = options.beforeCreate
-<<<<<<< HEAD
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-=======
       options.beforeCreate = existing ? [].concat(existing, hook) : [hook]
->>>>>>> 0eee9a0 (Working on selection issue.)
     }
   }
 
@@ -4897,21 +4765,12 @@ function normalizeComponent(
   }
 }
 
-<<<<<<< HEAD
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4827b044-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue?vue&type=template&id=02ddae12&shadow
-var AnnotatedPathwayHierarchyWCvue_type_template_id_02ddae12_shadow_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-app',[_c('AnnotatedPathwaySearch',{attrs:{"term":_vm.term,"darkmode":_vm.darkmode,"title":_vm.title,"subtitle":_vm.subtitle}})],1)}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue?vue&type=template&id=02ddae12&shadow
-=======
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"43be8710-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue?vue&type=template&id=8de383a8&shadow
 var AnnotatedPathwayHierarchyWCvue_type_template_id_8de383a8_shadow_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-app',[_c('AnnotatedPathwaySearch',{attrs:{"term":_vm.term,"darkmode":_vm.darkmode,"title":_vm.title,"subtitle":_vm.subtitle}})],1)}
 var staticRenderFns = []
 
 
 // CONCATENATED MODULE: ./src/components/WebComponents/AnnotatedPathwayHierarchyWC.vue?vue&type=template&id=8de383a8&shadow
->>>>>>> 0eee9a0 (Working on selection issue.)
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__("b64b");
@@ -5161,11 +5020,7 @@ function mixins() {
     }, [wrapper]);
   }
 }));
-<<<<<<< HEAD
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4827b044-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue?vue&type=template&id=ee90fa00&scoped=true&%3Adark=darkmode&
-=======
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"43be8710-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue?vue&type=template&id=ee90fa00&scoped=true&%3Adark=darkmode&
->>>>>>> 0eee9a0 (Working on selection issue.)
 var AnnotatedPathwaySearchvue_type_template_id_ee90fa00_scoped_true_3Adark_darkmode_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.loadingPrimary)?_c('v-card',{attrs:{"dark":_vm.darkmode,"outlined":""}},[_c('v-card-text',[_c('LoadingCircularProgress')],1)],1):_vm._e(),(
       (_vm.primaryPathways.hierarchy && _vm.primaryPathways.hierarchy.length > 0) || _vm.loadingPrimary)?_c('div',[_c('div',{staticClass:"text-left"},[_c('span',{staticClass:"larger"},[_vm._v(_vm._s(_vm.title))]),_c('small',{staticClass:"pl-2"},[_vm._v(_vm._s(_vm.subtitle))])]),_c('v-card',{staticClass:"text-left annotaedPathwaysCard",attrs:{"outlined":"","dark":_vm.darkmode}},[(_vm.primaryPathways.hierarchy && _vm.primaryPathways.hierarchy.length > 0)?_c('v-treeview',{attrs:{"dense":"","open-all":"","items":_vm.primaryPathways.hierarchy,"expand-icon":_vm.mdiChevronDown,"transition":""},scopedSlots:_vm._u([{key:"label",fn:function(ref){
       var item = ref.item;
@@ -5368,11 +5223,7 @@ var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 
 
-<<<<<<< HEAD
-var url = "https://idg.reactome.org/idgpairwise/";
-=======
 var url = "http://localhost:8043/idgpairwise/";
->>>>>>> 0eee9a0 (Working on selection issue.)
 
 var PairwiseService_PairwiseService = /*#__PURE__*/function () {
   function PairwiseService() {
@@ -5413,8 +5264,6 @@ var PairwiseService_PairwiseService = /*#__PURE__*/function () {
       });
     }
   }, {
-<<<<<<< HEAD
-=======
     key: "getHierarchialOrderedPathways",
     value: function getHierarchialOrderedPathways() {
       return new Promise(function (resolve, reject) {
@@ -5426,7 +5275,6 @@ var PairwiseService_PairwiseService = /*#__PURE__*/function () {
       });
     }
   }, {
->>>>>>> 0eee9a0 (Working on selection issue.)
     key: "searchTermSecondaryPathways",
     value: function searchTermSecondaryPathways(postData) {
       return new Promise(function (resolve, reject) {
@@ -5589,11 +5437,7 @@ var PairwiseService_PairwiseService = /*#__PURE__*/function () {
 }();
 
 /* harmony default export */ var service_PairwiseService = (PairwiseService_PairwiseService);
-<<<<<<< HEAD
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4827b044-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/layout/LoadingCircularProgress.vue?vue&type=template&id=3aabfebd&scoped=true&
-=======
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"43be8710-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/layout/LoadingCircularProgress.vue?vue&type=template&id=3aabfebd&scoped=true&
->>>>>>> 0eee9a0 (Working on selection issue.)
 var LoadingCircularProgressvue_type_template_id_3aabfebd_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('v-container',{staticClass:"pl-0 pr-0",attrs:{"fluid":""}},[_c('v-card',{staticClass:"pa-5",attrs:{"outlined":""}},[_c('v-progress-circular',{attrs:{"indeterminate":"","color":"primary"}}),_vm._v(" "+_vm._s(_vm.title)+" ")],1)],1)}
 var LoadingCircularProgressvue_type_template_id_3aabfebd_scoped_true_staticRenderFns = []
 
@@ -6086,12 +5930,9 @@ var es_string_starts_with = __webpack_require__("2ca0");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.sort.js
 var es_array_sort = __webpack_require__("4e82");
 
-<<<<<<< HEAD
-=======
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
 var es_array_reduce = __webpack_require__("13d5");
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.to-fixed.js
 var es_number_to_fixed = __webpack_require__("b680");
 
@@ -6124,10 +5965,6 @@ var es_array_fill = __webpack_require__("cb29");
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0eee9a0 (Working on selection issue.)
 function createSimpleFunctional(c) {
   var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'div';
   var name = arguments.length > 2 ? arguments[2] : undefined;
@@ -6659,10 +6496,6 @@ var es_object_values = __webpack_require__("07ac");
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0eee9a0 (Working on selection issue.)
 // Extensions
 
 var application_Application = /*#__PURE__*/function (_Service) {
@@ -11191,10 +11024,6 @@ function filterTreeItems(filter, item, search, idKey, textKey, childrenKey, excl
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0eee9a0 (Working on selection issue.)
 // Styles
  // Components
 
@@ -17811,13 +17640,8 @@ var mdiZodiacVirgo = "M18.5,19.13C20,17.77 20,15.18 20,14A4,4 0 0,0 16,10C15.3,1
 });
 // CONCATENATED MODULE: ./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue?vue&type=script&lang=js&
  /* harmony default export */ var PairwiseSearch_AnnotatedPathwaySearchvue_type_script_lang_js_ = (AnnotatedPathwaySearchvue_type_script_lang_js_); 
-<<<<<<< HEAD
-// EXTERNAL MODULE: ./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue?vue&type=style&index=0&id=ee90fa00&scoped=true&lang=css&
-var AnnotatedPathwaySearchvue_type_style_index_0_id_ee90fa00_scoped_true_lang_css_ = __webpack_require__("69fd");
-=======
 // EXTERNAL MODULE: ./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue?vue&type=style&index=0&id=ee90fa00&prod&scoped=true&lang=css&
 var AnnotatedPathwaySearchvue_type_style_index_0_id_ee90fa00_prod_scoped_true_lang_css_ = __webpack_require__("f24c");
->>>>>>> 0eee9a0 (Working on selection issue.)
 
 // CONCATENATED MODULE: ./src/components/features/PairwiseSearch/AnnotatedPathwaySearch.vue
 
@@ -17892,11 +17716,7 @@ installComponents_default()(AnnotatedPathwaySearch_component, {VCard: VCard_VCar
 
 function injectStyles (context) {
   
-<<<<<<< HEAD
-  var style0 = __webpack_require__("e775")
-=======
   var style0 = __webpack_require__("23eb")
->>>>>>> 0eee9a0 (Working on selection issue.)
 if (style0.__inject__) style0.__inject__(context)
 
 }
@@ -17905,11 +17725,7 @@ if (style0.__inject__) style0.__inject__(context)
 
 var AnnotatedPathwayHierarchyWCshadow_component = normalizeComponent(
   WebComponents_AnnotatedPathwayHierarchyWCvue_type_script_lang_js_shadow,
-<<<<<<< HEAD
-  AnnotatedPathwayHierarchyWCvue_type_template_id_02ddae12_shadow_render,
-=======
   AnnotatedPathwayHierarchyWCvue_type_template_id_8de383a8_shadow_render,
->>>>>>> 0eee9a0 (Working on selection issue.)
   staticRenderFns,
   false,
   injectStyles,
@@ -18144,8 +17960,6 @@ module.exports = function (input) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "605d":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18157,7 +17971,6 @@ module.exports = classof(global.process) == 'process';
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "6062":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18626,20 +18439,6 @@ module.exports = {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "69fd":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwaySearch_vue_vue_type_style_index_0_id_ee90fa00_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("e858");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwaySearch_vue_vue_type_style_index_0_id_ee90fa00_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwaySearch_vue_vue_type_style_index_0_id_ee90fa00_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
-
-/***/ }),
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "6d61":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19463,8 +19262,6 @@ fixRegExpWellKnownSymbolLogic('search', 1, function (SEARCH, nativeSearch, maybe
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "848b":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19578,7 +19375,6 @@ module.exports = {
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "857a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21166,8 +20962,6 @@ exports.f = DESCRIPTORS ? $defineProperty : function defineProperty(O, P, Attrib
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "9daf":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21186,7 +20980,6 @@ module.exports.__inject__ = function (shadowRoot) {
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "9ed3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21336,8 +21129,6 @@ module.exports = flattenIntoArray;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "a309":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21356,7 +21147,6 @@ module.exports.__inject__ = function (shadowRoot) {
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "a4d3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22083,10 +21873,7 @@ module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
     var requestData = config.data;
     var requestHeaders = config.headers;
-<<<<<<< HEAD
-=======
     var responseType = config.responseType;
->>>>>>> 0eee9a0 (Working on selection issue.)
 
     if (utils.isFormData(requestData)) {
       delete requestHeaders['Content-Type']; // Let the browser set it
@@ -22107,25 +21894,6 @@ module.exports = function xhrAdapter(config) {
     // Set the request timeout in MS
     request.timeout = config.timeout;
 
-<<<<<<< HEAD
-    // Listen for ready state
-    request.onreadystatechange = function handleLoad() {
-      if (!request || request.readyState !== 4) {
-        return;
-      }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
-      // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-=======
     function onloadend() {
       if (!request) {
         return;
@@ -22134,7 +21902,6 @@ module.exports = function xhrAdapter(config) {
       var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
       var responseData = !responseType || responseType === 'text' ||  responseType === 'json' ?
         request.responseText : request.response;
->>>>>>> 0eee9a0 (Working on selection issue.)
       var response = {
         data: responseData,
         status: request.status,
@@ -22148,9 +21915,6 @@ module.exports = function xhrAdapter(config) {
 
       // Clean up request
       request = null;
-<<<<<<< HEAD
-    };
-=======
     }
 
     if ('onloadend' in request) {
@@ -22175,7 +21939,6 @@ module.exports = function xhrAdapter(config) {
         setTimeout(onloadend);
       };
     }
->>>>>>> 0eee9a0 (Working on selection issue.)
 
     // Handle browser request cancellation (as opposed to a manual cancellation)
     request.onabort = function handleAbort() {
@@ -22205,14 +21968,10 @@ module.exports = function xhrAdapter(config) {
       if (config.timeoutErrorMessage) {
         timeoutErrorMessage = config.timeoutErrorMessage;
       }
-<<<<<<< HEAD
-      reject(createError(timeoutErrorMessage, config, 'ECONNABORTED',
-=======
       reject(createError(
         timeoutErrorMessage,
         config,
         config.transitional && config.transitional.clarifyTimeoutError ? 'ETIMEDOUT' : 'ECONNABORTED',
->>>>>>> 0eee9a0 (Working on selection issue.)
         request));
 
       // Clean up request
@@ -22252,21 +22011,8 @@ module.exports = function xhrAdapter(config) {
     }
 
     // Add responseType to request if needed
-<<<<<<< HEAD
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
-=======
     if (responseType && responseType !== 'json') {
       request.responseType = config.responseType;
->>>>>>> 0eee9a0 (Working on selection issue.)
     }
 
     // Handle progress if needed
@@ -22579,8 +22325,6 @@ module.exports = {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "bb15":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22597,7 +22341,6 @@ module.exports = exports;
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "bb2f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22707,10 +22450,7 @@ module.exports = function parseHeaders(headers) {
 
 
 var utils = __webpack_require__("c532");
-<<<<<<< HEAD
-=======
 var defaults = __webpack_require__("2444");
->>>>>>> 0eee9a0 (Working on selection issue.)
 
 /**
  * Transform the data for a request or a response
@@ -22721,16 +22461,10 @@ var defaults = __webpack_require__("2444");
  * @returns {*} The resulting transformed data
  */
 module.exports = function transformData(data, headers, fns) {
-<<<<<<< HEAD
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
-=======
   var context = this || defaults;
   /*eslint no-param-reassign:0*/
   utils.forEach(fns, function transform(fn) {
     data = fn.call(context, data, headers);
->>>>>>> 0eee9a0 (Working on selection issue.)
   });
 
   return data;
@@ -22755,11 +22489,6 @@ module.exports = false;
 
 var bind = __webpack_require__("1d2b");
 
-<<<<<<< HEAD
-/*global toString:true*/
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 // utils is a library of generic helper functions non-specific to axios
 
 var toString = Object.prototype.toString;
@@ -22943,11 +22672,7 @@ function isURLSearchParams(val) {
  * @returns {String} The String freed of excess whitespace
  */
 function trim(str) {
-<<<<<<< HEAD
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-=======
   return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
->>>>>>> 0eee9a0 (Working on selection issue.)
 }
 
 /**
@@ -23311,25 +23036,6 @@ addToUnscopables('fill');
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "cc0c":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
-var ___CSS_LOADER_AT_RULE_IMPORT_0___ = __webpack_require__("a011");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-exports.i(___CSS_LOADER_AT_RULE_IMPORT_0___);
-// Module
-exports.push([module.i, "[data-v-ee90fa00]:root{--idg-dark-blue:#183c65;--idg-corporate-blue:#0d5184;--idg-medium-blue:#5e8bad;--idg-light-blue:#aec5d6;--idg-alt-blue:#4aabca;--idg-alt-dark-blue:#477f9c;--idg-alt-light-blue:#abe7f4;--idg-orange:#f98419;--idg-dark-orange:#a06529;--idg-light-orange:#f2c09e;--idg-red:#ea3b65;--idg-hyperlink-color:#509dbe}.linkDark[data-v-ee90fa00]{text-decoration:none;color:#fff!important}.linkDark[data-v-ee90fa00]:active:hover{color:var(--idg-alt-light-blue)!important}.link[data-v-ee90fa00]{text-decoration:none;color:var(--idg-hyperlink-color)!important}.link[data-v-ee90fa00]:hover{color:var(--idg-alt-dark-blue)!important}.annotaedPathwaysCard[data-v-ee90fa00]{max-height:385px;overflow:scroll}", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "cc12":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23347,25 +23053,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "cddf":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
-var ___CSS_LOADER_AT_RULE_IMPORT_0___ = __webpack_require__("a011");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-exports.i(___CSS_LOADER_AT_RULE_IMPORT_0___);
-// Module
-exports.push([module.i, ".v-application--wrap{min-height:1vh!important}*{-webkit-box-sizing:border-box;box-sizing:border-box}#app,*{margin:0;padding:0}#app{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-color:transparent}.linkDark{text-decoration:none;color:#fff}.linkDark:hover{color:#d3d3d3}.linkDark:active:hover{color:grey}.link{text-decoration:none;color:#000}.link:hover{color:grey}.link:active:hover{color:#d3d3d3}", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "ce4e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23602,8 +23289,6 @@ module.exports = function (it, TAG, STATIC) {
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "d58f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23651,7 +23336,6 @@ module.exports = {
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "d784":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24532,39 +24216,6 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ }),
 
-<<<<<<< HEAD
-/***/ "e775":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwayHierarchyWC_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5586");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwayHierarchyWC_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwayHierarchyWC_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwayHierarchyWC_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AnnotatedPathwayHierarchyWC_vue_vue_type_style_index_0_lang_css_shadow__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
-/***/ }),
-
-/***/ "e858":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("cc0c");
-if(content.__esModule) content = content.default;
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add CSS to Shadow Root
-var add = __webpack_require__("35d6").default
-module.exports.__inject__ = function (shadowRoot) {
-  add("f539a290", content, shadowRoot)
-};
-
-/***/ }),
-
-=======
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "e893":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24687,8 +24338,6 @@ hiddenKeys[METADATA] = true;
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "f24c":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24700,7 +24349,6 @@ hiddenKeys[METADATA] = true;
 
 /***/ }),
 
->>>>>>> 0eee9a0 (Working on selection issue.)
 /***/ "f5df":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24754,19 +24402,12 @@ function InterceptorManager() {
  *
  * @return {Number} An ID used to remove interceptor later
  */
-<<<<<<< HEAD
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-=======
 InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
   this.handlers.push({
     fulfilled: fulfilled,
     rejected: rejected,
     synchronous: options ? options.synchronous : false,
     runWhen: options ? options.runWhen : null
->>>>>>> 0eee9a0 (Working on selection issue.)
   });
   return this.handlers.length - 1;
 };
