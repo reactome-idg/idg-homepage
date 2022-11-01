@@ -1,7 +1,6 @@
 <template>
   <v-card class="pa-0" style="min-height: 300px; margin: 0px 0px 0px 0px;"
-    outlined 
-    @dblclick="unselect">
+    outlined>
     <plotly 
       ref="chart" 
       :data="results" 
@@ -85,12 +84,6 @@ export default {
           displayModeBar: true,
           left: 0.1,
         }
-      };
-    },
-    displayModeBar: function () {
-      return {
-        'displayModeBar': true, 
-        left: 0.1,
       };
     },
   },
@@ -245,8 +238,8 @@ export default {
       let threshold = 30;
       let euclideanDistance = this.calculateEuclideanDistance(
         clickEvent.clientX, 
-        this.hoverData.clientX, 
         clickEvent.clientY, 
+        this.hoverData.clientX, 
         this.hoverData.clientY);
 
       if(euclideanDistance > threshold){
@@ -298,12 +291,7 @@ export default {
       this.$refs.chart.restyle(update, [this.curveNumber]);
     },
 
-    updatePlot(){
-      let newPlotResults = this.$emit("updatePlot");
-      console.log(newPlotResults);
-    },
-
-    calculateEuclideanDistance(x1, x2, y1, y2){
+    calculateEuclideanDistance(x1, y1, x2, y2){
       let xDistance = x1 - x2;
       let yDistance = y1 - y2;
       let euclideanDistance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);

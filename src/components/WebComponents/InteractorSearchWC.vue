@@ -42,7 +42,7 @@ export default {
 
 <style>
 @import "../../../node_modules/vuetify/dist/vuetify.min.css";
-@import "./plotlyLegendStyle.css";
+@import "./PlotlyLegendStyle.css";
 
 .v-application--wrap {
   min-height: 1vh !important;
