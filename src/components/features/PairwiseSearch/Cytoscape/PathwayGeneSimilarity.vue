@@ -9,8 +9,8 @@
       @mousedown="settingPaneShow = false; legendPaneShow = false">
       <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
-    <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow"/>
-        <v-icon>{{ mdiCogOutline }}</v-icon>
+    <!-- <v-btn icon class="settingBtn mx-1 pa-0" @click="settingPaneShow = !settingPaneShow"/>
+        <v-icon>{{ mdiCogOutline }}</v-icon> -->
     <v-btn icon style="position: absolute; top: 4px; left: 4px;" class="mx-1 pa-0 .d-flex"
       @click="settingPaneShow = !settingPaneShow">
       <v-icon>{{ mdiCogOutline }}</v-icon>
@@ -26,7 +26,8 @@
           v-on="on"
           icon
           v-on:click = "switchPathwayView"
-          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0">
+          style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0"
+          title="Switch to plot view">
           <v-icon>{{ mdiChartScatterPlot }}</v-icon>
         </v-btn>
       </template>

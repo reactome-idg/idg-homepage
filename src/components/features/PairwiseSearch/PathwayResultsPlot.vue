@@ -1,7 +1,6 @@
 <template>
-  <v-card 
-    outlined 
-    @dblclick="unselect">
+  <v-card class="pa-0" style="min-height: 300px; margin: 0px 0px 0px 0px;"
+    outlined>
     <plotly 
       ref="chart" 
       :data="results" 
@@ -9,11 +8,12 @@
       :display-mode-bar="true" 
       style="height: 300px;" 
       class="pa-0"
-      @click="select">
+      @hover = "onHover"
+      >
     </plotly>
     <v-tooltip right>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on" icon v-on:click="switchPathwayView"
+        <v-btn v-bind="attrs" v-on="on" icon v-on:click="switchPathwayView" title ="Switch to network view"
           style="position: absolute; bottom: 4px; left: 4px;" class="mx-1 pa-0">
           <v-icon>{{ mdiChartTimelineVariant }}</v-icon>
         </v-btn>
@@ -52,7 +52,9 @@ export default {
       pointNumber: undefined,
       curveNumber: undefined,
       sizes: [],
-      defaultPointSize: 5
+      defaultPointSize: 5,
+      hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
+         hoverText:undefined, clientX: undefined, clientY: undefined}
     };
   },
 
@@ -75,8 +77,12 @@ export default {
         },
         hoverlabel: {
           font: {
-            size: 10
+            size: 10,
           }
+        },
+        modebar: {
+          displayModeBar: true,
+          left: 0.1,
         }
       };
     },
@@ -86,9 +92,23 @@ export default {
     nodeFDRFilter() {
       this.updatePlot(); 
     },
+  }, 
+
+  mounted() {
+    this.$refs.chart.$el.addEventListener('click', data => this.onClick(data));
   },
 
   methods: {
+    
+    onHover(hoverData){ 
+      this.hoverData.hoverCurveNumber = hoverData.points[0].curveNumber; 
+      this.hoverData.hoverPointNumber = hoverData.points[0].pointNumber; 
+      this.hoverData.hoverSizes = hoverData.points[0].data.marker.size;
+      this.hoverData.hoverText = hoverData.points[0].text;
+      this.hoverData.clientX = hoverData.event.clientX;
+      this.hoverData.clientY = hoverData.event.clientY;
+    },
+
     generateXAxisLabels() {
       let pathwayList = this.getPathwayList();
       let labels = [];
@@ -167,6 +187,7 @@ export default {
         }
         plotData.push(topData);
       }
+
       return plotData;
     },
 
@@ -205,7 +226,7 @@ export default {
       if (topPathway) text += "<br>" + "Top pathway: " + topPathway;
       text = text + "<br>" + "pValue: " + pVal.toExponential(2);
       if (label) text += '<br>Analysis: ' + label;
-      text += "<br>" + "Click data point to select." + "<br>" + "Double click outisde the plot to reset."
+      text += "<br>" + "Click data point to select."
       return text;
     },
 
@@ -213,30 +234,46 @@ export default {
       this.$emit('switchPathwayView')
     },
 
-    select(clickData) {
-      if (clickData.points.length === 1) {
-        // reset previous selection
-        if (this.pointNumber != undefined && this.curveNumber != undefined) {
-          this.changePointSize(this.defaultPointSize);
-        }
+    onClick(clickEvent) {
+      let threshold = 30;
+      let euclideanDistance = this.calculateEuclideanDistance(
+        clickEvent.clientX, 
+        clickEvent.clientY, 
+        this.hoverData.clientX, 
+        this.hoverData.clientY);
 
-        // logic follows https://plotly.com/javascript/plotlyjs-events/   
-        for (var i = 0; i < clickData.points.length; i++) {
-          // using global variable to track the point changed to reset later
-          this.pointNumber = clickData.points[i].pointNumber;
-          this.curveNumber = clickData.points[i].curveNumber;
-          this.sizes = clickData.points[i].data.marker.size;
-        }
-
-        this.changePointSize(this.sizes[this.pointNumber] * 2);
-
-        this.selected.clear();
-        let text = clickData.points[0].text;
-        let pattern = "Stable id: ";
-        let textArray = text.substr(text.indexOf(pattern) + pattern.length, text.length);
-        this.selected.add(textArray.split("<br>")[0])
-        this.$emit("selectionChanged", this.selected);
+      if(euclideanDistance > threshold){
+        this.resetHoverData();
       }
+
+      if(this.hoverData.hoverPointNumber !== undefined) 
+      {
+        this.select();
+      }
+
+      else {
+        this.unselect();
+      }
+    },
+
+    select() {
+      // reset previous selection
+      if (this.pointNumber != undefined && this.curveNumber != undefined) {
+        this.changePointSize(this.defaultPointSize);
+      }
+
+      this.pointNumber = this.hoverData.hoverPointNumber;
+      this.curveNumber = this.hoverData.hoverCurveNumber;
+      this.sizes = this.hoverData.hoverSizes;
+
+      this.changePointSize(this.sizes[this.pointNumber] * 2);
+
+      this.selected.clear();
+      let text = this.hoverData.hoverText;
+      let pattern = "Stable id: ";
+      let textArray = text.substr(text.indexOf(pattern) + pattern.length, text.length);
+      this.selected.add(textArray.split("<br>")[0])
+      this.$emit("selectionChanged", this.selected);
     },
 
     unselect() {
@@ -254,10 +291,20 @@ export default {
       this.$refs.chart.restyle(update, [this.curveNumber]);
     },
 
-    updatePlot(){
-      //this.pathwayEnrichmentResults = this.$emit("updatePlot");
-      let newPlotResults = this.$emit("updatePlot");
-      // console.log(newPlotResults);
+    calculateEuclideanDistance(x1, y1, x2, y2){
+      let xDistance = x1 - x2;
+      let yDistance = y1 - y2;
+      let euclideanDistance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+      return euclideanDistance;
+    },
+
+    resetHoverData() {
+      this.hoverData.hoverCurveNumber = undefined; 
+      this.hoverData.hoverPointNumber = undefined; 
+      this.hoverData.hoverSizes = [];
+      this.hoverData.hoverText = undefined;
+      this.hoverData.clientX = undefined;
+      this.hoverData.clientY = undefined;
     }
   },
 };
