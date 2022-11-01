@@ -91,8 +91,7 @@ export default {
 
   components: {
     EdgeTable,
-    LegendTable,
-    // PathwayEnrichmentResults
+    LegendTable
   },
 
   // Probably there is a bug in vue-cytoscape: component cannot be defined here
