@@ -121,6 +121,11 @@ export default {
     isCytoscapeView: {
       type: Boolean,
       default: true,
+    },
+
+    plotSelection: {
+      type: String,
+      default: () => "",
     }
   },
   // This is a function
@@ -206,6 +211,15 @@ export default {
     tabledPathways() {
       this.updateNetwork()
     },
+    // plotSelection() {
+    //   this.setSelection()
+    // }
+  },
+
+  mounted() {
+    if(this.plotSelection !== ""){
+      this.setSelection();
+    }
   },
 
   methods: {
@@ -324,7 +338,23 @@ export default {
 
     switchPathwayView(){
       this.$emit('switchPathwayView')
+    },
+
+    setSelection() {
+      let cy = this.cy; 
+      console.log(cy);
+      let nodes = this.cy.nodes()
+        for (let i = 0; i < nodes.length; i++) {
+          let stId = nodes[i].data('id')
+          if(stId === this.plotSelection){
+            let element = nodes[i]._private.map.get(this.plotSelection);
+            element.selected = true;
+            nodes[i]._private.selected = true;
+            nodes[i].json({selected:true})
+          }
+        }
     }
+
   },
 };
 </script>

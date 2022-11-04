@@ -42,6 +42,10 @@ export default {
       type: Number,
       default: 0.05,
     },
+    networkSelection: {
+      type: String,
+      default: () => "",
+    }
   },
 
   data() {
@@ -54,7 +58,11 @@ export default {
       sizes: [],
       defaultPointSize: 5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
-         hoverText:undefined, clientX: undefined, clientY: undefined}
+         hoverText:undefined, clientX: undefined, clientY: undefined},
+      top2curveNumber: new Map(),
+      stId2top: new Map(),
+      stId2pointNumber: new Map(),
+      top2sizes: new Map()
     };
   },
 
@@ -96,6 +104,9 @@ export default {
 
   mounted() {
     this.$refs.chart.$el.addEventListener('click', data => this.onClick(data));
+    if(this.networkSelection !== ""){
+      this.setSelection(this.networkSelection);
+    }
   },
 
   methods: {
@@ -131,19 +142,18 @@ export default {
 
     // Generate the plot data based on top-level pathways
     generateTypedResults(pathwayEnrichmentResults) {
-      let stId2top = new Map();
       let pathwayList = this.getPathwayList();
       if (pathwayList) {
         for (let pathway of pathwayList) {
           // Better to use stId to avoid any type of text encoding issue 
           // with miss match.
-          stId2top.set(pathway.stId, pathway.topPathway);
+          this.stId2top.set(pathway.stId, pathway.topPathway);
         }
       }
       let top2data = new Map();
-
+      
       for (let result of pathwayEnrichmentResults) {
-        let top = stId2top.get(result.stId);
+        let top = this.stId2top.get(result.stId);
         if (top === undefined) top = "unknown";
         let data = top2data.get(top);
         if (data === undefined) {
@@ -160,10 +170,17 @@ export default {
             top,
           )
         );
+
+        // pointNumber
+        for (let i = 0; i < data.pathways.length; i++) {
+          this.stId2pointNumber.set(result.stId, i);
+        }
+
       }
       let plotData = [];
       // Need to sort top pathways first to get the same color and legends
       let tops = [...top2data.keys()].sort();
+      let topIndex = 0;
       for (let top of tops) {
         let data = top2data.get(top);
         let name = top;
@@ -186,8 +203,11 @@ export default {
           },
         }
         plotData.push(topData);
+        
+        this.top2curveNumber.set(top, topIndex);
+        this.top2sizes.set(top, topData.marker.size);
+        topIndex++;
       }
-
       return plotData;
     },
 
@@ -305,6 +325,14 @@ export default {
       this.hoverData.hoverText = undefined;
       this.hoverData.clientX = undefined;
       this.hoverData.clientY = undefined;
+    },
+
+    setSelection(stId){
+      this.pointNumber = this.stId2pointNumber.get(stId);
+      let top = this.stId2top.get(stId);
+      this.curveNumber = this.top2curveNumber.get(top);
+      this.sizes = this.top2sizes.get(top);
+      this.changePointSize(this.sizes[this.pointNumber] * 2);
     }
   },
 };

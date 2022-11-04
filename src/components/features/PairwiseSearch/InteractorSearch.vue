@@ -87,6 +87,7 @@
             :isWebComponent="isWebComponent"
             :isCytoscapeView="isCytoscapeView"
             @switchPathwayView = "switchPathwayView"
+            :plotSelection="secondarySearch"
           />
         </v-card>
         <v-container v-else class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid>
@@ -95,6 +96,7 @@
             :pathwayEnrichmentResults="filteredSecondaryPathways"
             :isCytoscapeView="isCytoscapeView"
             :nodeFDRFilter="fdr"
+            :networkSelection="secondarySearch"
             @switchPathwayView = "switchPathwayView"     
             @selectionChanged = "networkSelectionUpdated($event)"
           />
@@ -527,7 +529,7 @@ export default {
       link.download = `PathwaysFor${this.term}.csv`;
       link.click();
     },
-    networkSelectionUpdated(selection) {
+    networkSelectionUpdated(selection) {  
       if (selection.size === 0)
         this.secondarySearch = ""
       else
