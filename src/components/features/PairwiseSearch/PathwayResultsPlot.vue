@@ -6,7 +6,7 @@
       :data="results" 
       :layout="layout" 
       :display-mode-bar="true" 
-      style="height: 300px;" 
+      style="height: 290px;" 
       class="pa-0"
       @hover = "onHover"
       >
@@ -42,7 +42,7 @@ export default {
       type: Number,
       default: 0.05,
     },
-    networkSelection: {
+    pathwaySelection: {
       type: String,
       default: () => "",
     }
@@ -53,9 +53,8 @@ export default {
       pathwayList: undefined,
       mdiChartTimelineVariant,
       selected: new Set(),
-      pointNumber: undefined,
-      curveNumber: undefined,
-      sizes: [],
+      selectedData: {pointNumber: undefined, curveNumber: undefined, sizes: []},
+      selectedArray: new Set(),
       defaultPointSize: 5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
          hoverText:undefined, clientX: undefined, clientY: undefined},
@@ -104,8 +103,8 @@ export default {
 
   mounted() {
     this.$refs.chart.$el.addEventListener('click', data => this.onClick(data));
-    if(this.networkSelection !== ""){
-      this.setSelection(this.networkSelection);
+    if(this.pathwaySelection !== ""){
+      this.setSelection(this.pathwaySelection);
     }
   },
 
@@ -272,21 +271,30 @@ export default {
       }
 
       else {
-        this.unselect();
+        if(this.selectedArray.size > 1)
+        {
+          for(let point of this.selectedArray) {
+            this.selectedData = point;
+            this.unselect();
+          }
+        }
+        else {
+          this.unselect();
+        }
       }
     },
 
     select() {
       // reset previous selection
-      if (this.pointNumber != undefined && this.curveNumber != undefined) {
+      if (this.selectedData.pointNumber != undefined && this.selectedData.curveNumber != undefined) {
         this.changePointSize(this.defaultPointSize);
       }
 
-      this.pointNumber = this.hoverData.hoverPointNumber;
-      this.curveNumber = this.hoverData.hoverCurveNumber;
-      this.sizes = this.hoverData.hoverSizes;
+      this.selectedData.pointNumber = this.hoverData.hoverPointNumber;
+      this.selectedData.curveNumber = this.hoverData.hoverCurveNumber;
+      this.selectedData.sizes = this.hoverData.hoverSizes;
 
-      this.changePointSize(this.sizes[this.pointNumber] * 2);
+      this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
 
       this.selected.clear();
       let text = this.hoverData.hoverText;
@@ -300,15 +308,15 @@ export default {
       this.changePointSize(this.defaultPointSize);
       this.selected.clear();
       this.$emit("selectionChanged", this.selected);
-      this.pointNumber = undefined;
-      this.curveNumber = undefined;
-      this.sizes = [];
+      this.selectedData.pointNumber = undefined;
+      this.selectedData.curveNumber = undefined;
+      this.selectedData.sizes = [];
     },
 
     changePointSize(pointSize) {
-      this.sizes[this.pointNumber] = pointSize;
-      let update = { 'marker': { size: this.sizes } };
-      this.$refs.chart.restyle(update, [this.curveNumber]);
+      this.selectedData.sizes[this.selectedData.pointNumber] = pointSize;
+      let update = { 'marker': { size: this.selectedData.sizes } };
+      this.$refs.chart.restyle(update, [this.selectedData.curveNumber]);
     },
 
     calculateEuclideanDistance(x1, y1, x2, y2){
@@ -327,12 +335,18 @@ export default {
       this.hoverData.clientY = undefined;
     },
 
-    setSelection(stId){
-      this.pointNumber = this.stId2pointNumber.get(stId);
-      let top = this.stId2top.get(stId);
-      this.curveNumber = this.top2curveNumber.get(top);
-      this.sizes = this.top2sizes.get(top);
-      this.changePointSize(this.sizes[this.pointNumber] * 2);
+    setSelection(pathwaySelection){
+      let stIdSplit = pathwaySelection.split(',');
+      for(let stId of stIdSplit){
+        let pointNumber = this.stId2pointNumber.get(stId);
+        let top = this.stId2top.get(stId);
+        let curveNumber = this.top2curveNumber.get(top);
+        let sizes = this.top2sizes.get(top);
+        let selectedData = {pointNumber, curveNumber, sizes};
+        this.selectedArray.add(selectedData);
+        this.selectedData = selectedData;
+        this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
+      }
     }
   },
 };

@@ -123,7 +123,7 @@ export default {
       default: true,
     },
 
-    plotSelection: {
+    pathwaySelection: {
       type: String,
       default: () => "",
     }
@@ -210,15 +210,6 @@ export default {
     },
     tabledPathways() {
       this.updateNetwork()
-    },
-    // plotSelection() {
-    //   this.setSelection()
-    // }
-  },
-
-  mounted() {
-    if(this.plotSelection !== ""){
-      this.setSelection();
     }
   },
 
@@ -328,6 +319,9 @@ export default {
       this.doLayout()
       this.selected.clear() // reset selected
       this.selectedEdges.length = 0
+      if(this.pathwaySelection !== "") {
+        this.setSelection();
+      }
     },
 
     reset() {
@@ -341,20 +335,17 @@ export default {
     },
 
     setSelection() {
-      let cy = this.cy; 
-      console.log(cy);
       let nodes = this.cy.nodes()
         for (let i = 0; i < nodes.length; i++) {
-          let stId = nodes[i].data('id')
-          if(stId === this.plotSelection){
-            let element = nodes[i]._private.map.get(this.plotSelection);
-            element.selected = true;
-            nodes[i]._private.selected = true;
-            nodes[i].json({selected:true})
+          let nodeStId = nodes[i].data('id')
+          let stIdSplit = this.pathwaySelection.split(',');
+          for(let stId of stIdSplit){
+            if(nodeStId === stId){
+              nodes[i].select();
+            }
           }
         }
     }
-
   },
 };
 </script>

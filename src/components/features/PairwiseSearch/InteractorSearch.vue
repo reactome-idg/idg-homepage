@@ -79,7 +79,7 @@
           />
           <PathwayGeneSimilarity
             class="pgs"
-            @selectionChanged="networkSelectionUpdated($event)"
+            @selectionChanged="pathwaySelectionUpdated($event)"
             v-if="networkForCytoscape && networkForCytoscape.length > 0"
             :network="networkForCytoscape"
             :nodeFDRFilter="fdr"
@@ -87,18 +87,18 @@
             :isWebComponent="isWebComponent"
             :isCytoscapeView="isCytoscapeView"
             @switchPathwayView = "switchPathwayView"
-            :plotSelection="secondarySearch"
+            :pathwaySelection="secondarySearch"
           />
         </v-card>
-        <v-container v-else class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid>
+        <v-container v-else class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid outlined>
           <PathwayResultsPlot 
             class="pgs"
             :pathwayEnrichmentResults="filteredSecondaryPathways"
             :isCytoscapeView="isCytoscapeView"
             :nodeFDRFilter="fdr"
-            :networkSelection="secondarySearch"
+            :pathwaySelection="secondarySearch"
             @switchPathwayView = "switchPathwayView"     
-            @selectionChanged = "networkSelectionUpdated($event)"
+            @selectionChanged = "pathwaySelectionUpdated($event)"
           />
         </v-container>
         <v-card outlined>
@@ -304,7 +304,7 @@ export default {
     expandedPathways: [],
     networkForCytoscape: [],
     networkLoading: false,
-    isCytoscapeView: true,
+    isCytoscapeView: false,
   }),
   watch: {
     term() {
@@ -529,7 +529,7 @@ export default {
       link.download = `PathwaysFor${this.term}.csv`;
       link.click();
     },
-    networkSelectionUpdated(selection) {  
+    pathwaySelectionUpdated(selection) {  
       if (selection.size === 0)
         this.secondarySearch = ""
       else
