@@ -6,7 +6,7 @@
       :data="results" 
       :layout="layout" 
       :display-mode-bar="true" 
-      style="height: 290px;" 
+      style="height: 290px; width: 99%; left: 1px" 
       class="pa-0"
       @hover = "onHover"
       >
@@ -45,7 +45,11 @@ export default {
     pathwaySelection: {
       type: String,
       default: () => "",
-    }
+    },
+    isCytoscapeView: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -54,7 +58,7 @@ export default {
       mdiChartTimelineVariant,
       selected: new Set(),
       selectedData: {pointNumber: undefined, curveNumber: undefined, sizes: []},
-      selectedArray: new Set(),
+      selectedSet: new Set(),
       defaultPointSize: 5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
          hoverText:undefined, clientX: undefined, clientY: undefined},
@@ -99,13 +103,14 @@ export default {
     nodeFDRFilter() {
       this.updatePlot(); 
     },
+
+    isCytoscapeView() {
+      this.setSelection();
+    }
   }, 
 
   mounted() {
     this.$refs.chart.$el.addEventListener('click', data => this.onClick(data));
-    if(this.pathwaySelection !== ""){
-      this.setSelection(this.pathwaySelection);
-    }
   },
 
   methods: {
@@ -271,9 +276,9 @@ export default {
       }
 
       else {
-        if(this.selectedArray.size > 1)
+        if(this.selectedSet.size > 1)
         {
-          for(let point of this.selectedArray) {
+          for(let point of this.selectedSet) {
             this.selectedData = point;
             this.unselect();
           }
@@ -287,6 +292,10 @@ export default {
     select() {
       // reset previous selection
       if (this.selectedData.pointNumber != undefined && this.selectedData.curveNumber != undefined) {
+        this.changePointSize(this.defaultPointSize);
+      }
+      for(let point of this.selectedSet) {
+        this.selectedData = point;
         this.changePointSize(this.defaultPointSize);
       }
 
@@ -305,6 +314,7 @@ export default {
     },
 
     unselect() {
+      //this.selectedSet.clear(); // TODO: ensure this is the correct/only spot
       this.changePointSize(this.defaultPointSize);
       this.selected.clear();
       this.$emit("selectionChanged", this.selected);
@@ -335,17 +345,27 @@ export default {
       this.hoverData.clientY = undefined;
     },
 
-    setSelection(pathwaySelection){
-      let stIdSplit = pathwaySelection.split(',');
-      for(let stId of stIdSplit){
-        let pointNumber = this.stId2pointNumber.get(stId);
-        let top = this.stId2top.get(stId);
-        let curveNumber = this.top2curveNumber.get(top);
-        let sizes = this.top2sizes.get(top);
-        let selectedData = {pointNumber, curveNumber, sizes};
-        this.selectedArray.add(selectedData);
-        this.selectedData = selectedData;
-        this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
+    setSelection(){
+      for(let point of this.selectedSet) {
+          this.selectedData = point;
+          this.changePointSize(this.defaultPointSize);
+      }
+      this.selectedData.pointNumber = undefined;
+      this.selectedData.curveNumber = undefined;
+      this.selectedData.sizes = [];
+      this.selectedSet.clear();
+      if(this.pathwaySelection !== ""){
+        let stIdSplit = this.pathwaySelection.split(',');
+        for(let stId of stIdSplit){
+          let pointNumber = this.stId2pointNumber.get(stId);
+          let top = this.stId2top.get(stId);
+          let curveNumber = this.top2curveNumber.get(top);
+          let sizes = this.top2sizes.get(top);
+          let selectedData = {pointNumber, curveNumber, sizes};
+          this.selectedSet.add(selectedData);
+          this.selectedData = selectedData;
+          this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
+        }
       }
     }
   },

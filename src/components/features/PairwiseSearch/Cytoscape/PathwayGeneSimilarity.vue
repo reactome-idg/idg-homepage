@@ -5,7 +5,7 @@
     <!-- Ref: https://rcarcasses.github.io/vue-cytoscape/installation.html#usage. Apparently the original code doesn't work
     as described here. Therefore, Tim has customized the behavior using methods in this component. -->
     <cytoscape ref="cy" :config="cyConfig" :preConfig="preConfig" :afterCreated="afterCreated" class="pa-0"
-      v-on:select="select" v-on:unselect="unselect" style="max-height: 300px; min-height: 300px; height: 300px;"
+      v-on:select="select" v-on:unselect="unselect" v-on:resize="reset" style="max-height: 300px; min-height: 300px; height: 300px;"
       @mousedown="settingPaneShow = false; legendPaneShow = false">
       <!-- Make sure the setting pane closed if it is displayed to save a click -->
     </cytoscape>
@@ -210,7 +210,10 @@ export default {
     },
     tabledPathways() {
       this.updateNetwork()
-    }
+    },
+    isCytoscapeView() {
+      this.setSelection();
+    },
   },
 
   methods: {
@@ -266,6 +269,8 @@ export default {
       if (el && el.style) {
         el.style.minHeight = "300px"
         el.style.height = "300px"
+        el.style.width = "100%"
+        el.style.minWidth = "100%"
       }
     },
 
@@ -317,11 +322,8 @@ export default {
         edge.data('overlap_score', -Math.log10(edge.data('hypergeometricScore')))
       }
       this.doLayout()
-      this.selected.clear() // reset selected
+      //this.selected.clear() // reset selected
       this.selectedEdges.length = 0
-      if(this.pathwaySelection !== "") {
-        this.setSelection();
-      }
     },
 
     reset() {
@@ -335,17 +337,28 @@ export default {
     },
 
     setSelection() {
-      let nodes = this.cy.nodes()
-        for (let i = 0; i < nodes.length; i++) {
-          let nodeStId = nodes[i].data('id')
-          let stIdSplit = this.pathwaySelection.split(',');
+      let nodes = this.cy.nodes();
+      for (let i = 0; i < nodes.length; i++) {
+        nodes[i].unselect();
+        let nodeStId = nodes[i].data('id');
+        let stIdSplit = this.pathwaySelection.split(',');
+
+        if(this.pathwaySelection !== ""){
           for(let stId of stIdSplit){
             if(nodeStId === stId){
               nodes[i].select();
+              //this.selected.add(stId);
             }
-          }
+          }     
         }
+
+        // else {
+        //   nodes[i].unselect();
+        //   //this.selected.clear();
+        // }
+      }
     }
+    
   },
 };
 </script>
