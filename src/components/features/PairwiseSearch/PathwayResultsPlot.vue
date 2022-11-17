@@ -6,7 +6,7 @@
       :data="results" 
       :layout="layout" 
       :display-mode-bar="true" 
-      style="height: 300px;" 
+      style="height: 290px; width: 99%; left: 1px" 
       class="pa-0"
       @hover = "onHover"
       >
@@ -42,6 +42,14 @@ export default {
       type: Number,
       default: 0.05,
     },
+    pathwaySelection: {
+      type: String,
+      default: () => "",
+    },
+    isCytoscapeView: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -49,12 +57,15 @@ export default {
       pathwayList: undefined,
       mdiChartTimelineVariant,
       selected: new Set(),
-      pointNumber: undefined,
-      curveNumber: undefined,
-      sizes: [],
+      selectedData: {pointNumber: undefined, curveNumber: undefined, sizes: []},
+      selectedSet: new Set(),
       defaultPointSize: 5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
-         hoverText:undefined, clientX: undefined, clientY: undefined}
+         hoverText:undefined, clientX: undefined, clientY: undefined},
+      top2curveNumber: new Map(),
+      stId2top: new Map(),
+      stId2pointNumber: new Map(),
+      top2sizes: new Map()
     };
   },
 
@@ -92,6 +103,10 @@ export default {
     nodeFDRFilter() {
       this.updatePlot(); 
     },
+
+    isCytoscapeView() {
+      this.setSelection();
+    }
   }, 
 
   mounted() {
@@ -131,19 +146,18 @@ export default {
 
     // Generate the plot data based on top-level pathways
     generateTypedResults(pathwayEnrichmentResults) {
-      let stId2top = new Map();
       let pathwayList = this.getPathwayList();
       if (pathwayList) {
         for (let pathway of pathwayList) {
           // Better to use stId to avoid any type of text encoding issue 
           // with miss match.
-          stId2top.set(pathway.stId, pathway.topPathway);
+          this.stId2top.set(pathway.stId, pathway.topPathway);
         }
       }
       let top2data = new Map();
-
+      
       for (let result of pathwayEnrichmentResults) {
-        let top = stId2top.get(result.stId);
+        let top = this.stId2top.get(result.stId);
         if (top === undefined) top = "unknown";
         let data = top2data.get(top);
         if (data === undefined) {
@@ -160,10 +174,17 @@ export default {
             top,
           )
         );
+
+        // pointNumber
+        for (let i = 0; i < data.pathways.length; i++) {
+          this.stId2pointNumber.set(result.stId, i);
+        }
+
       }
       let plotData = [];
       // Need to sort top pathways first to get the same color and legends
       let tops = [...top2data.keys()].sort();
+      let topIndex = 0;
       for (let top of tops) {
         let data = top2data.get(top);
         let name = top;
@@ -186,8 +207,11 @@ export default {
           },
         }
         plotData.push(topData);
+        
+        this.top2curveNumber.set(top, topIndex);
+        this.top2sizes.set(top, topData.marker.size);
+        topIndex++;
       }
-
       return plotData;
     },
 
@@ -252,21 +276,34 @@ export default {
       }
 
       else {
-        this.unselect();
+        if(this.selectedSet.size > 1)
+        {
+          for(let point of this.selectedSet) {
+            this.selectedData = point;
+            this.unselect();
+          }
+        }
+        else {
+          this.unselect();
+        }
       }
     },
 
     select() {
       // reset previous selection
-      if (this.pointNumber != undefined && this.curveNumber != undefined) {
+      if (this.selectedData.pointNumber != undefined && this.selectedData.curveNumber != undefined) {
+        this.changePointSize(this.defaultPointSize);
+      }
+      for(let point of this.selectedSet) {
+        this.selectedData = point;
         this.changePointSize(this.defaultPointSize);
       }
 
-      this.pointNumber = this.hoverData.hoverPointNumber;
-      this.curveNumber = this.hoverData.hoverCurveNumber;
-      this.sizes = this.hoverData.hoverSizes;
+      this.selectedData.pointNumber = this.hoverData.hoverPointNumber;
+      this.selectedData.curveNumber = this.hoverData.hoverCurveNumber;
+      this.selectedData.sizes = this.hoverData.hoverSizes;
 
-      this.changePointSize(this.sizes[this.pointNumber] * 2);
+      this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
 
       this.selected.clear();
       let text = this.hoverData.hoverText;
@@ -277,18 +314,19 @@ export default {
     },
 
     unselect() {
+      //this.selectedSet.clear(); // TODO: ensure this is the correct/only spot
       this.changePointSize(this.defaultPointSize);
       this.selected.clear();
       this.$emit("selectionChanged", this.selected);
-      this.pointNumber = undefined;
-      this.curveNumber = undefined;
-      this.sizes = [];
+      this.selectedData.pointNumber = undefined;
+      this.selectedData.curveNumber = undefined;
+      this.selectedData.sizes = [];
     },
 
     changePointSize(pointSize) {
-      this.sizes[this.pointNumber] = pointSize;
-      let update = { 'marker': { size: this.sizes } };
-      this.$refs.chart.restyle(update, [this.curveNumber]);
+      this.selectedData.sizes[this.selectedData.pointNumber] = pointSize;
+      let update = { 'marker': { size: this.selectedData.sizes } };
+      this.$refs.chart.restyle(update, [this.selectedData.curveNumber]);
     },
 
     calculateEuclideanDistance(x1, y1, x2, y2){
@@ -305,6 +343,30 @@ export default {
       this.hoverData.hoverText = undefined;
       this.hoverData.clientX = undefined;
       this.hoverData.clientY = undefined;
+    },
+
+    setSelection(){
+      for(let point of this.selectedSet) {
+          this.selectedData = point;
+          this.changePointSize(this.defaultPointSize);
+      }
+      this.selectedData.pointNumber = undefined;
+      this.selectedData.curveNumber = undefined;
+      this.selectedData.sizes = [];
+      this.selectedSet.clear();
+      if(this.pathwaySelection !== ""){
+        let stIdSplit = this.pathwaySelection.split(',');
+        for(let stId of stIdSplit){
+          let pointNumber = this.stId2pointNumber.get(stId);
+          let top = this.stId2top.get(stId);
+          let curveNumber = this.top2curveNumber.get(top);
+          let sizes = this.top2sizes.get(top);
+          let selectedData = {pointNumber, curveNumber, sizes};
+          this.selectedSet.add(selectedData);
+          this.selectedData = selectedData;
+          this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
+        }
+      }
     }
   },
 };

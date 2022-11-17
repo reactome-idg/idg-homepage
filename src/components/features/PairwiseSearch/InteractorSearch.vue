@@ -71,15 +71,10 @@
         </div>
       </div>
       <v-card-text class="interactingPathwaysCard">
-        <v-card v-if="isCytoscapeView" outlined>
-          <LoadingCircularProgress
-            v-if="networkLoading"
-            style="width: 80%"
-            :title="'Loading Pathway Overlap Network...'"
-          />
+        <v-card v-show="isCytoscapeView" outlined>
           <PathwayGeneSimilarity
             class="pgs"
-            @selectionChanged="networkSelectionUpdated($event)"
+            @selectionChanged="pathwaySelectionUpdated($event)"
             v-if="networkForCytoscape && networkForCytoscape.length > 0"
             :network="networkForCytoscape"
             :nodeFDRFilter="fdr"
@@ -87,16 +82,24 @@
             :isWebComponent="isWebComponent"
             :isCytoscapeView="isCytoscapeView"
             @switchPathwayView = "switchPathwayView"
+            :pathwaySelection="secondarySearch"
           />
         </v-card>
-        <v-container v-else class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid>
-          <PathwayResultsPlot 
+        <v-container v-show="!isCytoscapeView" class="pa-0 ma-0" style="min-height: 300px; margin: 0px 0px 0px 0px;" fluid outlined>
+          <LoadingCircularProgress
+            v-if="plotLoading"
+            style="width: 80%"
+            :title="'Loading Pathway Plot...'"
+          />
+          <PathwayResultsPlot
+            v-if="!plotLoading && secondaryPathways.length > 0" 
             class="pgs"
             :pathwayEnrichmentResults="filteredSecondaryPathways"
             :isCytoscapeView="isCytoscapeView"
             :nodeFDRFilter="fdr"
+            :pathwaySelection="secondarySearch"
             @switchPathwayView = "switchPathwayView"     
-            @selectionChanged = "networkSelectionUpdated($event)"
+            @selectionChanged = "pathwaySelectionUpdated($event)"
           />
         </v-container>
         <v-card outlined>
@@ -247,8 +250,8 @@ export default {
     FuncInteractionScoreFilter,
     PathwayGeneSimilarity,
     LoadingCircularProgress,
-    PathwayResultsPlot
-  },
+    PathwayResultsPlot,
+},
   vuetify,
   props: {
     term: {
@@ -301,8 +304,10 @@ export default {
     pathwayStIdsForGene: [],
     expandedPathways: [],
     networkForCytoscape: [],
+    pathwayList: [],
     networkLoading: false,
-    isCytoscapeView: true,
+    plotLoading: false,
+    isCytoscapeView: false,
   }),
   watch: {
     term() {
@@ -385,12 +390,14 @@ export default {
       await this.loadInteractingGenes();
 
       await this.loadCombinedScores();
+      await this.loadPlot();
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
       while (this.secondaryPathways.length === 0 && this.currentPRD >= 0.1) {
         this.currentPRD = this.currentPRD - 0.1;
         await this.loadCombinedScores();
+        await this.loadPlot();
       }
       if (this.secondaryPathways.length === 0) {
         this.currentPRD = 0;
@@ -438,13 +445,16 @@ export default {
         this.secondaryPathwaysError();
       }
       this.secondaryPathwaysLoading = false;
-
+    },
+    async loadPlot() {
       try {
         // Handle pathway list that is used as the base for plot
+        this.plotLoading = true;
         if (!sessionStorage.getItem('reactome_pathway_list')) {
-          let pathwayList = await PairwiseService.getHierarchialOrderedPathways();
-          sessionStorage.setItem('reactome_pathway_list', JSON.stringify(pathwayList));
+          this.pathwayList = await PairwiseService.getHierarchialOrderedPathways();
+          sessionStorage.setItem('reactome_pathway_list', JSON.stringify(this.pathwayList));
         }
+        this.plotLoading = false;
       } catch (err) {
         console.log(err);
       }
@@ -503,6 +513,7 @@ export default {
       this.currentPRD = prd;
       this.loadCombinedScores();
       this.loadNetwork()
+      this.loadPlot()
       this.secondarySearch = ""
     },
     getSecondaryLink(stId) {
@@ -515,6 +526,7 @@ export default {
       this.currentSecondarySearchDescs = [];
       this.loadCombinedScores();
       this.loadNetwork()
+      this.loadPlot()
     },
     downloadTable() {
       let str = "Pathway Id,Pathway,Gene Number,pValue,FDR\n";
@@ -527,7 +539,7 @@ export default {
       link.download = `PathwaysFor${this.term}.csv`;
       link.click();
     },
-    networkSelectionUpdated(selection) {
+    pathwaySelectionUpdated(selection) {  
       if (selection.size === 0)
         this.secondarySearch = ""
       else
@@ -546,6 +558,7 @@ export default {
     },
     switchPathwayView(){
       this.isCytoscapeView = !this.isCytoscapeView;
+      // console.log(this.$refs.pathwayGeneSimilarity);
     }
   },
 };

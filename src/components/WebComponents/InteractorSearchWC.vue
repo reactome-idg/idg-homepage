@@ -42,6 +42,8 @@ export default {
 
 <style>
 @import "../../../node_modules/vuetify/dist/vuetify.min.css";
+@import "./PlotlyLegendStyle.css";
+
 .v-application--wrap {
   min-height: 1vh !important;
 }
@@ -83,4 +85,5 @@ border-bottom: 1px dotted darkgrey;
 .secondaryBtn {
   background-color: #424242;
 }
+
 </style>
