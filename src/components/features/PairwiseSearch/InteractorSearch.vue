@@ -558,7 +558,7 @@ export default {
     },
     switchPathwayView(){
       this.isCytoscapeView = !this.isCytoscapeView;
-      console.log(this.$refs.pathwayGeneSimilarity);
+      // console.log(this.$refs.pathwayGeneSimilarity);
     }
   },
 };
