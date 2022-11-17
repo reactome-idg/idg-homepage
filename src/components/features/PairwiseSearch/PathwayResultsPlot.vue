@@ -46,7 +46,7 @@ export default {
       type: String,
       default: () => "",
     },
-    isCytoscapeView: {
+    isShown: {
       type: Boolean,
       default: false,
     },
@@ -104,7 +104,7 @@ export default {
       this.updatePlot(); 
     },
 
-    isCytoscapeView() {
+    isShown() {
       this.setSelection();
     }
   }, 

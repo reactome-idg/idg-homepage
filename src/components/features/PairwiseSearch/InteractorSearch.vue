@@ -95,7 +95,7 @@
             v-if="!plotLoading && secondaryPathways.length > 0" 
             class="pgs"
             :pathwayEnrichmentResults="filteredSecondaryPathways"
-            :isCytoscapeView="isCytoscapeView"
+            :isShown="isCytoscapeView"
             :nodeFDRFilter="fdr"
             :pathwaySelection="secondarySearch"
             @switchPathwayView = "switchPathwayView"     
