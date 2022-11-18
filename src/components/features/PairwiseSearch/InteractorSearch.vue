@@ -72,7 +72,7 @@
       </div>
       <v-card-text class="interactingPathwaysCard">
         <v-card v-show="isCytoscapeView" outlined>
-          <PathwayGeneSimilarity
+          <PathwayNetworkView
             class="pgs"
             @selectionChanged="pathwaySelectionUpdated($event)"
             v-if="networkForCytoscape && networkForCytoscape.length > 0"
@@ -80,7 +80,7 @@
             :nodeFDRFilter="fdr"
             :tabledPathways="filteredSecondaryPathways"
             :isWebComponent="isWebComponent"
-            :isCytoscapeView="isCytoscapeView"
+            :isShown="isCytoscapeView"
             @switchPathwayView = "switchPathwayView"
             :pathwaySelection="secondarySearch"
           />
@@ -95,7 +95,7 @@
             v-if="!plotLoading && secondaryPathways.length > 0" 
             class="pgs"
             :pathwayEnrichmentResults="filteredSecondaryPathways"
-            :isShown="isCytoscapeView"
+            :isShown="!isCytoscapeView"
             :nodeFDRFilter="fdr"
             :pathwaySelection="secondarySearch"
             @switchPathwayView = "switchPathwayView"     
@@ -214,7 +214,7 @@ import ReactomeService from "../../../service/ReactomeService";
 import SecondaryPathwaysForm from "./SecondaryPathwaysForm";
 import FuncInteractionScoreFilter from "./FuncInteractionScoreFilter";
 import TableDetails from "./TableDetails";
-import PathwayGeneSimilarity from "./Cytoscape/PathwayGeneSimilarity.vue";
+import PathwayNetworkView from "./Cytoscape/PathwayNetworkView.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 import PathwayResultsPlot from "./PathwayResultsPlot.vue";
 
@@ -248,7 +248,7 @@ export default {
     VCard,
     VProgressCircular,
     FuncInteractionScoreFilter,
-    PathwayGeneSimilarity,
+    PathwayNetworkView,
     LoadingCircularProgress,
     PathwayResultsPlot,
 },

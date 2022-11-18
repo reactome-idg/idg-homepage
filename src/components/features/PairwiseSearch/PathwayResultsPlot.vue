@@ -48,7 +48,7 @@ export default {
     },
     isShown: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
 
@@ -104,7 +104,7 @@ export default {
       this.updatePlot(); 
     },
 
-    isShown() {
+    pathwaySelection() {
       this.setSelection();
     }
   }, 
@@ -302,6 +302,7 @@ export default {
       this.selectedData.pointNumber = this.hoverData.hoverPointNumber;
       this.selectedData.curveNumber = this.hoverData.hoverCurveNumber;
       this.selectedData.sizes = this.hoverData.hoverSizes;
+      this.selectedSet.add(this.selectedData);
 
       this.changePointSize(this.selectedData.sizes[this.selectedData.pointNumber] * 2);
 
@@ -346,14 +347,18 @@ export default {
     },
 
     setSelection(){
+      if(this.isShown) return;
+    
       for(let point of this.selectedSet) {
           this.selectedData = point;
           this.changePointSize(this.defaultPointSize);
       }
+      
       this.selectedData.pointNumber = undefined;
       this.selectedData.curveNumber = undefined;
       this.selectedData.sizes = [];
       this.selectedSet.clear();
+
       if(this.pathwaySelection !== ""){
         let stIdSplit = this.pathwaySelection.split(',');
         for(let stId of stIdSplit){

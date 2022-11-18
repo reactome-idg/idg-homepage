@@ -118,7 +118,7 @@ export default {
       default: false,
     },
 
-    isCytoscapeView: {
+    isShown: {
       type: Boolean,
       default: true,
     },
@@ -211,7 +211,7 @@ export default {
     tabledPathways() {
       this.updateNetwork()
     },
-    isCytoscapeView() {
+    pathwaySelection() {
       this.setSelection();
     },
   },
@@ -337,28 +337,21 @@ export default {
     },
 
     setSelection() {
+      if (this.isShown) return;
+
       let nodes = this.cy.nodes();
+      let stIdSplit = new Set(this.pathwaySelection.split(','));
+
       for (let i = 0; i < nodes.length; i++) {
-        nodes[i].unselect();
         let nodeStId = nodes[i].data('id');
-        let stIdSplit = this.pathwaySelection.split(',');
-
-        if(this.pathwaySelection !== ""){
-          for(let stId of stIdSplit){
-            if(nodeStId === stId){
-              nodes[i].select();
-              //this.selected.add(stId);
-            }
-          }     
+        if(stIdSplit.has(nodeStId)){
+          nodes[i].select();
+        } 
+        else{
+          nodes[i].unselect();
         }
-
-        // else {
-        //   nodes[i].unselect();
-        //   //this.selected.clear();
-        // }
       }
     }
-    
   },
 };
 </script>
