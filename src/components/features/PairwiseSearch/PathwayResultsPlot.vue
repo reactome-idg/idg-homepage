@@ -77,6 +77,7 @@ export default {
     layout: function () {
       return {
         showlegend: true, // Always let this on
+        responsive: true, // resize itself
         xaxis: {
           title: "Pathway",
           showticklabels: false,
