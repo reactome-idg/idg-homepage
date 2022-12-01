@@ -87,7 +87,7 @@ body {
     background-attachment: fixed; */
 }
 .container {
-  max-width: 1100px;
+  /* max-width: 1100px; */
   margin: 0 auto;
   overflow: auto;
   padding: 0 50px;
