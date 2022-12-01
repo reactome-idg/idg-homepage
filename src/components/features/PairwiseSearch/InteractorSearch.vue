@@ -72,6 +72,11 @@
       </div>
       <v-card-text class="interactingPathwaysCard">
         <v-card v-show="isCytoscapeView" outlined>
+          <LoadingCircularProgress
+            v-if="networkLoading"
+            style="width: 80%"
+            :title="'Loading Network...'"
+          />
           <PathwayNetworkView
             class="pgs"
             @selectionChanged="pathwaySelectionUpdated($event)"
@@ -345,6 +350,10 @@ export default {
       if (this.showAnnotatedPathwaysInput) return this.secondaryPathways;
       return this.secondaryPathways.filter((pw) => pw.isAnnotated === false);
     },
+    filteredNetworkForCytoscape() {
+      if (this.showAnnotatedPathwaysInput) return this.networkForCytoscape;
+      return this.networkForCytoscape.filter((pw) => pw.isAnnotated === false);
+    },
     hideSecondaryPagination() {
       return this.secondaryPathways.length < 20;
     },
@@ -471,6 +480,7 @@ export default {
     },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
+      this.plotLoading = true;
       this.showSecondarySearchForm = false;
       this.secondaryPathways = [];
       this.currentSecondarySearchDescs = dataDescriptions;
@@ -478,6 +488,7 @@ export default {
         this.secondaryPathways =
           await PairwiseService.searchTermSecondaryPathways({
             term: this.term,
+            prd: this.currentPRD,
             dataDescKeys: dataDescriptions.digitalKeys,
           });
         this.addIsAnnotatedToPathways();
@@ -490,6 +501,25 @@ export default {
       }
 
       this.secondaryPathwaysLoading = false;
+      this.plotLoading = false;
+      this.searchNetworkForCytoscape(dataDescriptions);
+    },
+    async searchNetworkForCytoscape(dataDescriptions) {
+      this.networkLoading = true;
+      this.showSecondarySearchForm = false;
+      this.networkForCytoscape = [];
+      try {
+        this.networkForCytoscape =
+        await PairwiseService.searchNetworkTermSecondaryPathways({
+          term: this.term,
+          prd: this.currentPRD,
+          dataDescKeys: dataDescriptions.digitalKeys,
+        });
+      } catch (err) {
+        this.networkLoading = false;
+        console.log(err);
+      }
+      this.networkLoading = false;
     },
     addIsAnnotatedToPathways() {
       this.secondaryPathways.forEach((pathway) => {

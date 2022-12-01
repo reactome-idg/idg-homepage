@@ -37,7 +37,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn small color="var(--secondary-color)" @click="addRelationship"
+              <v-btn small color="var(--idg-alt-dark-blue, #477F9C)" class="secondaryBtn white--text" @click="addRelationship"
                 >Add</v-btn
               >
             </v-col>
@@ -56,7 +56,7 @@
           >
         </v-col>
         <v-col cols="12" md="2">
-          <v-btn :dark="darkmode" color="var(--primary-color)" class="btn-primary" @click="searchSecondaryPathways">Search</v-btn>
+          <v-btn :dark="darkmode" color="var(--idg-dark-blue, #477F9C)" class="primaryBtn white--text" @click="searchSecondaryPathways">Search</v-btn>
         </v-col>
       </v-row>
       <v-row>
