@@ -350,10 +350,6 @@ export default {
       if (this.showAnnotatedPathwaysInput) return this.secondaryPathways;
       return this.secondaryPathways.filter((pw) => pw.isAnnotated === false);
     },
-    filteredNetworkForCytoscape() {
-      if (this.showAnnotatedPathwaysInput) return this.networkForCytoscape;
-      return this.networkForCytoscape.filter((pw) => pw.isAnnotated === false);
-    },
     hideSecondaryPagination() {
       return this.secondaryPathways.length < 20;
     },
