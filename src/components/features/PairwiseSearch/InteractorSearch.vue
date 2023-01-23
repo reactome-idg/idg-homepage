@@ -205,6 +205,21 @@
         />
       </v-overlay>
     </v-card>
+    <v-row class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px;" fluid outlined>
+    <v-container class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px; width: 50%" fluid outlined>
+      <FuncIntScoreThresholdPlot
+        :term="term"
+        :interactingGenes="interactingGenes"
+        :prd="currentPRD"
+        @updatePRD="updatePRD">
+    </FuncIntScoreThresholdPlot>
+    </v-container>
+    <v-container class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px; width: 50%" fluid outlined>
+    <FeatureInfoPlot
+        :term="term">
+    </FeatureInfoPlot>
+    </v-container>
+  </v-row>
   </div>
 </template>
 
@@ -217,6 +232,8 @@ import TableDetails from "./TableDetails";
 import PathwayNetworkView from "./Cytoscape/PathwayNetworkView.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 import PathwayResultsPlot from "./PathwayResultsPlot.vue";
+import FuncIntScoreThresholdPlot from "./FuncIntScoreThresholdPlot.vue";
+import FeatureInfoPlot from "./FeatureInfoPlot.vue";
 
 import {
   VDataTable,
@@ -251,6 +268,8 @@ export default {
     PathwayNetworkView,
     LoadingCircularProgress,
     PathwayResultsPlot,
+    FuncIntScoreThresholdPlot,
+    FeatureInfoPlot
 },
   vuetify,
   props: {
@@ -305,6 +324,7 @@ export default {
     expandedPathways: [],
     networkForCytoscape: [],
     pathwayList: [],
+    dataDescriptions: [],
     networkLoading: false,
     plotLoading: false,
     isCytoscapeView: false,
@@ -391,6 +411,7 @@ export default {
 
       await this.loadCombinedScores();
       await this.loadPlot();
+      await this.loadSecondaryPathways();
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
@@ -558,8 +579,17 @@ export default {
     },
     switchPathwayView(){
       this.isCytoscapeView = !this.isCytoscapeView;
-      // console.log(this.$refs.pathwayGeneSimilarity);
-    }
+    },
+    async loadSecondaryPathways(){
+      if (!sessionStorage.getItem('dataDescriptions')) {
+        try {
+          this.dataDescriptions = await PairwiseService.getAllDataDescs();
+          sessionStorage.setItem('dataDescriptions', JSON.stringify(this.dataDescriptions));
+        } catch (err) {
+          this.error = err.message;
+        }
+      }
+    },
   },
 };
 </script>

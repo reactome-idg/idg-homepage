@@ -78,6 +78,12 @@ export default {
       return {
         showlegend: true, // Always let this on
         responsive: true, // resize itself
+        title: {
+            text:'Interacting Pathway Plot',
+            font: {
+              size: 16
+            },
+          },
         xaxis: {
           title: "Pathway",
           showticklabels: false,
