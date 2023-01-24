@@ -192,13 +192,6 @@ export default {
     else
       throw new Error("No data descriptions can be found.");
   },
-  // async created() {
-  //   try {
-  //     this.dataDescs = await PairwiseService.getDataDescs(this.term);
-  //   } catch (err) {
-  //     this.error = err.message;
-  //   }
-  // },
   methods: {
     searchSecondaryPathways() {
       if (this.relationshipTypes.length < 1) {
