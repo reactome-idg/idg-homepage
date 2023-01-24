@@ -30,17 +30,11 @@ export default {
       type: Array,
       default: () => [],
     },
-    errors: {
-      type: String,
-      default: () => "",
-    },
   },
 
   data() {
     return {
-      prdInput: 0.9,
-      error: "",
-      geneData: [],
+      geneData: []
     };
   },
 
@@ -78,10 +72,6 @@ export default {
         }
       };
     },
-  },
-
-  watch: {
-
   },
 
   methods: {

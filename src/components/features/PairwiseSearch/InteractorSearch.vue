@@ -216,7 +216,8 @@
     </v-container>
     <v-container class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px; width: 50%" fluid outlined>
     <FeatureInfoPlot
-        :term="term">
+      v-if="!dataDescriptionsLoading"
+      :term="term">
     </FeatureInfoPlot>
     </v-container>
   </v-row>
@@ -328,6 +329,7 @@ export default {
     networkLoading: false,
     plotLoading: false,
     isCytoscapeView: false,
+    dataDescriptionsLoading: false,
   }),
   watch: {
     term() {
@@ -411,7 +413,7 @@ export default {
 
       await this.loadCombinedScores();
       await this.loadPlot();
-      await this.loadSecondaryPathways();
+      await this.loadDataDescriptions();
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
@@ -580,15 +582,18 @@ export default {
     switchPathwayView(){
       this.isCytoscapeView = !this.isCytoscapeView;
     },
-    async loadSecondaryPathways(){
+    async loadDataDescriptions(){
+      this.dataDescriptionsLoading = true;
       if (!sessionStorage.getItem('dataDescriptions')) {
         try {
           this.dataDescriptions = await PairwiseService.getAllDataDescs();
           sessionStorage.setItem('dataDescriptions', JSON.stringify(this.dataDescriptions));
         } catch (err) {
           this.error = err.message;
+          console.error(err);
         }
       }
+      this.dataDescriptionsLoading = false;
     },
   },
 };

@@ -187,23 +187,10 @@ export default {
   },
   created() {
     let data_descriptions_text = sessionStorage.getItem("dataDescriptions");
-    let tmpDataDesc= undefined;
-    if (data_descriptions_text) {
-        tmpDataDesc = JSON.parse(data_descriptions_text);
-    } else {
-        tmpDataDesc = "TODO"
-    }
-    let dataDescriptions = tmpDataDesc;
-
-    this.dataDescs = dataDescriptions;
+    if (data_descriptions_text)
+    this.dataDescs = JSON.parse(data_descriptions_text);
+    throw new Error("No data descriptions can be found.");
   },
-  // async created() {
-  //   try {
-  //     this.dataDescs = await PairwiseService.getDataDescs(this.term);
-  //   } catch (err) {
-  //     this.error = err.message;
-  //   }
-  // },
   methods: {
     searchSecondaryPathways() {
       if (this.relationshipTypes.length < 1) {

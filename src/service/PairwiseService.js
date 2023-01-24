@@ -220,7 +220,6 @@ class PairwiseService {
       axios
         .post(`${url}pairwise/genes/true`, postData)
         .then((res) => {
-          console.info('in pairwise service' + res.data);
           resolve(res.data);
         })
         .catch((err) => {

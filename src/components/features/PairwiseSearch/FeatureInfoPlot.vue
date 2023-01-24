@@ -58,6 +58,7 @@ import { Plotly } from "vue-plotly";
             title: "Sources",
             showticklabels: false,
             categoryorder: "array",
+            categoryarray: this.generateDesc2TypeMap().keys()
           },
           yaxis: {
             title: "Number of " + "<br>" + "Pairwise Features",
@@ -85,18 +86,7 @@ import { Plotly } from "vue-plotly";
   
     methods: {
       createPlotData() {
-          let dataDesc2Type = new Map();
-          if(this.dataDescriptions){
-            for(let dataDescription of this.dataDescriptions){
-              let dataType = dataDescription.dataType;
-              if(dataType === "Gene_Coexpression"){
-                let dataResource = dataDescription.id.split("|")[0];
-                dataType += "_" + dataResource;
-              }
-
-              dataDesc2Type.set(dataDescription.id, dataType);
-            }
-          }
+          let dataDesc2Type = this.generateDesc2TypeMap();
 
           let dataType2pairwiseRelationship = new Map();
           if(this.results){
@@ -106,12 +96,11 @@ import { Plotly } from "vue-plotly";
 
               let geneRelationship = dataType2pairwiseRelationship.get(descType);
               if(geneRelationship === undefined){
-                geneRelationship = {relationshipType: [], posNum: [], text: []};
+                geneRelationship = {dataDescId: [], posNum: [], text: []};
                 dataType2pairwiseRelationship.set(descType, geneRelationship);
               }
 
-                geneRelationship.relationshipType.push(result.dataDesc.id);
-                //TODO: case where no posNum
+                geneRelationship.dataDescId.push(result.dataDesc.id);
                 let posNum = result.posNum ? result.posNum: 0;
                 let negNum = result.negNum ? result.negNum: 0;
                 geneRelationship.posNum.push(posNum + negNum);
@@ -127,7 +116,7 @@ import { Plotly } from "vue-plotly";
 
             let relationshipGeneData = {
               name: name,
-              x: pairwiseData.relationshipType,
+              x: pairwiseData.dataDescId,
               y: pairwiseData.posNum,
               text: pairwiseData.text,
               type: "scattergl",
@@ -142,32 +131,42 @@ import { Plotly } from "vue-plotly";
         },
   
         generateText(numFeatures, relationship) {
-          if(relationship){
+          if(relationship !== undefined){
           let relationships = relationship.split("|");
           let relationshipType = relationships[2];
           let dataResouce = relationships[0];
           let bioSource = relationships[1];
           let dataSource = relationships[3] ? relationships[3] : undefined;
-            let text = "<b>Relationship Type: " + relationshipType + "</b><br>" 
-            + "Data Resource: " + dataResouce + "<br>"
-            + "Biosource: " + bioSource;
-            if (dataSource) text += "<br>" + "Data Source: " + dataSource;
-            text = text + "<br>" + "Number of Features: " + numFeatures;
+            let text = "<b>Relationship Type: </b>" + relationshipType + "<br>" 
+            + "<b>Data Resource: </b>" + dataResouce + "<br>"
+            + "<b>Biosource: </b>" + bioSource;
+            if (dataSource) text += "<br>" + "<b>Data Source: </b>" + dataSource;
+            text = text + "<br>" + "<b>Number of Features: </b>" + numFeatures;
             return text;
           }
+        },
+
+        generateDesc2TypeMap() {
+          let dataDesc2Type = new Map();
+          if(this.dataDescriptions){
+            for(let dataDescription of this.dataDescriptions){
+              let dataType = dataDescription.dataType;
+              if(dataType === "Gene_Coexpression"){
+                let dataResource = dataDescription.id.split("|")[0];
+                dataType += "_" + dataResource;
+              }
+
+              dataDesc2Type.set(dataDescription.id, dataType);
+            }
+          }
+          return dataDesc2Type;
         },
   
          getDataDescriptions() {
             let data_descriptions_text = sessionStorage.getItem("dataDescriptions");
-            let tmpDataDesc= undefined;
-            if (data_descriptions_text) {
-                tmpDataDesc = JSON.parse(data_descriptions_text);
-            } else {
-                tmpDataDesc = "TODO"
-            }
-            let dataDescriptions = tmpDataDesc;
-
-            return dataDescriptions;
+            if (data_descriptions_text)
+              return JSON.parse(data_descriptions_text);
+            throw new Error("No data descriptions can be found.");
         },
 
         getDatadescriptionIds() {
@@ -187,33 +186,27 @@ import { Plotly } from "vue-plotly";
                     genes: [this.term],
                     dataDescs: descIds
                 });
+                this.assignPairwiseFeatures(relationshipsForGenes, descIds);
                 this.results = relationshipsForGenes;
-                this.assign0PairwiseFeatures(relationshipsForGenes, descIds);
             } catch (err) {
                 relationshipsForGenes = [];
-                console.error(err);
             }
-            console.info(relationshipsForGenes.length)
             return relationshipsForGenes;
         },
 
-        assign0PairwiseFeatures(relationshipsForGenes, descIds) {
-          let included = [];
+        assignPairwiseFeatures(relationshipsForGenes, descIds) {
           let relationshipIds = [];
           for(let relationship of relationshipsForGenes){
             relationshipIds.push(relationship.dataDesc.id);
           }      
           for(let id of descIds){
-            if(!relationshipIds.includes(id)){
-              included.push(id);
-            }
-          }
-          for(let id of included){
-            let relationshipObject =  {dataDesc: {id: id}, posNum: 0};
-            this.results.push(relationshipObject);
+            if(relationshipIds.includes(id)) 
+              continue;
+            let relationshipObject =  {dataDesc: {id: id}};
+            relationshipsForGenes.push(relationshipObject);
           }
 
-        }
+         }
     },
   
   };
