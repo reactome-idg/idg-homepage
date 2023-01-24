@@ -95,6 +95,15 @@ class PairwiseService {
     return new Promise((resolve, reject) => {
       axios
         .get(`${url}datadesc` + (term && `/${term}`))
+        .then((res) => {resolve(res.data);})
+        .catch((err) => {reject(err);});
+    });
+  }
+
+  static getAllDataDescs() {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`${url}datadesc`)
         .then((res) => {
           resolve(res.data);
         })
@@ -205,6 +214,20 @@ class PairwiseService {
 
     return data;
   }
+
+  static pairwiseRelationshipsForGenes(postData){
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${url}pairwise/genes/true`, postData)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
 }
 
 export default PairwiseService;

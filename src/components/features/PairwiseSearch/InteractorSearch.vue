@@ -72,11 +72,6 @@
       </div>
       <v-card-text class="interactingPathwaysCard">
         <v-card v-show="isCytoscapeView" outlined>
-          <LoadingCircularProgress
-            v-if="networkLoading"
-            style="width: 80%"
-            :title="'Loading Network...'"
-          />
           <PathwayNetworkView
             class="pgs"
             @selectionChanged="pathwaySelectionUpdated($event)"
@@ -210,6 +205,22 @@
         />
       </v-overlay>
     </v-card>
+    <v-row class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px;" fluid outlined>
+    <v-container class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px; width: 50%" fluid outlined>
+      <FuncIntScoreThresholdPlot
+        :term="term"
+        :interactingGenes="interactingGenes"
+        :prd="currentPRD"
+        @updatePRD="updatePRD">
+    </FuncIntScoreThresholdPlot>
+    </v-container>
+    <v-container class="pa-0 ma-0" style="max-height: 300px; margin: 0px 0px 0px 0px; width: 50%" fluid outlined>
+    <FeatureInfoPlot
+      v-if="!dataDescriptionsLoading"
+      :term="term">
+    </FeatureInfoPlot>
+    </v-container>
+  </v-row>
   </div>
 </template>
 
@@ -222,6 +233,8 @@ import TableDetails from "./TableDetails";
 import PathwayNetworkView from "./Cytoscape/PathwayNetworkView.vue";
 import LoadingCircularProgress from "../../layout/LoadingCircularProgress";
 import PathwayResultsPlot from "./PathwayResultsPlot.vue";
+import FuncIntScoreThresholdPlot from "./FuncIntScoreThresholdPlot.vue";
+import FeatureInfoPlot from "./FeatureInfoPlot.vue";
 
 import {
   VDataTable,
@@ -256,6 +269,8 @@ export default {
     PathwayNetworkView,
     LoadingCircularProgress,
     PathwayResultsPlot,
+    FuncIntScoreThresholdPlot,
+    FeatureInfoPlot
 },
   vuetify,
   props: {
@@ -310,9 +325,11 @@ export default {
     expandedPathways: [],
     networkForCytoscape: [],
     pathwayList: [],
+    dataDescriptions: [],
     networkLoading: false,
     plotLoading: false,
     isCytoscapeView: false,
+    dataDescriptionsLoading: false,
   }),
   watch: {
     term() {
@@ -396,6 +413,7 @@ export default {
 
       await this.loadCombinedScores();
       await this.loadPlot();
+      await this.loadDataDescriptions();
 
       //when loading initial data, always want to start with something loaded
       //if nothing available at PRD 0.9. decrement by 0.1 until something is available.
@@ -476,7 +494,6 @@ export default {
     },
     async searchSecondaryPathways(dataDescriptions) {
       this.secondaryPathwaysLoading = true;
-      this.plotLoading = true;
       this.showSecondarySearchForm = false;
       this.secondaryPathways = [];
       this.currentSecondarySearchDescs = dataDescriptions;
@@ -484,7 +501,6 @@ export default {
         this.secondaryPathways =
           await PairwiseService.searchTermSecondaryPathways({
             term: this.term,
-            prd: this.currentPRD,
             dataDescKeys: dataDescriptions.digitalKeys,
           });
         this.addIsAnnotatedToPathways();
@@ -497,25 +513,6 @@ export default {
       }
 
       this.secondaryPathwaysLoading = false;
-      this.plotLoading = false;
-      this.searchNetworkForCytoscape(dataDescriptions);
-    },
-    async searchNetworkForCytoscape(dataDescriptions) {
-      this.networkLoading = true;
-      this.showSecondarySearchForm = false;
-      this.networkForCytoscape = [];
-      try {
-        this.networkForCytoscape =
-        await PairwiseService.searchNetworkTermSecondaryPathways({
-          term: this.term,
-          prd: this.currentPRD,
-          dataDescKeys: dataDescriptions.digitalKeys,
-        });
-      } catch (err) {
-        this.networkLoading = false;
-        console.log(err);
-      }
-      this.networkLoading = false;
     },
     addIsAnnotatedToPathways() {
       this.secondaryPathways.forEach((pathway) => {
@@ -584,8 +581,20 @@ export default {
     },
     switchPathwayView(){
       this.isCytoscapeView = !this.isCytoscapeView;
-      // console.log(this.$refs.pathwayGeneSimilarity);
-    }
+    },
+    async loadDataDescriptions(){
+      this.dataDescriptionsLoading = true;
+      if (!sessionStorage.getItem('dataDescriptions')) {
+        try {
+          this.dataDescriptions = await PairwiseService.getAllDataDescs();
+          sessionStorage.setItem('dataDescriptions', JSON.stringify(this.dataDescriptions));
+        } catch (err) {
+          this.error = err.message;
+          console.error(err);
+        }
+      }
+      this.dataDescriptionsLoading = false;
+    },
   },
 };
 </script>

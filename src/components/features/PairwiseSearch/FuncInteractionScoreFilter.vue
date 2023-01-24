@@ -1,7 +1,9 @@
 <template>
   <v-row no-gutters>
     <v-col cols="10">
-      <v-text-field
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+      <v-text-field v-bind="attrs" v-on="on" 
         id="prdInputBox"
         prefix="Functional Interaction Score ≥"
         v-model="prdInput"
@@ -12,8 +14,11 @@
         max="1"
         step="0.1"
       ></v-text-field>
-      <p>
-        {{ numberOfGenesLabel }}
+    </template>
+      <span>See Genes vs Functional Interaction Score Plot Below</span>
+        </v-tooltip>
+      <p>    
+          {{ numberOfGenesLabel }}      
         <span
           ><v-btn x-small color="var(--idg-orange, #F98419)" @click="downloadFeatures"
             >Download Genes</v-btn

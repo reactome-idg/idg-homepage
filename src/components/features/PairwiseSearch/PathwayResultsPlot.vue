@@ -6,7 +6,7 @@
       :data="results" 
       :layout="layout" 
       :display-mode-bar="true" 
-      style="height: 290px;" 
+      style="height: 290px; width: 99%; left: 1px" 
       class="pa-0"
       @hover = "onHover"
       >
@@ -78,6 +78,12 @@ export default {
       return {
         showlegend: true, // Always let this on
         responsive: true, // resize itself
+        title: {
+            text:'Interacting Pathway Plot',
+            font: {
+              size: 16
+            },
+          },
         xaxis: {
           title: "Pathway",
           showticklabels: false,
@@ -101,6 +107,10 @@ export default {
   },
 
   watch: {
+    nodeFDRFilter() {
+      this.updatePlot(); 
+    },
+
     pathwaySelection() {
       this.setSelection();
     }
@@ -312,6 +322,7 @@ export default {
     },
 
     unselect() {
+      //this.selectedSet.clear(); // TODO: ensure this is the correct/only spot
       this.changePointSize(this.defaultPointSize);
       this.selected.clear();
       this.$emit("selectionChanged", this.selected);

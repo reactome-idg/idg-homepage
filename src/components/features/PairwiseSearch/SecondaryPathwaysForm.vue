@@ -1,77 +1,75 @@
 <template :dark="darkmode">
-<div class="full-width">
-  <v-card :dark="darkmode" outlined class="pt-5">
-    <v-btn icon class="closeBtn" title="close" 
-    @click="$emit('close')">
-          <v-icon>{{mdiClose}}</v-icon>
-    </v-btn>
-    <v-card-text class="text-left justify-left">
-      <h4 class="text-left pb-2">Choose individual pairwise relationship data sources</h4>
-      <v-card :dark="darkmode" outlined>
-        <v-card-text>
-          <v-row align="center" justify="center">
-            <v-col cols="12" md="6">
-              <label for="types" class="left">Select a relationship type</label>
-              <select name="types" id="types" @change="cascadeDataType" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
-                <option v-for="(type, index) in types" :key="index" :value="type">{{type}}</option>
-              </select>
-            </v-col>
-            <v-col cols="12" md="6">
-              <label for="provenances">Select a data resource</label>
-              <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
-                <option v-for="(provenance, index) in provenances" :key="index" :value="provenance">{{provenance}}</option>
-              </select>
-            </v-col>
-            <v-col cols="12" md="6">
-              <label for="bioSources">Select a biosource</label>
-              <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
-                <option v-for="(bioSource, index) in bioSources" :key="index" :value="bioSource">{{bioSource}}</option>
-              </select>
-            </v-col>
-            <v-col cols="12" md="4">
-              <div v-if="bioSource && origins.length > 0">
-                <label for="origin">Select a data source</label>
-                <select name="origin" id="origin" class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="origin">
-                  <option v-for="(origin, index) in origins" :key="index" :value="origin">{{origin}}</option>
+  <div class="full-width">
+    <v-card :dark="darkmode" outlined class="pt-5">
+      <v-btn icon class="closeBtn" title="close" @click="$emit('close')">
+        <v-icon>{{ mdiClose }}</v-icon>
+      </v-btn>
+      <v-card-text class="text-left justify-left">
+        <h4 class="text-left pb-2">Choose individual pairwise relationship data sources</h4>
+        <v-card :dark="darkmode" outlined>
+          <v-card-text>
+            <v-row align="center" justify="center">
+              <v-col cols="12" md="6">
+                <label for="types" class="left">Select a relationship type</label>
+                <select name="types" id="types" @change="cascadeDataType" class="ma-2"
+                  :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="dataType">
+                  <option v-for="(type, index) in types" :key="index" :value="type">{{ type }}</option>
                 </select>
-              </div>
-            </v-col>
-            <v-col cols="12" md="2">
-              <v-btn small color="var(--idg-alt-dark-blue, #477F9C)" class="secondaryBtn white--text" @click="addRelationship"
-                >Add</v-btn
-              >
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-      <v-row align="center" justify="center" class="mt-5">
-        <v-col cols="12" md="8">
-          <v-chip
-            v-for="(rel, index) in relationshipTypes"
-            :key="index"
-            close
-            :close-icon="mdiCloseCircle"
-            @click:close="remove(rel)"
-            >{{ rel }}</v-chip
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-btn :dark="darkmode" color="var(--idg-dark-blue, #477F9C)" class="primaryBtn white--text" @click="searchSecondaryPathways">Search</v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="errors">{{ computedErrors }}</v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <label for="provenances">Select a data resource</label>
+                <select name="provenances" id="provenances" :disabled="!dataType" @change="cascadeProvenance"
+                  class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="provenance">
+                  <option v-for="(provenance, index) in provenances" :key="index" :value="provenance">{{ provenance }}
+                  </option>
+                </select>
+              </v-col>
+              <v-col cols="12" md="6">
+                <label for="bioSources">Select a biosource</label>
+                <select name="bioSources" id="bioSources" :disabled="!provenance" @change="cascadeBioSource"
+                  class="ma-2" :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="bioSource">
+                  <option v-for="(bioSource, index) in bioSources" :key="index" :value="bioSource">{{ bioSource }}
+                  </option>
+                </select>
+              </v-col>
+              <v-col cols="12" md="4">
+                <div v-if="bioSource && origins.length > 0">
+                  <label for="origin">Select a data source</label>
+                  <select name="origin" id="origin" class="ma-2"
+                    :class="darkmode ? 'selectionDropDownDark' : 'selectionDropDown'" v-model="origin">
+                    <option v-for="(origin, index) in origins" :key="index" :value="origin">{{ origin }}</option>
+                  </select>
+                </div>
+              </v-col>
+              <v-col cols="12" md="2">
+                <v-btn small color="var(--secondary-color)" @click="addRelationship">Add</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+        <v-row align="center" justify="center" class="mt-5">
+          <v-col cols="12" md="8">
+            <v-chip v-for="(rel, index) in relationshipTypes" :key="index" close :close-icon="mdiCloseCircle"
+              @click:close="remove(rel)">{{ rel }}</v-chip>
+          </v-col>
+          <v-col cols="12" md="2">
+            <v-btn :dark="darkmode" color="var(--primary-color)" class="btn-primary"
+              @click="searchSecondaryPathways">Search</v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="errors">{{ computedErrors }}</v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
-import PairwiseService from "../../../service/PairwiseService";
+//import PairwiseService from "../../../service/PairwiseService";
 import { VCard, VCardText, VCol, VRow, VBtn, VChip } from "vuetify/lib";
 import vuetify from "../../../plugins/vuetify"
-import {mdiMenuDown, mdiCloseCircle, mdiClose} from "@mdi/js";
+import { mdiMenuDown, mdiCloseCircle, mdiClose } from "@mdi/js";
 export default {
   name: "SecondaryPathwayForm",
   components: {
@@ -97,7 +95,7 @@ export default {
       default: () => false,
     },
     term: {
-      type:String,
+      type: String,
       default: () => null
     }
   },
@@ -112,7 +110,7 @@ export default {
     provenance: null,
     bioSource: null,
     origin: null,
-    dialog:false,
+    dialog: false,
   }),
   computed: {
     types() {
@@ -165,20 +163,20 @@ export default {
   },
   watch: {
     types(val) {
-      if(val.length > 0)
-      this.dataType = val[0];
+      if (val.length > 0)
+        this.dataType = val[0];
     },
     provenances(val) {
-      if(val.length > 0)
-      this.provenance = val[0];
+      if (val.length > 0)
+        this.provenance = val[0];
     },
     bioSources(val) {
-      if(val.length > 0)
-      this.bioSource = val[0];
+      if (val.length > 0)
+        this.bioSource = val[0];
     },
     origins(val) {
-      if(val.length > 0)
-      this.origin = val[0]
+      if (val.length > 0)
+        this.origin = val[0]
     },
     relationshipTypes(val) {
       if (val.length > 6) this.$nextTick(() => this.relationshipTypes.pop());
@@ -187,12 +185,12 @@ export default {
   mounted() {
     this.relationshipTypes.push(...this.initialDescs);
   },
-  async created() {
-    try {
-      this.dataDescs = await PairwiseService.getDataDescs(this.term);
-    } catch (err) {
-      this.error = err.message;
-    }
+  created() {
+    let data_descriptions_text = sessionStorage.getItem("dataDescriptions");
+    if (data_descriptions_text)
+      this.dataDescs = JSON.parse(data_descriptions_text);
+    else
+      throw new Error("No data descriptions can be found.");
   },
   methods: {
     searchSecondaryPathways() {
@@ -204,7 +202,7 @@ export default {
         dataDescriptions: this.relationshipTypes,
         digitalKeys: this.dataDescs.filter(desc => this.relationshipTypes.includes(desc.id)).map(desc => desc.digitalKey)
       });
-      this.dialog=false;
+      this.dialog = false;
     },
     addRelationship() {
       this.error = "";
@@ -249,35 +247,44 @@ export default {
 
 <style>
 @import "../../../../node_modules/vuetify/dist/vuetify.min.css";
+
 .errors {
   color: red;
 }
-.selectionDropDownDark{
+
+.selectionDropDownDark {
   color: white;
   border-bottom: 1px solid white;
   width: 100%;
 }
+
 .selectionDropDownDark:disabled {
   border-bottom: 1px dotted white;
 }
+
 .selectionDropDown {
-color: black;
-border-bottom: 1px solid darkgrey;
-width: 100%; 
+  color: black;
+  border-bottom: 1px solid darkgrey;
+  width: 100%;
 }
-.selectionDropDown:disabled{
-border-bottom: 1px dotted darkgrey;
+
+.selectionDropDown:disabled {
+  border-bottom: 1px dotted darkgrey;
 }
+
 .primaryBtn {
   background-color: #1976D2;
 }
+
 .secondaryBtn {
   background-color: #424242;
 }
+
 .closeBtn {
   position: absolute;
-  top:0;
+  top: 0;
 }
+
 .full-width {
   width: 100%;
 }
