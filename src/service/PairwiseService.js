@@ -215,10 +215,10 @@ class PairwiseService {
     return data;
   }
 
-  static pairwiseRelationshipsForGenes(postData){
+  static pairwiseRelationshipsForTerm(postData){
     return new Promise((resolve, reject) => {
       axios
-        .post(`${url}pairwise/genes/true`, postData)
+        .post(`${url}pairwise/term/true`, postData)
         .then((res) => {
           resolve(res.data);
         })

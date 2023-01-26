@@ -198,7 +198,7 @@ export default {
       this.dataDescriptions = this._getDataDescriptions();
       let descIds = this.dataDescriptions.map((desc) => desc.id);
       try {
-        this.results = await PairwiseService.pairwiseRelationshipsForGenes({
+        this.results = await PairwiseService.pairwiseRelationshipsForTerm({
           genes: [this.term],
           dataDescs: descIds,
         });
