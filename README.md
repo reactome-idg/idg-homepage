@@ -28,10 +28,11 @@ npm run serve
 ```
 
 ### Compiles and minifies for production
-builds using .env.production file for public env variables. Deployable files are stired in the dist/ folder. This script also builds the two web components for deployement on other websites. They are generated at dist/wc/
+builds using .env.production file for public env variables. Deployable files are stored in the dist/ folder. This script also builds the two web components for deployement on other websites. They are generated at dist/wc/
 ```
 npm run build-production
 ```
+To move the generated dist files into the production server (i.e. idg.reactome.org), tar the dist folder and scp it into the staging folder. Prior to doing this, make sure archive the previous dist.tgz file just in case. The dist.tgz then should be copied to ```/usr/local/reactomes/Reactome/production/Website``` and untar there to make new build alive.
 
 # Installing the web components
 
