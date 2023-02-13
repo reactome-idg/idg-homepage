@@ -114,6 +114,7 @@ export default {
 
       let plotData = [];
       let relationshipTypes = dataType2pairwiseRelationship.keys();
+      relationshipTypes = [...relationshipTypes].sort((t1, t2) => {return t1.localeCompare(t2)});
       for (let relationshipType of relationshipTypes) {
         let pairwiseData = dataType2pairwiseRelationship.get(relationshipType);
         let name = relationshipType;
