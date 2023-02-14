@@ -59,13 +59,14 @@ export default {
       selected: new Set(),
       selectedData: {pointNumber: undefined, curveNumber: undefined, sizes: []},
       selectedSet: new Set(),
-      defaultPointSize: 5,
+      defaultPointSize: 5.5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
          hoverText:undefined, clientX: undefined, clientY: undefined},
       top2curveNumber: new Map(),
       stId2top: new Map(),
       stId2pointNumber: new Map(),
-      top2sizes: new Map()
+      top2sizes: new Map(),
+      color: undefined
     };
   },
 
@@ -129,6 +130,7 @@ export default {
       this.hoverData.hoverText = hoverData.points[0].text;
       this.hoverData.clientX = hoverData.event.clientX;
       this.hoverData.clientY = hoverData.event.clientY;
+      this.color = hoverData.points[0].data.marker.color;
     },
 
     generateXAxisLabels() {
@@ -365,7 +367,7 @@ export default {
 
     changePointSize(pointSize) {
       this.selectedData.sizes[this.selectedData.pointNumber] = pointSize;
-      let update = { 'marker': { size: this.selectedData.sizes } };
+      let update = { 'marker': { size: this.selectedData.sizes, color: this.color } };
       this.$refs.chart.restyle(update, [this.selectedData.curveNumber]);
     },
 
