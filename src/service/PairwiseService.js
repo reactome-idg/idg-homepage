@@ -47,10 +47,11 @@ class PairwiseService {
     });
   }
 
+  // Use a fast version at the server side. Note: There is 1 at the end of the URL.
   static searchTermSecondaryPathways(postData) {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${url}relationships/enrichedSecondaryPathwaysForTerm`, postData)
+        .post(`${url}relationships/enrichedSecondaryPathwaysForTerm1`, postData)
         .then((res) => {
           //return only bottom level pathways
           resolve(res.data.filter((p) => p.bottomLevel));

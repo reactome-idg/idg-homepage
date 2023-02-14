@@ -32,7 +32,16 @@ builds using .env.production file for public env variables. Deployable files are
 ```
 npm run build-production
 ```
-To move the generated dist files into the production server (i.e. idg.reactome.org), tar the dist folder and scp it into the staging folder. Prior to doing this, make sure archive the previous dist.tgz file just in case. The dist.tgz then should be copied to ```/usr/local/reactomes/Reactome/production/Website``` and untar there to make new build alive. Also make sure .htaccess is in the final unzipped folder. Otherwise, refresh cannot work. To make things easier, don't delete the deployed dist folder. Make the tar overwrite whatever there.
+To move the generated dist files into the production server (i.e. idg.reactome.org), tar the dist folder and scp it into the staging folder. Prior to doing this, make sure archive the previous dist.tgz file just in case. The dist.tgz then should be copied to ```/usr/local/reactomes/Reactome/production/Website``` and untar there to make new build alive. 
+
+Note: To make refresh and history work, the apache2 configuration should have the following line:
+```
+  DocumentRoot /usr/local/reactomes/Reactome/production/Website/dist
+  <Directory /usr/local/reactomes/Reactome/production/Website/dist>
+      FallbackResource /index.html
+  </Directory>
+```
+Or an .htaccess file should be added into the unzipped dist folder. The sample .htaccess file is in this codebase. 
 
 # Installing the web components
 
