@@ -59,14 +59,13 @@ export default {
       selected: new Set(),
       selectedData: {pointNumber: undefined, curveNumber: undefined, sizes: []},
       selectedSet: new Set(),
-      defaultPointSize: 5.5,
+      defaultPointSize: 5,
       hoverData: {hoverCurveNumber: undefined, hoverPointNumber: undefined, hoverSizes: [],
          hoverText:undefined, clientX: undefined, clientY: undefined},
       top2curveNumber: new Map(),
       stId2top: new Map(),
       stId2pointNumber: new Map(),
-      top2sizes: new Map(),
-      color: undefined
+      top2sizes: new Map()
     };
   },
 
@@ -130,7 +129,6 @@ export default {
       this.hoverData.hoverText = hoverData.points[0].text;
       this.hoverData.clientX = hoverData.event.clientX;
       this.hoverData.clientY = hoverData.event.clientY;
-      this.color = hoverData.points[0].data.marker.color;
     },
 
     generateXAxisLabels() {
@@ -153,48 +151,16 @@ export default {
       return this.generateTypedResults(filteredPathwayEnrichmentResults);
     },
 
-    // Assign a color to a pathway for consistency
-    generateColorMap(topSet){
-      let colors = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22','#17becf'];
-      let top2Color = new Map();
-      let count = 0;
-      let loopNum = 0;
-      let newColors = [...colors];
-
-      for(let top of topSet){
-        if(count === colors.length){
-          count = 0;
-          loopNum++;
-
-          for(let i=0; i< colors.length; i++){
-
-            let rgb = [colors[i].substring(1,3), colors[i].substring(3,5), colors[i].substring(5,7)];
-            
-            rgb[loopNum % 3] = parseInt(rgb[loopNum % 3], 16) + 85;
-            rgb[loopNum % 3] = (rgb[loopNum % 3] % 255).toString(16);
-            let newColor = '#' + rgb[0] + rgb[1] + rgb[2];
-            newColors[i] = newColor;
-          }
-        }
-        top2Color.set(top, newColors[count]); 
-        count++;
-      }
-      return top2Color;
-    },
-
     // Generate the plot data based on top-level pathways
     generateTypedResults(pathwayEnrichmentResults) {
       let pathwayList = this.getPathwayList();
-      let topSet = new Set(); // Need a unique set of the top level pathways
       if (pathwayList) {
         for (let pathway of pathwayList) {
           // Better to use stId to avoid any type of text encoding issue 
           // with miss match.
           this.stId2top.set(pathway.stId, pathway.topPathway);
-          topSet.add(pathway.topPathway);
         }
       }
-      let top2Color = this.generateColorMap(topSet);
       let top2data = new Map();
       
       for (let result of pathwayEnrichmentResults) {
@@ -228,7 +194,6 @@ export default {
       let topIndex = 0;
       for (let top of tops) {
         let data = top2data.get(top);
-        let color = top2Color.get(top);
         let name = top;
         let pathwaySize = [];
         for (let i = 0; i < data.pathways.length; i++) {
@@ -243,8 +208,9 @@ export default {
           mode: "markers",
           marker: {
             size: pathwaySize,
-            color: color
-            // Colors generated in generateColorMap 
+            // Let plotly decides the color. But we may need to decide colors to
+            // get a consistent color scheme.
+            // color: "#0000FF",
           },
         }
         plotData.push(topData);
@@ -367,7 +333,7 @@ export default {
 
     changePointSize(pointSize) {
       this.selectedData.sizes[this.selectedData.pointNumber] = pointSize;
-      let update = { 'marker': { size: this.selectedData.sizes, color: this.color } };
+      let update = { 'marker': { size: this.selectedData.sizes } };
       this.$refs.chart.restyle(update, [this.selectedData.curveNumber]);
     },
 
