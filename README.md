@@ -32,9 +32,16 @@ builds using .env.production file for public env variables. Deployable files are
 ```
 npm run build-production
 ```
+To embed the required vue into the wc, so that there is no need to include vue.js in the client's host page for web component, run the following, according to https://cli.vuejs.org/guide/build-targets.html#web-component:
+
+**Note**: This should be the preferred method for production.
+```
+npm run build-production-wc-inline
+```
+
 To move the generated dist files into the production server (i.e. idg.reactome.org), tar the dist folder and scp it into the staging folder. Prior to doing this, make sure archive the previous dist.tgz file just in case. The dist.tgz then should be copied to ```/usr/local/reactomes/Reactome/production/Website``` and untar there to make new build alive. 
 
-Note: To make refresh and history work, the apache2 configuration should have the following line:
+**Note**: To make refresh and history work, the apache2 configuration should have the following line (this approach is used currently. It is set in the configuration file, 001-reactome.conf, in the /etc/apache2/sites-common folder.):
 ```
   DocumentRoot /usr/local/reactomes/Reactome/production/Website/dist
   <Directory /usr/local/reactomes/Reactome/production/Website/dist>
@@ -42,6 +49,8 @@ Note: To make refresh and history work, the apache2 configuration should have th
   </Directory>
 ```
 Or an .htaccess file should be added into the unzipped dist folder. The sample .htaccess file is in this codebase. 
+
+**Note**: Make sure to add a symbolic link, download -> ../static/download, to make sure the two download links work in the download page. 
 
 # Installing the web components
 

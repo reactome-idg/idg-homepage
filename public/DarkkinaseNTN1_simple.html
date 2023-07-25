@@ -5,8 +5,9 @@
 
 <!-- Try to download these two JS files from darkkinome by saving the html file directly.
 	 Or download from the source by checking the html file there.-->
-<script src="DarkKinaseNTN1_files/vue.js"></script>
-<script src="DarkKinaseNTN1_files/webcomponents-loader.js"></script>
+<!-- <script src="DarkKinaseNTN1_files/vue.js"></script> -->
+<!-- Apparently the following script is not needed. -->
+<!-- script src="DarkKinaseNTN1_files/webcomponents-loader.js"></script -->
 
 
 <script src="wc/reactome-pathway-hierarchy.min.js"></script>
@@ -15,6 +16,8 @@
 	<div id="ReactomeCollapse" class="collapse">
 		<div class="card-body">
 			<p>The <a href="https://reactome.org/">Reactome Knowledgebase</a> of Human Biological Pathways and Processes is a curated and peer-reviewed knowledgebase available online as an open access resource that can be freely used and distributed by all members of the biological research community. This view of the reactome database is focused on TLK2 and displays the pathways associated with TLK2.
+			<!-- The first component reactome-pathway-hierarchy can be commented out if annotated pathways are not needed to be displayed. -->
+			<!-- term can be either UniProt accession number (e.g. Q9C0D5) or human gene symbol. -->
 			<reactome-pathway-hierarchy term="NTN1" darkmode="false"></reactome-pathway-hierarchy>
 			<reactome-interactor-search term="NTN1" darkmode="false"></reactome-interactor-search>
 		</div>
